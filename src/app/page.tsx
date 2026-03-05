@@ -64,6 +64,14 @@ const translations: Record<string, {
     signUp: '注册',
     chooseLanguage: '选择你的语言',
   },
+  'zh-TW': {
+    subtitle: '韓國教育國際',
+    title1: '學習韓語！',
+    title2: '有趣的方式',
+    startFree: '免費開始',
+    signUp: '註冊',
+    chooseLanguage: '選擇你的語言',
+  },
 };
 
 // Language data

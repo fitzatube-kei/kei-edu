@@ -75,7 +75,7 @@ export default function LearningReview({
         <div className="text-5xl mb-4">📚</div>
         <h2 className="text-2xl font-bold text-white mb-2">
           {language === 'ja' ? '今日の学習' :
-           language === 'zh' ? '今日学习' :
+           language.startsWith('zh') ? '今日学习' :
            language === 'th' ? 'การเรียนรู้วันนี้' :
            language === 'vi' ? 'Học hôm nay' :
            language === 'es' ? 'Aprendizaje de hoy' :
@@ -83,7 +83,7 @@ export default function LearningReview({
         </h2>
         <p className="text-white/60">
           {language === 'ja' ? '学んだ単語とフレーズを復習しましょう' :
-           language === 'zh' ? '复习学过的单词和短语' :
+           language.startsWith('zh') ? '复习学过的单词和短语' :
            language === 'th' ? 'ทบทวนคำและวลีที่เรียนรู้' :
            language === 'vi' ? 'Ôn lại từ vựng và cụm từ đã học' :
            language === 'es' ? 'Repasa las palabras y frases aprendidas' :
@@ -107,14 +107,14 @@ export default function LearningReview({
           <div>
             <div className="text-2xl font-bold text-green-400">{learnedItems.length}</div>
             <div className="text-xs text-white/60">
-              {language === 'ja' ? '単語' : language === 'zh' ? '单词' : 'Words'}
+              {language === 'ja' ? '単語' : language.startsWith('zh') ? '单词' : 'Words'}
             </div>
           </div>
           <div className="w-px bg-white/20" />
           <div>
             <div className="text-2xl font-bold text-blue-400">{accuracy}%</div>
             <div className="text-xs text-white/60">
-              {language === 'ja' ? '正解率' : language === 'zh' ? '正确率' : 'Accuracy'}
+              {language === 'ja' ? '正解率' : language.startsWith('zh') ? '正确率' : 'Accuracy'}
             </div>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default function LearningReview({
         className="w-full bg-gradient-to-r from-[#B4D700] to-[#77B602] text-white font-bold py-4 px-6 rounded-xl mt-6 shadow-lg"
       >
         {language === 'ja' ? '完了' :
-         language === 'zh' ? '完成' :
+         language.startsWith('zh') ? '完成' :
          language === 'th' ? 'เสร็จสิ้น' :
          language === 'vi' ? 'Hoàn thành' :
          language === 'es' ? 'Completar' :

@@ -49,7 +49,11 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   }, [language]);
 
   const getText = useCallback((textObj: Record<string, string>): string => {
-    return textObj[language] || textObj.en || '';
+    if (textObj[language]) return textObj[language];
+    // Fallback for regional variants (e.g., zh-TW -> zh)
+    const base = language.split('-')[0];
+    if (base !== language && textObj[base]) return textObj[base];
+    return textObj.en || '';
   }, [language]);
 
   const languageInfo = languages.find(l => l.code === language) || languages[0];

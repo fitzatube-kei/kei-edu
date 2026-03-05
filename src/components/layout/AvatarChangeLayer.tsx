@@ -115,7 +115,7 @@ export default function AvatarChangeLayer({
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                👩 {language === 'en' ? 'Female' : language === 'ja' ? '女性' : language === 'zh' ? '女性' : language === 'es' ? 'Femenino' : language === 'vi' ? 'Nữ' : 'หญิง'}
+                👩 {language === 'en' ? 'Female' : language === 'ja' ? '女性' : language.startsWith('zh') ? '女性' : language === 'es' ? 'Femenino' : language === 'vi' ? 'Nữ' : 'หญิง'}
               </button>
               <button
                 onClick={() => setAvatarGender('male')}
@@ -125,7 +125,7 @@ export default function AvatarChangeLayer({
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                👨 {language === 'en' ? 'Male' : language === 'ja' ? '男性' : language === 'zh' ? '男性' : language === 'es' ? 'Masculino' : language === 'vi' ? 'Nam' : 'ชาย'}
+                👨 {language === 'en' ? 'Male' : language === 'ja' ? '男性' : language.startsWith('zh') ? '男性' : language === 'es' ? 'Masculino' : language === 'vi' ? 'Nam' : 'ชาย'}
               </button>
             </div>
 

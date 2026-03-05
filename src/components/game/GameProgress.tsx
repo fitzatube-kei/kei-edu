@@ -44,6 +44,7 @@ export default function GameProgress({
       ja: ['月', '火', '水', '木', '金', '土', '日'],
       vi: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'],
       zh: ['一', '二', '三', '四', '五', '六', '日'],
+      'zh-TW': ['一', '二', '三', '四', '五', '六', '日'],
     };
     return weekDays[language] || weekDays.en;
   };

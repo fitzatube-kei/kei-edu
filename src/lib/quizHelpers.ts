@@ -92,6 +92,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '{word} หมายความว่าอะไร?',
     vi: '{word} có nghĩa là gì?',
     zh: '{word}是什么意思？',
+    'zh-TW': '{word}是什麼意思？',
   },
   'fill-blank': {
     en: 'Fill in the blank: {syllable}',
@@ -100,6 +101,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'เติมคำในช่องว่าง: {syllable}',
     vi: 'Điền vào chỗ trống: {syllable}',
     zh: '填空: {syllable}',
+    'zh-TW': '填空：{syllable}',
   },
   // Consonant templates
   'consonant-name': {
@@ -109,6 +111,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ชื่อการออกเสียงของ "{char}" คืออะไร?',
     vi: 'Tên phát âm của "{char}" là gì?',
     zh: '"{char}"的发音名称是什么？',
+    'zh-TW': '「{char}」的發音名稱是什麼？',
   },
   'find-consonant': {
     en: 'What is the first consonant in {word}?',
@@ -117,6 +120,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'พยัญชนะตัวแรกใน {word} คืออะไร?',
     vi: 'Phụ âm đầu tiên trong {word} là gì?',
     zh: '{word}的第一个辅音是什么？',
+    'zh-TW': '{word}的第一個子音是什麼？',
   },
   'consonant-roman': {
     en: 'What is the romanization of "{char}"?',
@@ -125,6 +129,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'การเขียนแบบโรมันของ "{char}" คืออะไร?',
     vi: 'La tinh hóa của "{char}" là gì?',
     zh: '"{char}"的罗马字表记是什么？',
+    'zh-TW': '「{char}」的羅馬字表記是什麼？',
   },
   'silent-consonant': {
     en: 'How is "{char}" pronounced when it comes at the beginning?',
@@ -133,6 +138,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '"{char}" ออกเสียงอย่างไรเมื่ออยู่ต้นคำ?',
     vi: '"{char}" được phát âm như thế nào khi ở đầu?',
     zh: '"{char}"在开头时怎么发音？',
+    'zh-TW': '「{char}」在開頭時怎麼發音？',
   },
   'not-double': {
     en: 'Which of the following is NOT a double consonant?',
@@ -141,6 +147,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ข้อใดต่อไปนี้ไม่ใช่พยัญชนะคู่?',
     vi: 'Đâu KHÔNG phải là phụ âm kép?',
     zh: '以下哪个不是双辅音？',
+    'zh-TW': '以下哪個不是雙子音？',
   },
   'double-in-word': {
     en: 'What consonant is used in {word}?',
@@ -149,6 +156,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'พยัญชนะใดที่ใช้ใน {word}?',
     vi: 'Phụ âm nào được dùng trong {word}?',
     zh: '{word}中使用的辅音是什么？',
+    'zh-TW': '{word}中使用的子音是什麼？',
   },
 
   // Vowel templates
@@ -159,6 +167,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'การออกเสียงของสระ "{char}" คืออะไร?',
     vi: 'Phát âm của nguyên âm "{char}" là gì?',
     zh: '元音"{char}"的发音是什么？',
+    'zh-TW': '母音「{char}」的發音是什麼？',
   },
   'find-vowel': {
     en: 'What vowel is used in {word}?',
@@ -167,6 +176,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'สระใดที่ใช้ใน {word}?',
     vi: 'Nguyên âm nào được dùng trong {word}?',
     zh: '{word}中使用的元音是什么？',
+    'zh-TW': '{word}中使用的母音是什麼？',
   },
   'vowel-roman': {
     en: 'What is the romanization of the vowel "{char}"?',
@@ -175,6 +185,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'การเขียนแบบโรมันของสระ "{char}" คืออะไร?',
     vi: 'La tinh hóa của nguyên âm "{char}" là gì?',
     zh: '元音"{char}"的罗马字表记是什么？',
+    'zh-TW': '母音「{char}」的羅馬字表記是什麼？',
   },
   'not-complex-vowel': {
     en: 'Which of the following is NOT a complex vowel?',
@@ -183,6 +194,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ข้อใดต่อไปนี้ไม่ใช่สระประสม?',
     vi: 'Đâu KHÔNG phải là nguyên âm kép?',
     zh: '以下哪个不是复合元音？',
+    'zh-TW': '以下哪個不是複合母音？',
   },
   'compound-vowel': {
     en: 'What is the compound vowel of "{char}" + "{char2}"?',
@@ -191,6 +203,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'สระประสมของ "{char}" + "{char2}" คืออะไร?',
     vi: 'Nguyên âm kép của "{char}" + "{char2}" là gì?',
     zh: '"{char}"和"{char2}"的复合元音是什么？',
+    'zh-TW': '「{char}」和「{char2}」的複合母音是什麼？',
   },
   'vowel-common': {
     en: 'What do "{char}" and "{char2}" have in common?',
@@ -199,6 +212,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '"{char}" และ "{char2}" มีอะไรเหมือนกัน?',
     vi: '"{char}" và "{char2}" có điểm chung gì?',
     zh: '"{char}"和"{char2}"有什么共同点？',
+    'zh-TW': '「{char}」和「{char2}」有什麼共同點？',
   },
   'word-with-vowel': {
     en: 'Which word contains the vowel "{char}"?',
@@ -207,6 +221,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'คำใดมีสระ "{char}"?',
     vi: 'Từ nào chứa nguyên âm "{char}"?',
     zh: '哪个词包含元音"{char}"？',
+    'zh-TW': '哪個詞包含母音「{char}」？',
   },
 
   // Syllable templates
@@ -217,6 +232,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'เมื่อรวม "{char}" + "{char2}" จะได้พยางค์อะไร?',
     vi: 'Âm tiết nào được tạo từ "{char}" + "{char2}"?',
     zh: '"{char}"和"{char2}"组合成什么音节？',
+    'zh-TW': '「{char}」和「{char2}」組合成什麼音節？',
   },
   'syllable-components': {
     en: 'What are the components of "{syllable}"?',
@@ -225,6 +241,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'องค์ประกอบของ "{syllable}" คืออะไร?',
     vi: 'Các thành phần của "{syllable}" là gì?',
     zh: '"{syllable}"的组成部分是什么？',
+    'zh-TW': '「{syllable}」的組成部分是什麼？',
   },
   'syllable-roman': {
     en: 'What is the romanization of "{syllable}"?',
@@ -233,6 +250,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'การเขียนแบบโรมันของ "{syllable}" คืออะไร?',
     vi: 'La tinh hóa của "{syllable}" là gì?',
     zh: '"{syllable}"的罗马字表记是什么？',
+    'zh-TW': '「{syllable}」的羅馬字表記是什麼？',
   },
 
   // Batchim templates
@@ -243,6 +261,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ตัวสะกด (받침) ใน "{syllable}" คืออะไร?',
     vi: 'Phụ âm cuối (받침) trong "{syllable}" là gì?',
     zh: '"{syllable}"的收音(받침)是什么？',
+    'zh-TW': '「{syllable}」的收音（받침）是什麼？',
   },
   'has-batchim': {
     en: 'Which syllable has a final consonant (batchim)?',
@@ -251,6 +270,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'พยางค์ใดมีตัวสะกด (받침)?',
     vi: 'Âm tiết nào có phụ âm cuối (받침)?',
     zh: '哪个音节有收音(받침)？',
+    'zh-TW': '哪個音節有收音（받침）？',
   },
   'syllable-structure': {
     en: 'What is the structure of "{syllable}"?',
@@ -259,6 +279,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'โครงสร้างของ "{syllable}" คืออะไร?',
     vi: 'Cấu trúc của "{syllable}" là gì?',
     zh: '"{syllable}"的结构是什么？',
+    'zh-TW': '「{syllable}」的結構是什麼？',
   },
   'batchim-ng': {
     en: 'Which syllable uses "ㅇ" as a final consonant (ng sound)?',
@@ -267,6 +288,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'พยางค์ใดใช้ "ㅇ" เป็นตัวสะกด (เสียง ng)?',
     vi: 'Âm tiết nào dùng "ㅇ" làm phụ âm cuối (âm ng)?',
     zh: '哪个音节用"ㅇ"作为收音（ng音）？',
+    'zh-TW': '哪個音節用「ㅇ」作為收音（ng音）？',
   },
 
   // Word question templates
@@ -277,6 +299,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '"{word}" แปลว่าอะไร?',
     vi: '"{word}" có nghĩa là gì?',
     zh: '"{word}"是什么意思？',
+    'zh-TW': '「{word}」是什麼意思？',
   },
   'word-roman': {
     en: 'What is the romanization of "{word}"?',
@@ -285,6 +308,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'การเขียนแบบโรมันของ "{word}" คืออะไร?',
     vi: 'La tinh hóa của "{word}" là gì?',
     zh: '"{word}"的罗马字表记是什么？',
+    'zh-TW': '「{word}」的羅馬字表記是什麼？',
   },
   'meaning-to-korean': {
     en: 'What is "{meaning}" in Korean?',
@@ -293,6 +317,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '"{meaning}" ในภาษาเกาหลีคืออะไร?',
     vi: '"{meaning}" trong tiếng Hàn là gì?',
     zh: '"{meaning}"用韩语怎么说？',
+    'zh-TW': '「{meaning}」用韓語怎麼說？',
   },
   'sentence-translate': {
     en: '{meaning}',
@@ -301,6 +326,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '{meaning}',
     vi: '{meaning}',
     zh: '{meaning}',
+    'zh-TW': '{meaning}',
   },
   'number-meaning': {
     en: 'What does "{word}" mean?',
@@ -309,6 +335,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '"{word}" หมายถึงอะไร?',
     vi: '"{word}" nghĩa là gì?',
     zh: '"{word}"是什么意思？',
+    'zh-TW': '「{word}」是什麼意思？',
   },
   'when-to-use': {
     en: 'When do you use "{word}"?',
@@ -317,6 +344,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ใช้ "{word}" เมื่อไหร่?',
     vi: 'Khi nào dùng "{word}"?',
     zh: '什么时候使用"{word}"？',
+    'zh-TW': '什麼時候使用「{word}」？',
   },
   'family-term': {
     en: 'What does a {gender} call their older {sibling}?',
@@ -325,6 +353,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '{gender}เรียก{sibling}ที่แก่กว่าว่าอะไร?',
     vi: '{gender} gọi {sibling} lớn hơn là gì?',
     zh: '{gender}叫年长的{sibling}什么？',
+    'zh-TW': '{gender}叫年長的{sibling}什麼？',
   },
 
   // History question templates
@@ -335,6 +364,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ใครก่อตั้ง{kingdom}?',
     vi: 'Ai đã thành lập {kingdom}?',
     zh: '谁建立了{kingdom}？',
+    'zh-TW': '誰建立了{kingdom}？',
   },
   'history-first': {
     en: 'Which of the Three Kingdoms was founded first?',
@@ -343,6 +373,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'อาณาจักรใดในสามอาณาจักรก่อตั้งก่อน?',
     vi: 'Trong Ba Vương Quốc, nước nào được thành lập đầu tiên?',
     zh: '三国中哪个最先建国？',
+    'zh-TW': '三國中哪個最先建國？',
   },
   'history-unifier': {
     en: 'Which kingdom unified the Three Kingdoms?',
@@ -351,6 +382,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'อาณาจักรใดรวมสามอาณาจักร?',
     vi: 'Vương quốc nào thống nhất Ba Vương Quốc?',
     zh: '哪个王国统一了三国？',
+    'zh-TW': '哪個王國統一了三國？',
   },
   'history-battle': {
     en: 'Which general led the victory at {battle}?',
@@ -359,6 +391,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'นายพลคนใดนำชัยชนะใน{battle}?',
     vi: 'Tướng nào đã lãnh đạo chiến thắng tại {battle}?',
     zh: '哪位将军带领了{battle}的胜利？',
+    'zh-TW': '哪位將軍帶領了{battle}的勝利？',
   },
   'history-king': {
     en: 'Who was the king when {event} happened?',
@@ -367,6 +400,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ใครเป็นกษัตริย์เมื่อ{event}?',
     vi: 'Ai là vua khi {event}?',
     zh: '{event}时的国王是谁？',
+    'zh-TW': '{event}時的國王是誰？',
   },
   'history-person': {
     en: 'Who is associated with {event}?',
@@ -375,6 +409,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ใครเกี่ยวข้องกับ{event}?',
     vi: 'Ai liên quan đến {event}?',
     zh: '与{event}相关的人物是谁？',
+    'zh-TW': '與{event}相關的人物是誰？',
   },
   'history-ideology': {
     en: 'What was the founding ideology of {kingdom}?',
@@ -383,6 +418,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'อุดมการณ์ก่อตั้งของ{kingdom}คืออะไร?',
     vi: 'Tư tưởng lập quốc của {kingdom} là gì?',
     zh: '{kingdom}的建国理念是什么？',
+    'zh-TW': '{kingdom}的建國理念是什麼？',
   },
   'history-invention': {
     en: 'Which dynasty invented {invention}?',
@@ -391,6 +427,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ราชวงศ์ใดประดิษฐ์{invention}?',
     vi: 'Triều đại nào phát minh {invention}?',
     zh: '哪个朝代发明了{invention}？',
+    'zh-TW': '哪個朝代發明了{invention}？',
   },
   'history-event-year': {
     en: 'In what year was {kingdom} founded?',
@@ -399,6 +436,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: '{kingdom}ก่อตั้งในปีใด?',
     vi: '{kingdom} được thành lập vào năm nào?',
     zh: '{kingdom}是哪年建立的？',
+    'zh-TW': '{kingdom}是哪年建立的？',
   },
   'history-achievement': {
     en: 'What is the achievement of {person}?',
@@ -407,6 +445,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ผลงานของ{person}คืออะไร?',
     vi: 'Thành tựu của {person} là gì?',
     zh: '{person}的功绩是什么？',
+    'zh-TW': '{person}的功績是什麼？',
   },
   'history-war': {
     en: 'Who was the hero of {war}?',
@@ -415,6 +454,7 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     th: 'ใครเป็นวีรบุรุษของ{war}?',
     vi: 'Ai là anh hùng của {war}?',
     zh: '{war}的英雄是谁？',
+    'zh-TW': '{war}的英雄是誰？',
   },
 };
 
@@ -430,6 +470,7 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'เงียบ (ไม่มีเสียง)',
     vi: 'Im lặng (không có âm)',
     zh: '静音（无声）',
+    'zh-TW': '靜音（無聲）',
   },
   'none': {
     en: 'None',
@@ -438,6 +479,7 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'ไม่มี',
     vi: 'Không có',
     zh: '没有',
+    'zh-TW': '沒有',
   },
   'both-basic': {
     en: 'Both are basic vowels',
@@ -446,6 +488,7 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'ทั้งคู่เป็นสระพื้นฐาน',
     vi: 'Cả hai đều là nguyên âm cơ bản',
     zh: '都是基本元音',
+    'zh-TW': '都是基本母音',
   },
   'both-i-combined': {
     en: 'Both have "ㅣ" combined',
@@ -454,6 +497,7 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'ทั้งคู่มี "ㅣ" รวมอยู่',
     vi: 'Cả hai đều có "ㅣ" kết hợp',
     zh: '都有"ㅣ"结合',
+    'zh-TW': '都有「ㅣ」結合',
   },
   'both-y-sound': {
     en: 'Both have "y" sound',
@@ -462,6 +506,7 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'ทั้งคู่มีเสียง "y"',
     vi: 'Cả hai đều có âm "y"',
     zh: '都有"y"音',
+    'zh-TW': '都有「y」音',
   },
   'both-complex': {
     en: 'Both are complex vowels',
@@ -470,57 +515,58 @@ const commonAnswerTranslations: Record<string, MultilingualText> = {
     th: 'ทั้งคู่เป็นสระประสม',
     vi: 'Cả hai đều là nguyên âm kép',
     zh: '都是复合元音',
+    'zh-TW': '都是複合母音',
   },
   // Word meaning translations
-  'love': { en: 'Love', ja: '愛', es: 'Amor', th: 'ความรัก', vi: 'Tình yêu', zh: '爱' },
-  'family': { en: 'Family', ja: '家族', es: 'Familia', th: 'ครอบครัว', vi: 'Gia đình', zh: '家庭' },
-  'friend': { en: 'Friend', ja: '友達', es: 'Amigo', th: 'เพื่อน', vi: 'Bạn bè', zh: '朋友' },
-  'school': { en: 'School', ja: '学校', es: 'Escuela', th: 'โรงเรียน', vi: 'Trường học', zh: '学校' },
-  'book': { en: 'Book', ja: '本', es: 'Libro', th: 'หนังสือ', vi: 'Sách', zh: '书' },
-  'water': { en: 'Water', ja: '水', es: 'Agua', th: 'น้ำ', vi: 'Nước', zh: '水' },
-  'sky': { en: 'Sky', ja: '空', es: 'Cielo', th: 'ท้องฟ้า', vi: 'Bầu trời', zh: '天空' },
-  'flower': { en: 'Flower', ja: '花', es: 'Flor', th: 'ดอกไม้', vi: 'Hoa', zh: '花' },
-  'house': { en: 'House', ja: '家', es: 'Casa', th: 'บ้าน', vi: 'Nhà', zh: '房子' },
+  'love': { en: 'Love', ja: '愛', es: 'Amor', th: 'ความรัก', vi: 'Tình yêu', zh: '爱', 'zh-TW': '愛' },
+  'family': { en: 'Family', ja: '家族', es: 'Familia', th: 'ครอบครัว', vi: 'Gia đình', zh: '家庭', 'zh-TW': '家庭' },
+  'friend': { en: 'Friend', ja: '友達', es: 'Amigo', th: 'เพื่อน', vi: 'Bạn bè', zh: '朋友', 'zh-TW': '朋友' },
+  'school': { en: 'School', ja: '学校', es: 'Escuela', th: 'โรงเรียน', vi: 'Trường học', zh: '学校', 'zh-TW': '學校' },
+  'book': { en: 'Book', ja: '本', es: 'Libro', th: 'หนังสือ', vi: 'Sách', zh: '书', 'zh-TW': '書' },
+  'water': { en: 'Water', ja: '水', es: 'Agua', th: 'น้ำ', vi: 'Nước', zh: '水', 'zh-TW': '水' },
+  'sky': { en: 'Sky', ja: '空', es: 'Cielo', th: 'ท้องฟ้า', vi: 'Bầu trời', zh: '天空', 'zh-TW': '天空' },
+  'flower': { en: 'Flower', ja: '花', es: 'Flor', th: 'ดอกไม้', vi: 'Hoa', zh: '花', 'zh-TW': '花' },
+  'house': { en: 'House', ja: '家', es: 'Casa', th: 'บ้าน', vi: 'Nhà', zh: '房子', 'zh-TW': '房子' },
   // Family terms
-  'father': { en: 'Father', ja: '父', es: 'Padre', th: 'พ่อ', vi: 'Bố', zh: '父亲' },
-  'mother': { en: 'Mother', ja: '母', es: 'Madre', th: 'แม่', vi: 'Mẹ', zh: '母亲' },
-  'grandfather': { en: 'Grandfather', ja: '祖父', es: 'Abuelo', th: 'ปู่', vi: 'Ông', zh: '爷爷' },
-  'grandmother': { en: 'Grandmother', ja: '祖母', es: 'Abuela', th: 'ย่า', vi: 'Bà', zh: '奶奶' },
+  'father': { en: 'Father', ja: '父', es: 'Padre', th: 'พ่อ', vi: 'Bố', zh: '父亲', 'zh-TW': '父親' },
+  'mother': { en: 'Mother', ja: '母', es: 'Madre', th: 'แม่', vi: 'Mẹ', zh: '母亲', 'zh-TW': '母親' },
+  'grandfather': { en: 'Grandfather', ja: '祖父', es: 'Abuelo', th: 'ปู่', vi: 'Ông', zh: '爷爷', 'zh-TW': '爺爺' },
+  'grandmother': { en: 'Grandmother', ja: '祖母', es: 'Abuela', th: 'ย่า', vi: 'Bà', zh: '奶奶', 'zh-TW': '奶奶' },
   // Numbers
-  'one': { en: 'One', ja: '一', es: 'Uno', th: 'หนึ่ง', vi: 'Một', zh: '一' },
-  'two': { en: 'Two', ja: '二', es: 'Dos', th: 'สอง', vi: 'Hai', zh: '二' },
-  'three': { en: 'Three', ja: '三', es: 'Tres', th: 'สาม', vi: 'Ba', zh: '三' },
-  'four': { en: 'Four', ja: '四', es: 'Cuatro', th: 'สี่', vi: 'Bốn', zh: '四' },
-  'five': { en: 'Five', ja: '五', es: 'Cinco', th: 'ห้า', vi: 'Năm', zh: '五' },
+  'one': { en: 'One', ja: '一', es: 'Uno', th: 'หนึ่ง', vi: 'Một', zh: '一', 'zh-TW': '一' },
+  'two': { en: 'Two', ja: '二', es: 'Dos', th: 'สอง', vi: 'Hai', zh: '二', 'zh-TW': '二' },
+  'three': { en: 'Three', ja: '三', es: 'Tres', th: 'สาม', vi: 'Ba', zh: '三', 'zh-TW': '三' },
+  'four': { en: 'Four', ja: '四', es: 'Cuatro', th: 'สี่', vi: 'Bốn', zh: '四', 'zh-TW': '四' },
+  'five': { en: 'Five', ja: '五', es: 'Cinco', th: 'ห้า', vi: 'Năm', zh: '五', 'zh-TW': '五' },
   // Greetings
-  'hello': { en: 'Hello', ja: 'こんにちは', es: 'Hola', th: 'สวัสดี', vi: 'Xin chào', zh: '你好' },
-  'thank you': { en: 'Thank you', ja: 'ありがとう', es: 'Gracias', th: 'ขอบคุณ', vi: 'Cảm ơn', zh: '谢谢' },
-  'sorry': { en: 'Sorry', ja: 'ごめんなさい', es: 'Lo siento', th: 'ขอโทษ', vi: 'Xin lỗi', zh: '对不起' },
-  'goodbye': { en: 'Goodbye', ja: 'さようなら', es: 'Adiós', th: 'ลาก่อน', vi: 'Tạm biệt', zh: '再见' },
-  'yes': { en: 'Yes', ja: 'はい', es: 'Sí', th: 'ใช่', vi: 'Vâng', zh: '是' },
-  'no': { en: 'No', ja: 'いいえ', es: 'No', th: 'ไม่', vi: 'Không', zh: '不是' },
+  'hello': { en: 'Hello', ja: 'こんにちは', es: 'Hola', th: 'สวัสดี', vi: 'Xin chào', zh: '你好', 'zh-TW': '你好' },
+  'thank you': { en: 'Thank you', ja: 'ありがとう', es: 'Gracias', th: 'ขอบคุณ', vi: 'Cảm ơn', zh: '谢谢', 'zh-TW': '謝謝' },
+  'sorry': { en: 'Sorry', ja: 'ごめんなさい', es: 'Lo siento', th: 'ขอโทษ', vi: 'Xin lỗi', zh: '对不起', 'zh-TW': '對不起' },
+  'goodbye': { en: 'Goodbye', ja: 'さようなら', es: 'Adiós', th: 'ลาก่อน', vi: 'Tạm biệt', zh: '再见', 'zh-TW': '再見' },
+  'yes': { en: 'Yes', ja: 'はい', es: 'Sí', th: 'ใช่', vi: 'Vâng', zh: '是', 'zh-TW': '是' },
+  'no': { en: 'No', ja: 'いいえ', es: 'No', th: 'ไม่', vi: 'Không', zh: '不是', 'zh-TW': '不是' },
   // Usage contexts
-  'greeting': { en: 'When greeting', ja: '挨拶する時', es: 'Al saludar', th: 'เมื่อทักทาย', vi: 'Khi chào hỏi', zh: '打招呼时' },
-  'thanking': { en: 'When thanking', ja: '感謝する時', es: 'Al agradecer', th: 'เมื่อขอบคุณ', vi: 'Khi cảm ơn', zh: '感谢时' },
-  'apologizing': { en: 'When apologizing', ja: '謝る時', es: 'Al disculparse', th: 'เมื่อขอโทษ', vi: 'Khi xin lỗi', zh: '道歉时' },
-  'farewell': { en: 'When saying goodbye', ja: '別れる時', es: 'Al despedirse', th: 'เมื่อบอกลา', vi: 'Khi tạm biệt', zh: '告别时' },
+  'greeting': { en: 'When greeting', ja: '挨拶する時', es: 'Al saludar', th: 'เมื่อทักทาย', vi: 'Khi chào hỏi', zh: '打招呼时', 'zh-TW': '打招呼時' },
+  'thanking': { en: 'When thanking', ja: '感謝する時', es: 'Al agradecer', th: 'เมื่อขอบคุณ', vi: 'Khi cảm ơn', zh: '感谢时', 'zh-TW': '感謝時' },
+  'apologizing': { en: 'When apologizing', ja: '謝る時', es: 'Al disculparse', th: 'เมื่อขอโทษ', vi: 'Khi xin lỗi', zh: '道歉时', 'zh-TW': '道歉時' },
+  'farewell': { en: 'When saying goodbye', ja: '別れる時', es: 'Al despedirse', th: 'เมื่อบอกลา', vi: 'Khi tạm biệt', zh: '告别时', 'zh-TW': '告別時' },
 
   // History achievements/events
-  '영토 확장': { en: 'Territorial expansion', ja: '領土拡張', es: 'Expansión territorial', th: 'ขยายดินแดน', vi: 'Mở rộng lãnh thổ', zh: '领土扩张' },
-  '삼국통일': { en: 'Unification of Three Kingdoms', ja: '三国統一', es: 'Unificación de los Tres Reinos', th: 'รวมสามอาณาจักร', vi: 'Thống nhất Tam Quốc', zh: '三国统一' },
-  '불교 전래': { en: 'Introduction of Buddhism', ja: '仏教伝来', es: 'Introducción del budismo', th: 'พุทธศาสนาเข้ามา', vi: 'Phật giáo truyền vào', zh: '佛教传入' },
-  '훈민정음 창제': { en: 'Creation of Hunminjeongeum', ja: '訓民正音の創製', es: 'Creación del Hunminjeongeum', th: 'สร้างฮุนมินจองอึม', vi: 'Sáng tạo Huấn Dân Chính Âm', zh: '训民正音创制' },
-  '수원 화성 축조': { en: 'Construction of Hwaseong Fortress', ja: '水原華城築造', es: 'Construcción de la Fortaleza Hwaseong', th: 'สร้างป้อมฮวาซอง', vi: 'Xây dựng pháo đài Hwaseong', zh: '水原华城建造' },
-  '이토 히로부미 처단': { en: 'Assassination of Ito Hirobumi', ja: '伊藤博文処断', es: 'Asesinato de Ito Hirobumi', th: 'สังหารอิโตะ ฮิโรบูมิ', vi: 'Ám sát Ito Hirobumi', zh: '处决伊藤博文' },
-  '동학농민운동 주도': { en: 'Led Donghak Peasant Movement', ja: '東学農民運動の指導', es: 'Lideró el Movimiento Campesino Donghak', th: 'นำขบวนการชาวนาดงฮัก', vi: 'Lãnh đạo phong trào nông dân Đông Học', zh: '领导东学农民运动' },
-  '대한제국 선포': { en: 'Proclamation of Korean Empire', ja: '大韓帝国宣布', es: 'Proclamación del Imperio Coreano', th: 'ประกาศจักรวรรดิเกาหลี', vi: 'Tuyên bố Đế quốc Đại Hàn', zh: '宣布大韩帝国' },
-  '귀주대첩': { en: 'Victory at Gwiju', ja: '亀州大捷', es: 'Victoria en Gwiju', th: 'ชัยชนะที่กวีจู', vi: 'Đại thắng Quý Châu', zh: '龟州大捷' },
-  '팔만대장경': { en: 'Tripitaka Koreana', ja: '八万大蔵経', es: 'Tripitaka Coreana', th: 'พระไตรปิฎกเกาหลี', vi: 'Bát Vạn Đại Tạng Kinh', zh: '八万大藏经' },
-  '9재 학당': { en: '9 Jae Academy', ja: '九斎学堂', es: 'Academia 9 Jae', th: 'สถาบัน 9 แจ', vi: 'Học đường 9 Trai', zh: '九斋学堂' },
-  '강동 6주': { en: 'Gangdong 6 provinces', ja: '江東6州', es: '6 provincias de Gangdong', th: '6 จังหวัดคังดง', vi: '6 châu Giang Đông', zh: '江东六州' },
-  '동학 창시': { en: 'Foundation of Donghak', ja: '東学創始', es: 'Fundación de Donghak', th: 'ก่อตั้งดงฮัก', vi: 'Sáng lập Đông Học', zh: '创立东学' },
-  '조선 건국': { en: 'Foundation of Joseon', ja: '朝鮮建国', es: 'Fundación de Joseon', th: 'ก่อตั้งโชซ็อน', vi: 'Thành lập Triều Tiên', zh: '建立朝鲜' },
-  '임진왜란 승리': { en: 'Victory in Imjin War', ja: '壬辰倭乱勝利', es: 'Victoria en la Guerra Imjin', th: 'ชัยชนะสงครามอิมจิน', vi: 'Thắng lợi chiến tranh Nhâm Thìn', zh: '壬辰倭乱胜利' },
+  '영토 확장': { en: 'Territorial expansion', ja: '領土拡張', es: 'Expansión territorial', th: 'ขยายดินแดน', vi: 'Mở rộng lãnh thổ', zh: '领土扩张', 'zh-TW': '領土擴張' },
+  '삼국통일': { en: 'Unification of Three Kingdoms', ja: '三国統一', es: 'Unificación de los Tres Reinos', th: 'รวมสามอาณาจักร', vi: 'Thống nhất Tam Quốc', zh: '三国统一', 'zh-TW': '三國統一' },
+  '불교 전래': { en: 'Introduction of Buddhism', ja: '仏教伝来', es: 'Introducción del budismo', th: 'พุทธศาสนาเข้ามา', vi: 'Phật giáo truyền vào', zh: '佛教传入', 'zh-TW': '佛教傳入' },
+  '훈민정음 창제': { en: 'Creation of Hunminjeongeum', ja: '訓民正音の創製', es: 'Creación del Hunminjeongeum', th: 'สร้างฮุนมินจองอึม', vi: 'Sáng tạo Huấn Dân Chính Âm', zh: '训民正音创制', 'zh-TW': '訓民正音創制' },
+  '수원 화성 축조': { en: 'Construction of Hwaseong Fortress', ja: '水原華城築造', es: 'Construcción de la Fortaleza Hwaseong', th: 'สร้างป้อมฮวาซอง', vi: 'Xây dựng pháo đài Hwaseong', zh: '水原华城建造', 'zh-TW': '水原華城建造' },
+  '이토 히로부미 처단': { en: 'Assassination of Ito Hirobumi', ja: '伊藤博文処断', es: 'Asesinato de Ito Hirobumi', th: 'สังหารอิโตะ ฮิโรบูมิ', vi: 'Ám sát Ito Hirobumi', zh: '处决伊藤博文', 'zh-TW': '處決伊藤博文' },
+  '동학농민운동 주도': { en: 'Led Donghak Peasant Movement', ja: '東学農民運動の指導', es: 'Lideró el Movimiento Campesino Donghak', th: 'นำขบวนการชาวนาดงฮัก', vi: 'Lãnh đạo phong trào nông dân Đông Học', zh: '领导东学农民运动', 'zh-TW': '領導東學農民運動' },
+  '대한제국 선포': { en: 'Proclamation of Korean Empire', ja: '大韓帝国宣布', es: 'Proclamación del Imperio Coreano', th: 'ประกาศจักรวรรดิเกาหลี', vi: 'Tuyên bố Đế quốc Đại Hàn', zh: '宣布大韩帝国', 'zh-TW': '宣布大韓帝國' },
+  '귀주대첩': { en: 'Victory at Gwiju', ja: '亀州大捷', es: 'Victoria en Gwiju', th: 'ชัยชนะที่กวีจู', vi: 'Đại thắng Quý Châu', zh: '龟州大捷', 'zh-TW': '龜州大捷' },
+  '팔만대장경': { en: 'Tripitaka Koreana', ja: '八万大蔵経', es: 'Tripitaka Coreana', th: 'พระไตรปิฎกเกาหลี', vi: 'Bát Vạn Đại Tạng Kinh', zh: '八万大藏经', 'zh-TW': '八萬大藏經' },
+  '9재 학당': { en: '9 Jae Academy', ja: '九斎学堂', es: 'Academia 9 Jae', th: 'สถาบัน 9 แจ', vi: 'Học đường 9 Trai', zh: '九斋学堂', 'zh-TW': '九齋學堂' },
+  '강동 6주': { en: 'Gangdong 6 provinces', ja: '江東6州', es: '6 provincias de Gangdong', th: '6 จังหวัดคังดง', vi: '6 châu Giang Đông', zh: '江东六州', 'zh-TW': '江東六州' },
+  '동학 창시': { en: 'Foundation of Donghak', ja: '東学創始', es: 'Fundación de Donghak', th: 'ก่อตั้งดงฮัก', vi: 'Sáng lập Đông Học', zh: '创立东学', 'zh-TW': '創立東學' },
+  '조선 건국': { en: 'Foundation of Joseon', ja: '朝鮮建国', es: 'Fundación de Joseon', th: 'ก่อตั้งโชซ็อน', vi: 'Thành lập Triều Tiên', zh: '建立朝鲜', 'zh-TW': '建立朝鮮' },
+  '임진왜란 승리': { en: 'Victory in Imjin War', ja: '壬辰倭乱勝利', es: 'Victoria en la Guerra Imjin', th: 'ชัยชนะสงครามอิมจิน', vi: 'Thắng lợi chiến tranh Nhâm Thìn', zh: '壬辰倭乱胜利', 'zh-TW': '壬辰倭亂勝利' },
 };
 
 // ============================================

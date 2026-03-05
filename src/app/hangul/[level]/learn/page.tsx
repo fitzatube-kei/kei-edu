@@ -813,7 +813,7 @@ function CharacterCard({
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {language === 'ja' ? '音節の例' :
-                     language === 'zh' ? '音节示例' :
+                     language.startsWith('zh') ? '音节示例' :
                      language === 'th' ? 'ตัวอย่างพยางค์' :
                      language === 'vi' ? 'Vi du am tiet' :
                      language === 'es' ? 'Ejemplos de silabas' :
@@ -874,7 +874,7 @@ function CharacterCard({
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {language === 'ja' ? '単語の例' :
-                     language === 'zh' ? '词汇示例' :
+                     language.startsWith('zh') ? '词汇示例' :
                      language === 'th' ? 'ตัวอย่างคำ' :
                      language === 'vi' ? 'Vi du tu' :
                      language === 'es' ? 'Ejemplos de palabras' :
@@ -1080,7 +1080,7 @@ export default function HangulLearnPage() {
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
           >
             {language === 'ja' ? 'この レベルには学習コンテンツがありません' :
-             language === 'zh' ? '此关卡没有学习内容' :
+             language.startsWith('zh') ? '此关卡没有学习内容' :
              language === 'th' ? 'ระดับนี้ไม่มีเนื้อหาการเรียนรู้' :
              language === 'vi' ? 'Cap do nay khong co noi dung hoc tap' :
              language === 'es' ? 'Este nivel no tiene contenido de aprendizaje' :
@@ -1091,7 +1091,7 @@ export default function HangulLearnPage() {
             style={{ fontFamily: 'Poppins, sans-serif' }}
           >
             {language === 'ja' ? 'クイズに進んでください' :
-             language === 'zh' ? '请进入测验' :
+             language.startsWith('zh') ? '请进入测验' :
              language === 'th' ? 'กรุณาไปทำแบบทดสอบ' :
              language === 'vi' ? 'Vui long tien hanh lam bai kiem tra' :
              language === 'es' ? 'Por favor, proceda al cuestionario' :
@@ -1103,7 +1103,7 @@ export default function HangulLearnPage() {
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
           >
             {language === 'ja' ? 'クイズを始める' :
-             language === 'zh' ? '开始测验' :
+             language.startsWith('zh') ? '开始测验' :
              language === 'th' ? 'เริ่มแบบทดสอบ' :
              language === 'vi' ? 'Bat dau bai kiem tra' :
              language === 'es' ? 'Iniciar cuestionario' :
@@ -1134,7 +1134,7 @@ export default function HangulLearnPage() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
           {language === 'ja' ? '戻る' :
-           language === 'zh' ? '返回' :
+           language.startsWith('zh') ? '返回' :
            language === 'th' ? 'ย้อนกลับ' :
            language === 'vi' ? 'Quay lai' :
            language === 'es' ? 'Volver' :
@@ -1164,7 +1164,7 @@ export default function HangulLearnPage() {
           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
         >
           {language === 'ja' ? `レベル ${levelNumber} - 学習` :
-           language === 'zh' ? `第 ${levelNumber} 关 - 学习` :
+           language.startsWith('zh') ? `第 ${levelNumber} 关 - 学习` :
            language === 'th' ? `ระดับ ${levelNumber} - เรียนรู้` :
            language === 'vi' ? `Cap ${levelNumber} - Hoc` :
            language === 'es' ? `Nivel ${levelNumber} - Aprender` :
@@ -1193,13 +1193,13 @@ export default function HangulLearnPage() {
           >
             {itemCount} {hasCharacterObjects
               ? (language === 'ja' ? '文字' :
-                 language === 'zh' ? '个字符' :
+                 language.startsWith('zh') ? '个字符' :
                  language === 'th' ? 'ตัวอักษร' :
                  language === 'vi' ? 'chu cai' :
                  language === 'es' ? 'caracteres' :
                  'characters')
               : (language === 'ja' ? '単語' :
-                 language === 'zh' ? '个单词' :
+                 language.startsWith('zh') ? '个单词' :
                  language === 'th' ? 'คำศัพท์' :
                  language === 'vi' ? 'tu vung' :
                  language === 'es' ? 'palabras' :
@@ -1272,7 +1272,7 @@ export default function HangulLearnPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {language === 'ja' ? 'クイズを始める' :
-             language === 'zh' ? '开始测验' :
+             language.startsWith('zh') ? '开始测验' :
              language === 'th' ? 'เริ่มแบบทดสอบ' :
              language === 'vi' ? 'Bat dau bai kiem tra' :
              language === 'es' ? 'Iniciar cuestionario' :

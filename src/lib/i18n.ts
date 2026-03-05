@@ -4,8 +4,9 @@ import { th } from '@/data/translations/th';
 import { ja } from '@/data/translations/ja';
 import { vi } from '@/data/translations/vi';
 import { zh } from '@/data/translations/zh';
+import { zhTW } from '@/data/translations/zh-TW';
 
-export type Language = 'en' | 'es' | 'th' | 'ja' | 'vi' | 'zh';
+export type Language = 'en' | 'es' | 'th' | 'ja' | 'vi' | 'zh' | 'zh-TW';
 
 export interface LanguageInfo {
   code: Language;
@@ -17,10 +18,11 @@ export interface LanguageInfo {
 export const languages: LanguageInfo[] = [
   { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸' },
+  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', flag: '🇻🇳' },
   { code: 'th', name: 'Thai', nativeName: 'ภาษาไทย', flag: '🇹🇭' },
   { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵' },
-  { code: 'vi', name: 'Vietnamese', nativeName: 'Tiếng Việt', flag: '🇻🇳' },
-  { code: 'zh', name: 'Chinese', nativeName: '简体中文', flag: '🇨🇳' },
+  { code: 'zh', name: 'Chinese (Simplified)', nativeName: '中文(简体)', flag: '🇨🇳' },
+  { code: 'zh-TW', name: 'Chinese (Traditional)', nativeName: '中文(繁體)', flag: '🇹🇼' },
 ];
 
 export const translations = {
@@ -30,6 +32,7 @@ export const translations = {
   ja,
   vi,
   zh,
+  'zh-TW': zhTW,
 } as const;
 
 export type TranslationKeys = typeof en;

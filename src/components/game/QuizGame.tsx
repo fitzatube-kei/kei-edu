@@ -554,7 +554,7 @@ export default function QuizGame({
                       <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17c0 .5.4 1 1 1h6c.6 0 1-.5 1-1v-2.3c1.8-1.3 3-3.4 3-5.7 0-3.9-3.1-7-7-7z"/>
                     </svg>
                     {language === 'ja' ? 'ヒント' :
-                     language === 'zh' ? '提示' :
+                     language.startsWith('zh') ? '提示' :
                      language === 'th' ? 'คำใบ้' :
                      language === 'vi' ? 'Gợi ý' :
                      language === 'es' ? 'Pista' :
@@ -777,7 +777,7 @@ export default function QuizGame({
                   <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
                 </svg>
                 {language === 'ja' ? 'もう一度聞く' :
-                 language === 'zh' ? '再听一次' :
+                 language.startsWith('zh') ? '再听一次' :
                  language === 'th' ? 'ฟังอีกครั้ง' :
                  language === 'vi' ? 'Nghe lại' :
                  language === 'es' ? 'Escuchar de nuevo' :

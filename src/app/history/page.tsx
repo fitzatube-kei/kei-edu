@@ -151,7 +151,7 @@ export default function HistoryPage() {
                 <h3 className="text-xl font-heading font-bold text-white mb-1">Culture Explorer</h3>
                 <p className="text-white/80 text-sm">
                   {language === 'ja' ? '韓国の文化と歴史を探検' :
-                   language === 'zh' ? '探索韩国文化与历史' :
+                   language.startsWith('zh') ? '探索韩国文化与历史' :
                    'Discover Korean culture and heritage'}
                 </p>
               </div>
@@ -378,7 +378,7 @@ export default function HistoryPage() {
                   <p className="text-sm text-white/80 font-semibold mb-3">
                     {language === 'ja'
                       ? 'プレミアム会員になると全ての文化レベルにアクセスできます。'
-                      : language === 'zh'
+                      : language.startsWith('zh')
                       ? '成为高级会员解锁所有文化关卡。'
                       : 'Unlock all culture levels with Premium membership.'}
                   </p>

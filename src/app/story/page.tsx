@@ -153,7 +153,7 @@ export default function StoryPage() {
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
               >
                 {language === 'ja' ? '韓国旅行' :
-                 language === 'zh' ? '韩国旅行' :
+                 language.startsWith('zh') ? '韩国旅行' :
                  language === 'th' ? 'ท่องเที่ยวเกาหลี' :
                  language === 'vi' ? 'Du lịch Hàn Quốc' :
                  language === 'es' ? 'Viaje a Corea' :
@@ -164,7 +164,7 @@ export default function StoryPage() {
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
               >
                 {language === 'ja' ? '実際の旅行シーンで韓国語を学ぼう！' :
-                 language === 'zh' ? '在真实旅行场景中学习韩语！' :
+                 language.startsWith('zh') ? '在真实旅行场景中学习韩语！' :
                  language === 'th' ? 'เรียนภาษาเกาหลีในสถานการณ์ท่องเที่ยวจริง!' :
                  language === 'vi' ? 'Học tiếng Hàn trong các tình huống du lịch thực tế!' :
                  language === 'es' ? '¡Aprende coreano en escenarios de viaje reales!' :
@@ -191,7 +191,7 @@ export default function StoryPage() {
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {language === 'ja' ? '旅の記録' :
-               language === 'zh' ? '旅行记录' :
+               language.startsWith('zh') ? '旅行记录' :
                language === 'th' ? 'บันทึกการเดินทาง' :
                language === 'vi' ? 'Hồ sơ Du lịch' :
                language === 'es' ? 'Tu Progreso' :
@@ -215,7 +215,7 @@ export default function StoryPage() {
                     className="text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
-                    / {totalLocations} {language === 'ja' ? '場所' : language === 'zh' ? '地点' : 'Locations'}
+                    / {totalLocations} {language === 'ja' ? '場所' : language.startsWith('zh') ? '地点' : 'Locations'}
                   </p>
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function StoryPage() {
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {language === 'ja' ? '旅先を選ぼう' :
-               language === 'zh' ? '选择目的地' :
+               language.startsWith('zh') ? '选择目的地' :
                language === 'th' ? 'เลือกจุดหมาย' :
                language === 'vi' ? 'Chọn Điểm Đến' :
                language === 'es' ? 'Elige Tu Destino' :
@@ -367,7 +367,7 @@ export default function StoryPage() {
                         style={{ backgroundColor: area.color, fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                       >
                         {language === 'ja' ? '旅を始める' :
-                         language === 'zh' ? '开始旅行' :
+                         language.startsWith('zh') ? '开始旅行' :
                          language === 'th' ? 'เริ่มเดินทาง' :
                          language === 'vi' ? 'Bắt đầu' :
                          language === 'es' ? 'Comenzar' :
@@ -410,7 +410,7 @@ export default function StoryPage() {
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {language === 'ja' ? '遊び方' :
-               language === 'zh' ? '如何游玩' :
+               language.startsWith('zh') ? '如何游玩' :
                language === 'th' ? 'วิธีเล่น' :
                language === 'vi' ? 'Cách Chơi' :
                language === 'es' ? 'Cómo Jugar' :
@@ -421,7 +421,7 @@ export default function StoryPage() {
                 <span className="text-xl">✈️</span>
                 <p className="text-white font-medium">
                   {language === 'ja' ? '仁川空港からスタート！' :
-                   language === 'zh' ? '从仁川机场出发！' :
+                   language.startsWith('zh') ? '从仁川机场出发！' :
                    language === 'th' ? 'เริ่มจากสนามบินอินชอน!' :
                    language === 'vi' ? 'Bắt đầu từ sân bay Incheon!' :
                    language === 'es' ? '¡Comienza desde el aeropuerto de Incheon!' :
@@ -432,7 +432,7 @@ export default function StoryPage() {
                 <span className="text-xl">📍</span>
                 <p className="text-white font-medium">
                   {language === 'ja' ? '行き先を選んで韓国語クイズに挑戦' :
-                   language === 'zh' ? '选择目的地并挑战韩语测验' :
+                   language.startsWith('zh') ? '选择目的地并挑战韩语测验' :
                    language === 'th' ? 'เลือกจุดหมายและทำแบบทดสอบภาษาเกาหลี' :
                    language === 'vi' ? 'Chọn điểm đến và làm quiz tiếng Hàn' :
                    language === 'es' ? 'Elige destino y responde el quiz de coreano' :
@@ -443,7 +443,7 @@ export default function StoryPage() {
                 <span className="text-xl">🗣️</span>
                 <p className="text-white font-medium">
                   {language === 'ja' ? '実際のシーンで使えるフレーズを学ぼう！' :
-                   language === 'zh' ? '学习实际场景中使用的短语！' :
+                   language.startsWith('zh') ? '学习实际场景中使用的短语！' :
                    language === 'th' ? 'เรียนรู้วลีที่ใช้ในสถานการณ์จริง!' :
                    language === 'vi' ? 'Học các cụm từ sử dụng trong tình huống thực tế!' :
                    language === 'es' ? '¡Aprende frases para usar en escenarios reales!' :
@@ -487,7 +487,7 @@ export default function StoryPage() {
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
                   >
                     {language === 'ja' ? '釜山と済州をアンロック！' :
-                     language === 'zh' ? '解锁釜山和济州！' :
+                     language.startsWith('zh') ? '解锁釜山和济州！' :
                      language === 'th' ? 'ปลดล็อคปูซานและเชจู!' :
                      language === 'vi' ? 'Mở khóa Busan và Jeju!' :
                      language === 'es' ? '¡Desbloquea Busan y Jeju!' :
@@ -498,7 +498,7 @@ export default function StoryPage() {
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     {language === 'ja' ? 'プレミアムで海雲台ビーチ、済州島などを探検しよう！' :
-                     language === 'zh' ? '升级高级版，探索海云台海滩、济州岛等地！' :
+                     language.startsWith('zh') ? '升级高级版，探索海云台海滩、济州岛等地！' :
                      language === 'th' ? 'อัปเกรดพรีเมียมเพื่อสำรวจหาดแฮอุนแด เกาะเชจู และอื่นๆ!' :
                      language === 'vi' ? 'Nâng cấp Premium để khám phá bãi biển Haeundae, đảo Jeju và hơn thế nữa!' :
                      language === 'es' ? '¡Actualiza a Premium para explorar la playa Haeundae, la isla Jeju y más!' :
@@ -510,7 +510,7 @@ export default function StoryPage() {
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {language === 'ja' ? '詳しく見る' :
-                     language === 'zh' ? '了解更多' :
+                     language.startsWith('zh') ? '了解更多' :
                      language === 'th' ? 'ดูเพิ่มเติม' :
                      language === 'vi' ? 'Tìm hiểu thêm' :
                      language === 'es' ? 'Más información' :

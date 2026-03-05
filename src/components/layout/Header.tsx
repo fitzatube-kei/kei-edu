@@ -18,7 +18,8 @@ const languages = [
   { code: 'vi', name: 'Tiếng Việt', nativeName: 'Vietnamese', flag: '🇻🇳' },
   { code: 'th', name: 'ภาษาไทย', nativeName: 'Thai', flag: '🇹🇭' },
   { code: 'ja', name: '日本語', nativeName: 'Japanese', flag: '🇯🇵' },
-  { code: 'zh', name: '中文', nativeName: 'Chinese', flag: '🇨🇳' },
+  { code: 'zh', name: '中文(简体)', nativeName: 'Chinese (Simplified)', flag: '🇨🇳' },
+  { code: 'zh-TW', name: '中文(繁體)', nativeName: 'Chinese (Traditional)', flag: '🇹🇼' },
 ];
 
 const headerTranslations: Record<string, {
@@ -55,6 +56,11 @@ const headerTranslations: Record<string, {
     hi: 'สวัสดี',
     guest: 'ผู้เยี่ยมชม',
     letsStartLearning: 'มาเริ่มเรียนกันเถอะ',
+  },
+  'zh-TW': {
+    hi: '你好',
+    guest: '訪客',
+    letsStartLearning: '開始學習吧',
   },
 };
 
@@ -101,7 +107,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-[#440687] px-4 sm:px-6 pt-[8px] sm:pt-2 pb-[6px] relative z-20">
+      <header className="bg-[#440687] px-4 sm:px-6 pt-[8px] sm:pt-2 pb-[6px] relative z-50">
         <div className="max-w-4xl mx-auto">
           {/* Single Row: Logo + Language + Avatar + Settings */}
           <div className="flex items-center justify-between">

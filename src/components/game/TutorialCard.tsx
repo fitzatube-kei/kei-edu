@@ -290,7 +290,7 @@ export default function TutorialCard({
       {/* Swipe hint */}
       <p className="text-center text-sm text-gray-400 mt-4">
         {language === 'ja' ? '← スワイプして次へ →' :
-         language === 'zh' ? '← 滑动翻页 →' :
+         language.startsWith('zh') ? '← 滑动翻页 →' :
          language === 'th' ? '← ปัดเพื่อดูต่อ →' :
          language === 'vi' ? '← Vuốt để tiếp tục →' :
          language === 'es' ? '← Desliza para continuar →' :

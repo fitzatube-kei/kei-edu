@@ -47,9 +47,9 @@ export default function HangulPage() {
   // Get tier name in current language
   const getTierName = (tier: TierTab): string => {
     const names: Record<TierTab, Record<string, string>> = {
-      beginner: { en: 'Beginner', ja: '初級', zh: '初级', th: 'เริ่มต้น', vi: 'Cơ bản', es: 'Principiante' },
-      intermediate: { en: 'Intermediate', ja: '中級', zh: '中级', th: 'กลาง', vi: 'Trung cấp', es: 'Intermedio' },
-      advanced: { en: 'Advanced', ja: '上級', zh: '高级', th: 'ขั้นสูง', vi: 'Nâng cao', es: 'Avanzado' },
+      beginner: { en: 'Beginner', ja: '初級', zh: '初级', 'zh-TW': '初級', th: 'เริ่มต้น', vi: 'Cơ bản', es: 'Principiante' },
+      intermediate: { en: 'Intermediate', ja: '中級', zh: '中级', 'zh-TW': '中級', th: 'กลาง', vi: 'Trung cấp', es: 'Intermedio' },
+      advanced: { en: 'Advanced', ja: '上級', zh: '高级', 'zh-TW': '進階', th: 'ขั้นสูง', vi: 'Nâng cao', es: 'Avanzado' },
     };
     return names[tier][language] || names[tier].en;
   };

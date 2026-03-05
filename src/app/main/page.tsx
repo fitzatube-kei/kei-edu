@@ -136,6 +136,24 @@ const mainTranslations: Record<string, {
     hangulInfo: '<b>韩文</b>是世界上唯一一种有明确记录的创造者和目的的语言。它被设计得简单、有逻辑且易于学习。<b>现在就开始你的韩文之旅吧！</b>',
     hiImKei: "你好！我是KEI",
   },
+  'zh-TW': {
+    signUp: '註冊',
+    logIn: '登入',
+    heroBanner: '「樂趣化為流利」',
+    courseSubtitle: '學習韓文最簡單的方法。',
+    courseTitle: '按順序學習課程！',
+    learnBasics: '學習基礎',
+    hangulLearning: '韓文學習',
+    wordPuzzle: '單字拼圖',
+    wordBuilder: '單字建構',
+    interactiveAdventure: '互動冒險',
+    storyMode: '故事模式',
+    emojiGuessing: '表情猜謎遊戲',
+    kpopDrama: 'K Culture Emoji',
+    start: '開始',
+    hangulInfo: '<b>韓文</b>是世界上唯一一種有明確記載的創造者和目的的語言。它被設計得簡單、有邏輯且易於學習。<b>現在就開始你的韓文之旅吧！</b>',
+    hiImKei: "你好！我是KEI",
+  },
 };
 
 export default function MainPage() {

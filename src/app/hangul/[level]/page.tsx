@@ -208,7 +208,7 @@ export default function HangulLevelPage() {
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
           >
             {language === 'ja' ? 'ハングルを学ぼう!' :
-             language === 'zh' ? '学习韩文!' :
+             language.startsWith('zh') ? '学习韩文!' :
              language === 'th' ? 'เรียนรู้ฮันกึล!' :
              language === 'vi' ? 'Học Hangul!' :
              language === 'es' ? '¡Aprende Hangul!' :
@@ -220,7 +220,7 @@ export default function HangulLevelPage() {
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
           >
             {language === 'ja' ? 'ゲームを始める前に、ハングルの基礎を学ぶチュートリアルを見ますか？' :
-             language === 'zh' ? '在开始游戏之前，要不要先看看韩文基础教程？' :
+             language.startsWith('zh') ? '在开始游戏之前，要不要先看看韩文基础教程？' :
              language === 'th' ? 'ก่อนเริ่มเกม คุณต้องการดูบทเรียนพื้นฐานฮันกึลไหม?' :
              language === 'vi' ? 'Trước khi bắt đầu trò chơi, bạn có muốn xem hướng dẫn cơ bản về Hangul không?' :
              language === 'es' ? '¿Quieres ver el tutorial básico de Hangul antes de empezar el juego?' :
@@ -241,7 +241,7 @@ export default function HangulLevelPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               {language === 'ja' ? 'チュートリアルを見る' :
-               language === 'zh' ? '观看教程' :
+               language.startsWith('zh') ? '观看教程' :
                language === 'th' ? 'ดูบทเรียน' :
                language === 'vi' ? 'Xem hướng dẫn' :
                language === 'es' ? 'Ver tutorial' :
@@ -257,7 +257,7 @@ export default function HangulLevelPage() {
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
             >
               {language === 'ja' ? 'スキップしてゲーム開始' :
-               language === 'zh' ? '跳过，直接开始游戏' :
+               language.startsWith('zh') ? '跳过，直接开始游戏' :
                language === 'th' ? 'ข้าม ไปเล่นเกมเลย' :
                language === 'vi' ? 'Bỏ qua, bắt đầu chơi' :
                language === 'es' ? 'Saltar, empezar juego' :
@@ -274,7 +274,7 @@ export default function HangulLevelPage() {
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
           >
             {language === 'ja' ? 'チュートリアルはいつでも見ることができます' :
-             language === 'zh' ? '教程可以随时观看' :
+             language.startsWith('zh') ? '教程可以随时观看' :
              language === 'th' ? 'คุณสามารถดูบทเรียนได้ทุกเมื่อ' :
              language === 'vi' ? 'Bạn có thể xem hướng dẫn bất cứ lúc nào' :
              language === 'es' ? 'Puedes ver el tutorial en cualquier momento' :
@@ -437,7 +437,7 @@ export default function HangulLevelPage() {
                   {typeof level.characters[0] === 'object'
                     ? t('hangul.learnCharacters')
                     : (language === 'ja' ? '学ぶ単語' :
-                       language === 'zh' ? '学习词汇' :
+                       language.startsWith('zh') ? '学习词汇' :
                        language === 'th' ? 'คำศัพท์ที่จะเรียน' :
                        language === 'vi' ? 'Từ vựng sẽ học' :
                        language === 'es' ? 'Vocabulario' :
@@ -491,7 +491,7 @@ export default function HangulLevelPage() {
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                 >
                   {language === 'ja' ? '学ぶ単語' :
-                   language === 'zh' ? '学习词汇' :
+                   language.startsWith('zh') ? '学习词汇' :
                    language === 'th' ? 'คำศัพท์ที่จะเรียน' :
                    language === 'vi' ? 'Từ vựng sẽ học' :
                    language === 'es' ? 'Vocabulario' :
@@ -550,7 +550,7 @@ export default function HangulLevelPage() {
                       style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                     >
                       {language === 'ja' ? 'まず学習' :
-                       language === 'zh' ? '先学习' :
+                       language.startsWith('zh') ? '先学习' :
                        language === 'th' ? 'เรียนก่อน' :
                        language === 'vi' ? 'Học trước' :
                        language === 'es' ? 'Aprende primero' :
@@ -561,7 +561,7 @@ export default function HangulLevelPage() {
                       style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
                     >
                       {language === 'ja' ? 'ゲームを始める前に文字を学ぼう' :
-                       language === 'zh' ? '在游戏前先学习字符' :
+                       language.startsWith('zh') ? '在游戏前先学习字符' :
                        language === 'th' ? 'เรียนรู้ตัวอักษรก่อนเล่นเกม' :
                        language === 'vi' ? 'Học chữ cái trước khi chơi' :
                        language === 'es' ? 'Estudia los caracteres antes de jugar' :
@@ -623,7 +623,7 @@ export default function HangulLevelPage() {
                     <div className="w-14 h-14 bg-[#B4D700] rounded-[12px] flex items-center justify-center">
                       <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
                         {language === 'ja' ? 'あいう' :
-                         language === 'zh' ? '甲乙丙' :
+                         language.startsWith('zh') ? '甲乙丙' :
                          language === 'th' ? 'กขค' :
                          'ABC'}
                       </span>
@@ -663,7 +663,7 @@ export default function HangulLevelPage() {
                     <div className="w-14 h-14 bg-[#F59E0B] rounded-[12px] flex items-center justify-center">
                       <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
                         {language === 'ja' ? 'あいう' :
-                         language === 'zh' ? '甲乙丙' :
+                         language.startsWith('zh') ? '甲乙丙' :
                          language === 'th' ? 'กขค' :
                          'ABC'}
                       </span>
@@ -674,7 +674,7 @@ export default function HangulLevelPage() {
                         style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                       >
                         {language === 'ja' ? '空欄を埋めよう' :
-                         language === 'zh' ? '填空题' :
+                         language.startsWith('zh') ? '填空题' :
                          language === 'th' ? 'เติมคำในช่องว่าง' :
                          language === 'vi' ? 'Điền vào chỗ trống' :
                          language === 'es' ? 'Completa el espacio' :
@@ -685,7 +685,7 @@ export default function HangulLevelPage() {
                         style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
                       >
                         {language === 'ja' ? '文章の空欄に適切な単語を選ぼう' :
-                         language === 'zh' ? '选择正确的词填入句子空白处' :
+                         language.startsWith('zh') ? '选择正确的词填入句子空白处' :
                          language === 'th' ? 'เลือกคำที่เหมาะสมเติมในช่องว่าง' :
                          language === 'vi' ? 'Chọn từ phù hợp điền vào chỗ trống' :
                          language === 'es' ? 'Elige la palabra correcta' :

@@ -234,7 +234,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
           <div className="flex justify-center mt-5 mb-4 flex-shrink-0">
             <span className="px-5 py-2 rounded-[10px] text-[12px] sm:text-[13px] bg-[#AE7DFD] text-white font-bold uppercase tracking-wider">
               {language === 'ja' ? '空欄を埋めよう' :
-               language === 'zh' ? '填空题' :
+               language.startsWith('zh') ? '填空题' :
                language === 'th' ? 'เติมคำในช่องว่าง' :
                language === 'vi' ? 'Điền vào chỗ trống' :
                language === 'es' ? 'Completa el espacio' :
@@ -378,7 +378,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
                 >
                   <p className="text-white/70 text-[14px]">
                     {language === 'ja' ? '正解: ' :
-                     language === 'zh' ? '正确答案: ' :
+                     language.startsWith('zh') ? '正确答案: ' :
                      language === 'th' ? 'คำตอบที่ถูกต้อง: ' :
                      language === 'vi' ? 'Đáp án đúng: ' :
                      language === 'es' ? 'Respuesta correcta: ' :

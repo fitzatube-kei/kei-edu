@@ -119,7 +119,7 @@ export default function StoryEpisodePage() {
             className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-black mb-3 sm:mb-4 border-2 border-[#2d3436] shadow-[2px_2px_0_#2d3436] bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white"
           >
             {language === 'ja' ? '近日公開' :
-             language === 'zh' ? '即将推出' :
+             language.startsWith('zh') ? '即将推出' :
              language === 'th' ? 'เร็วๆ นี้' :
              language === 'vi' ? 'Sắp ra mắt' :
              language === 'es' ? 'Próximamente' :
@@ -128,7 +128,7 @@ export default function StoryEpisodePage() {
 
           <p className="text-gray-600 font-semibold mb-4 sm:mb-6 text-sm sm:text-base">
             {language === 'ja' ? 'このエピソードは近日公開予定です！' :
-             language === 'zh' ? '此集即将推出！' :
+             language.startsWith('zh') ? '此集即将推出！' :
              language === 'th' ? 'ตอนนี้เร็วๆ นี้!' :
              language === 'vi' ? 'Tập này sắp ra mắt!' :
              language === 'es' ? '¡Este episodio llegará pronto!' :
@@ -155,7 +155,7 @@ export default function StoryEpisodePage() {
 
           <Button variant="primary" fullWidth onClick={() => router.push('/story')}>
             {language === 'ja' ? 'ストーリーに戻る' :
-             language === 'zh' ? '返回故事' :
+             language.startsWith('zh') ? '返回故事' :
              language === 'th' ? 'กลับไปที่เรื่องราว' :
              language === 'vi' ? 'Quay lại câu chuyện' :
              language === 'es' ? 'Volver a la historia' :
@@ -198,7 +198,7 @@ export default function StoryEpisodePage() {
 
           <h1 className="text-2xl sm:text-3xl font-black text-gray-800 mb-2">
             {language === 'ja' ? 'エピソードクリア！' :
-             language === 'zh' ? '集完成！' :
+             language.startsWith('zh') ? '集完成！' :
              language === 'th' ? 'จบตอน!' :
              language === 'vi' ? 'Hoàn thành tập!' :
              language === 'es' ? '¡Episodio completado!' :
@@ -221,7 +221,7 @@ export default function StoryEpisodePage() {
             </div>
             <div className="text-gray-500 font-semibold text-sm sm:text-base">
               {language === 'ja' ? 'ポイント獲得' :
-               language === 'zh' ? '获得积分' :
+               language.startsWith('zh') ? '获得积分' :
                language === 'th' ? 'คะแนนที่ได้' :
                language === 'vi' ? 'điểm đạt được' :
                language === 'es' ? 'puntos obtenidos' :
@@ -272,14 +272,14 @@ export default function StoryEpisodePage() {
                     <div>
                       <h3 className="font-black text-gray-800 text-sm sm:text-base">
                         {language === 'ja' ? '学んだ単語' :
-                         language === 'zh' ? '学习的词汇' :
+                         language.startsWith('zh') ? '学习的词汇' :
                          language === 'th' ? 'คำศัพท์ที่เรียน' :
                          language === 'vi' ? 'Từ vựng đã học' :
                          language === 'es' ? 'Vocabulario aprendido' :
                          'Vocabulary Learned'}
                       </h3>
                       <p className="text-xs sm:text-sm text-gray-500">
-                        {allVocabulary.length} {language === 'ja' ? '単語' : language === 'zh' ? '个词' : 'words'}
+                        {allVocabulary.length} {language === 'ja' ? '単語' : language.startsWith('zh') ? '个词' : 'words'}
                       </p>
                     </div>
                   </div>
@@ -363,7 +363,7 @@ export default function StoryEpisodePage() {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-black text-gray-800 text-sm sm:text-base truncate">
                     {language === 'ja' ? '次のエピソードへ' :
-                     language === 'zh' ? '下一集' :
+                     language.startsWith('zh') ? '下一集' :
                      language === 'th' ? 'ตอนถัดไป' :
                      language === 'vi' ? 'Tập tiếp theo' :
                      language === 'es' ? 'Siguiente episodio' :
@@ -385,7 +385,7 @@ export default function StoryEpisodePage() {
               }}
             >
               {language === 'ja' ? 'もう一度プレイ' :
-               language === 'zh' ? '再玩一次' :
+               language.startsWith('zh') ? '再玩一次' :
                language === 'th' ? 'เล่นอีกครั้ง' :
                language === 'vi' ? 'Chơi lại' :
                language === 'es' ? 'Jugar de nuevo' :

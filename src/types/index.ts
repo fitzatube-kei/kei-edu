@@ -92,6 +92,7 @@ export type MultilingualText = {
   th: string;
   vi: string;
   zh: string;
+  'zh-TW'?: string;
 };
 
 // Question types

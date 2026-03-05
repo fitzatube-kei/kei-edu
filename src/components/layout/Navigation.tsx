@@ -60,6 +60,7 @@ const navLabels: Record<string, Record<string, string>> = {
   ja: { home: 'ホーム', hangul: 'ハングル', story: 'ストーリー', puzzle: 'パズル', culture: 'K Quiz' },
   vi: { home: 'Trang chủ', hangul: 'Hangul', story: 'Câu chuyện', puzzle: 'Puzzle', culture: 'K Quiz' },
   zh: { home: '首页', hangul: '韩文', story: '故事', puzzle: '拼图', culture: 'K Quiz' },
+  'zh-TW': { home: '首頁', hangul: '韓文', story: '故事', puzzle: '拼圖', culture: 'K Quiz' },
 };
 
 export default function Navigation() {
