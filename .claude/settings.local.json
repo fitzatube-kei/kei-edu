@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Bash(done)",
+      "Bash(echo:*)",
+      "Bash(grep:*)",
+      "Bash(sips:*)",
+      "Bash(lsof:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(xargs:*)",
+      "Bash(npx next dev:*)",
+      "Bash(pkill:*)",
+      "Bash(ipconfig getifaddr:*)",
+      "Bash(ipconfig:*)",
+      "Bash(wc:*)",
+      "Bash(git init)",
+      "Bash(xcode-select --install 2>&1)",
+      "Bash(git add .)"
+    ]
+  }
+}
