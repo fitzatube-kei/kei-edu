@@ -197,13 +197,13 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
     'zh-TW': '以下哪個不是複合母音？',
   },
   'compound-vowel': {
-    en: 'What is the compound vowel of "{char}" + "{char2}"?',
-    ja: '「{char}」+「{char2}」の複合母音は？',
-    es: '¿Cuál es la vocal compuesta de "{char}" + "{char2}"?',
-    th: 'สระประสมของ "{char}" + "{char2}" คืออะไร?',
-    vi: 'Nguyên âm kép của "{char}" + "{char2}" là gì?',
-    zh: '"{char}"和"{char2}"的复合元音是什么？',
-    'zh-TW': '「{char}」和「{char2}」的複合母音是什麼？',
+    en: 'What is the compound vowel of ({char}) + ({char2})?',
+    ja: '({char}) + ({char2}) の複合母音は？',
+    es: '¿Cuál es la vocal compuesta de ({char}) + ({char2})?',
+    th: 'สระประสมของ ({char}) + ({char2}) คืออะไร?',
+    vi: 'Nguyên âm kép của ({char}) + ({char2}) là gì?',
+    zh: '({char}) + ({char2}) 的复合元音是什么？',
+    'zh-TW': '({char}) + ({char2}) 的複合母音是什麼？',
   },
   'vowel-common': {
     en: 'What do "{char}" and "{char2}" have in common?',
@@ -226,13 +226,13 @@ const questionTemplates: Record<QuestionType, MultilingualText> = {
 
   // Syllable templates
   'combine-syllable': {
-    en: 'What syllable is formed by combining "{char}" + "{char2}"?',
-    ja: '「{char}」+「{char2}」を合わせると？',
-    es: '¿Qué sílaba se forma al combinar "{char}" + "{char2}"?',
-    th: 'เมื่อรวม "{char}" + "{char2}" จะได้พยางค์อะไร?',
-    vi: 'Âm tiết nào được tạo từ "{char}" + "{char2}"?',
-    zh: '"{char}"和"{char2}"组合成什么音节？',
-    'zh-TW': '「{char}」和「{char2}」組合成什麼音節？',
+    en: 'What syllable is formed by combining ({char}) + ({char2})?',
+    ja: '({char}) + ({char2}) を合わせると？',
+    es: '¿Qué sílaba se forma al combinar ({char}) + ({char2})?',
+    th: 'เมื่อรวม ({char}) + ({char2}) จะได้พยางค์อะไร?',
+    vi: 'Âm tiết nào được tạo từ ({char}) + ({char2})?',
+    zh: '({char}) + ({char2}) 组合成什么音节？',
+    'zh-TW': '({char}) + ({char2}) 組合成什麼音節？',
   },
   'syllable-components': {
     en: 'What are the components of "{syllable}"?',

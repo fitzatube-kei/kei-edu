@@ -19,7 +19,9 @@ const level21: HangulLevel = {
     { id: 'l21q5', templateKey: 'wordMeaning', word: { korean: '다섯', romanization: 'daseot', translations: { en: 'five', ja: '五つ', zh: '五', th: 'ห้า', vi: 'năm', es: 'cinco' } }, options: ['four', 'five', 'six', 'seven'], correctAnswer: 1 },
     { id: 'l21q6', templateKey: 'meaningToKorean', word: { korean: '여섯', romanization: 'yeoseot', translations: { en: 'six', ja: '六つ', zh: '六', th: 'หก', vi: 'sáu', es: 'seis' } }, options: ['여섯', '일곱', '여덟', '아홉'], correctAnswer: 0 },
     { id: 'l21q7', templateKey: 'meaningToKorean', word: { korean: '일곱', romanization: 'ilgop', translations: { en: 'seven', ja: '七つ', zh: '七', th: 'เจ็ด', vi: 'bảy', es: 'siete' } }, options: ['여섯', '일곱', '여덟', '아홉'], correctAnswer: 1 },
-    { id: 'l21q8', templateKey: 'meaningToKorean', word: { korean: '열', romanization: 'yeol', translations: { en: 'ten', ja: '十', zh: '十', th: 'สิบ', vi: 'mười', es: 'diez' } }, options: ['여덟', '아홉', '열', '하나'], correctAnswer: 2 },
+    { id: 'l21q8', templateKey: 'meaningToKorean', word: { korean: '여덟', romanization: 'yeodeol', translations: { en: 'eight', ja: '八つ', zh: '八', th: 'แปด', vi: 'tám', es: 'ocho' } }, options: ['여섯', '일곱', '여덟', '아홉'], correctAnswer: 2 },
+    { id: 'l21q9', templateKey: 'meaningToKorean', word: { korean: '아홉', romanization: 'ahop', translations: { en: 'nine', ja: '九つ', zh: '九', th: 'เก้า', vi: 'chín', es: 'nueve' } }, options: ['일곱', '여덟', '아홉', '열'], correctAnswer: 2 },
+    { id: 'l21q10', templateKey: 'meaningToKorean', word: { korean: '열', romanization: 'yeol', translations: { en: 'ten', ja: '十', zh: '十', th: 'สิบ', vi: 'mười', es: 'diez' } }, options: ['여덟', '아홉', '열', '하나'], correctAnswer: 2 },
   ],
   multilingualMatchingPairs: [
     { id: 'l21m1', left: '하나', right: { en: 'one', ja: '一つ', zh: '一', th: 'หนึ่ง', vi: 'một', es: 'uno' }, type: 'word' },
@@ -27,7 +29,11 @@ const level21: HangulLevel = {
     { id: 'l21m3', left: '셋', right: { en: 'three', ja: '三つ', zh: '三', th: 'สาม', vi: 'ba', es: 'tres' }, type: 'word' },
     { id: 'l21m4', left: '넷', right: { en: 'four', ja: '四つ', zh: '四', th: 'สี่', vi: 'bốn', es: 'cuatro' }, type: 'word' },
     { id: 'l21m5', left: '다섯', right: { en: 'five', ja: '五つ', zh: '五', th: 'ห้า', vi: 'năm', es: 'cinco' }, type: 'word' },
-    { id: 'l21m6', left: '열', right: { en: 'ten', ja: '十', zh: '十', th: 'สิบ', vi: 'mười', es: 'diez' }, type: 'word' },
+    { id: 'l21m6', left: '여섯', right: { en: 'six', ja: '六つ', zh: '六', th: 'หก', vi: 'sáu', es: 'seis' }, type: 'word' },
+    { id: 'l21m7', left: '일곱', right: { en: 'seven', ja: '七つ', zh: '七', th: 'เจ็ด', vi: 'bảy', es: 'siete' }, type: 'word' },
+    { id: 'l21m8', left: '여덟', right: { en: 'eight', ja: '八つ', zh: '八', th: 'แปด', vi: 'tám', es: 'ocho' }, type: 'word' },
+    { id: 'l21m9', left: '아홉', right: { en: 'nine', ja: '九つ', zh: '九', th: 'เก้า', vi: 'chín', es: 'nueve' }, type: 'word' },
+    { id: 'l21m10', left: '열', right: { en: 'ten', ja: '十', zh: '十', th: 'สิบ', vi: 'mười', es: 'diez' }, type: 'word' },
   ],
   reviewItems: ['하나', '둘', '셋', '넷', '다섯', '여섯', '일곱', '여덟', '아홉', '열'],
 };

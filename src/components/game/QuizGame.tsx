@@ -104,6 +104,21 @@ function renderMultilingualQuestion(
   language: string,
   t: (key: string) => string
 ): string {
+  // For wordMeaning/numberMeaning: show generic question with Korean word separately
+  if ((question.templateKey === 'wordMeaning' || question.templateKey === 'numberMeaning') && question.word?.korean) {
+    const wordMeaningQuestions: Record<string, string> = {
+      en: 'What does this character mean?',
+      ja: 'この文字の意味は？',
+      es: '¿Qué significa este carácter?',
+      th: 'ตัวอักษรนี้แปลว่าอะไร?',
+      vi: 'Ký tự này có nghĩa là gì?',
+      zh: '这个字是什么意思？',
+      'zh-TW': '這個字是什麼意思？',
+    };
+    const questionStr = wordMeaningQuestions[language] || wordMeaningQuestions.en;
+    return `${questionStr}\n"${question.word.korean}"`;
+  }
+
   // Special handling for fillBlank questions - show translated word in blank
   if (question.templateKey === 'fillBlank' && question.character) {
     const correctAnswer = question.options[question.correctAnswer] || '';
@@ -200,7 +215,7 @@ export default function QuizGame({
   onExit
 }: QuizGameProps) {
   const { t, language } = useLanguage();
-  const { speak } = useTTS();
+  const { speak, speakAsync } = useTTS();
 
   const questionsToUse: AnyQuestion[] = useMemo(() => {
     if (cultureQuestions && cultureQuestions.length > 0) {
@@ -256,11 +271,25 @@ export default function QuizGame({
   const { questionWithoutKorean, koreanChar } = useMemo(() => {
     if (!questionText) return { questionWithoutKorean: '', koreanChar: '' };
 
-    // Match content inside quotes that contains Korean characters
-    const match = questionText.match(/"([^"]*[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+[^"]*)"/);
-    if (match) {
-      const korean = match[1];
-      const withoutKorean = questionText.replace(`"${korean}"`, '" "');
+    // Handle newline-separated format: "Question text\n"한글""
+    const newlineMatch = questionText.match(/^(.+)\n"([^"]*[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+[^"]*)"$/);
+    if (newlineMatch) {
+      return { questionWithoutKorean: newlineMatch[1], koreanChar: newlineMatch[2] };
+    }
+
+    // Match content inside parentheses or quotes that contains Korean characters
+    const matchParen = questionText.match(/\(([^)]*[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+[^)]*)\)/);
+    if (matchParen) {
+      const korean = matchParen[1];
+      const withoutKorean = questionText.replace(`(${korean})`, '(   )');
+      return { questionWithoutKorean: withoutKorean, koreanChar: korean };
+    }
+
+    // Fallback: match content inside quotes
+    const matchQuote = questionText.match(/"([^"]*[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+[^"]*)"/);
+    if (matchQuote) {
+      const korean = matchQuote[1];
+      const withoutKorean = questionText.replace(`"${korean}"`, '"   "');
       return { questionWithoutKorean: withoutKorean, koreanChar: korean };
     }
     return { questionWithoutKorean: questionText, koreanChar: '' };
@@ -273,9 +302,10 @@ export default function QuizGame({
       return currentQuestion.options;
     }
 
-    // For meaningToKorean and sentenceTranslate questions, options are Korean words - don't translate them
+    // For meaningToKorean, sentenceTranslate, and syllable questions, options are Korean words/syllables - don't translate them
     if (isMultilingualQuestion(currentQuestion) &&
-        (currentQuestion.templateKey === 'meaningToKorean' || currentQuestion.templateKey === 'sentenceTranslate')) {
+        (currentQuestion.templateKey === 'meaningToKorean' || currentQuestion.templateKey === 'sentenceTranslate' ||
+         currentQuestion.templateKey === 'combineSyllable' || currentQuestion.templateKey === 'syllableComponents')) {
       return currentQuestion.options;
     }
 
@@ -348,11 +378,19 @@ export default function QuizGame({
     if (correct && currentQuestion) {
       // Only show explanation layer and speak word for word-focused questions
       const wordFocusedTemplates = ['wordMeaning', 'meaningToKorean', 'sentenceMeaning', 'sentenceTranslate', 'fillBlank'];
+      // Templates where the correct answer option should be spoken instead of the character
+      const speakAnswerTemplates = ['combineSyllable', 'compoundVowel'];
 
       if (isMultilingualQuestion(currentQuestion) && currentQuestion.word?.korean && wordFocusedTemplates.includes(currentQuestion.templateKey)) {
         // Word-focused question: speak the word and show explanation layer
         speak(currentQuestion.word.korean);
         setShowExplanationLayer(true);
+      } else if (isMultilingualQuestion(currentQuestion) && speakAnswerTemplates.includes(currentQuestion.templateKey)) {
+        // Combine-type question: speak the correct answer (e.g., "가" instead of "ㄱ")
+        const correctAnswerText = currentQuestion.options[currentQuestion.correctAnswer];
+        if (correctAnswerText) {
+          speak(correctAnswerText);
+        }
       } else if (isMultilingualQuestion(currentQuestion) && currentQuestion.character) {
         // Consonant/vowel question: speak the character
         speak(currentQuestion.character);
@@ -383,7 +421,7 @@ export default function QuizGame({
     }));
   }, [showResult, correctAnswerIndex, hintUsedThisQuestion, questionText, optionTexts, explanationText, hintText, currentQuestion, speak]);
 
-  const handleNextQuestion = useCallback(() => {
+  const handleNextQuestion = useCallback(async () => {
     const isLastQuestion = gameState.currentQuestion >= shuffledQuestions.length - 1;
 
     if (isLastQuestion) {
@@ -406,7 +444,7 @@ export default function QuizGame({
       setHintUsedThisQuestion(false);
       setShowExplanationLayer(false);
     }
-  }, [gameState, shuffledQuestions.length, onComplete, hintsUsed, questionResults]);
+  }, [gameState, shuffledQuestions, onComplete, hintsUsed, questionResults, speakAsync]);
 
   if (!currentQuestion) {
     return (
@@ -418,7 +456,7 @@ export default function QuizGame({
 
   return (
     <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col min-h-0">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button - 흰색 배경, 동그란 모양 */}
@@ -467,11 +505,11 @@ export default function QuizGame({
               exit={{ opacity: 0, x: -50 }}
               className="flex-1 flex flex-col min-h-0"
             >
-              {/* Top section: Title + Question (scrollable if needed) */}
-              <div className="flex-shrink-0">
+              {/* Top section: Title + Question - pushed down for better vertical balance */}
+              <div className="flex-shrink-0 mt-[6vh] sm:mt-[8vh]">
                 {/* Fill in the blank title label */}
                 {isFillBlankQuestion && (
-                  <div className="flex justify-center mb-2 mt-4 sm:mt-6">
+                  <div className="flex justify-center mb-2">
                     <span className="px-4 py-1.5 sm:px-5 sm:py-2 rounded-[10px] text-[12px] sm:text-[14px] bg-[#AE7DFD] text-white font-bold uppercase tracking-wide">
                       Fill in the blank
                     </span>
@@ -481,7 +519,7 @@ export default function QuizGame({
                 {/* Question text - with Korean character displayed separately */}
                 <div className={cn(
                   "text-center px-2",
-                  isFillBlankQuestion ? "mt-2 mb-2" : "mt-4 sm:mt-6 mb-3 sm:mb-4"
+                  isFillBlankQuestion ? "mt-2 mb-2" : "mt-2 sm:mt-4 mb-3 sm:mb-4"
                 )}>
                   <h2
                     className="text-[17px] sm:text-[20px] text-white leading-relaxed"
@@ -498,7 +536,7 @@ export default function QuizGame({
                       className="text-[48px] sm:text-[64px] text-white font-bold"
                       style={{ fontFamily: 'sans-serif' }}
                     >
-                      "{koreanChar}"
+                      {koreanChar}
                     </span>
                   </div>
                 )}
