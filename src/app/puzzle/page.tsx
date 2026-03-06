@@ -11,6 +11,9 @@ import HangulTutorial from '@/components/tutorial/HangulTutorial';
 import { useLanguage } from '@/context/LanguageContext';
 import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
+import { useAccessControl } from '@/hooks/useAccessControl';
+import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
+import PremiumContentModal from '@/components/ui/PremiumContentModal';
 import { puzzleCategories, getCategoryById } from '@/data/puzzle';
 
 type TierTab = 'beginner' | 'intermediate' | 'advanced';
@@ -27,8 +30,11 @@ export default function PuzzlePage() {
   const { t, language } = useLanguage();
   const { progress, getPuzzleLevelProgress } = useProgress();
   const { unlockPro, unlockAllLevels } = useDevMode();
+  const { tier, limits } = useAccessControl();
   const [activeTier, setActiveTier] = useState<TierTab>('beginner');
   const [showTutorial, setShowTutorial] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const isPremiumUser = progress.isPremium || unlockPro;
 
@@ -61,25 +67,46 @@ export default function PuzzlePage() {
   };
 
   // Check if tier is unlocked
-  const isTierUnlocked = (tier: TierTab): boolean => {
+  const isTierUnlocked = (tierTab: TierTab): boolean => {
     if (unlockAllLevels) return true;
-    if (tier === 'beginner') return true;
+    if (tierTab === 'beginner') return true;
 
     const beginnerCategory = getCategoryById('beginner');
     const intermediateCategory = getCategoryById('intermediate');
 
-    if (tier === 'intermediate') {
-      // Unlock intermediate after completing 10 beginner levels
+    if (tierTab === 'intermediate') {
+      if (!limits.puzzle.intermediateAllowed) return false;
       const beginnerCompleted = beginnerCategory?.levels.filter(l => getPuzzleLevelProgress(l.id)?.completed).length || 0;
       return beginnerCompleted >= 10;
     }
-    if (tier === 'advanced') {
+    if (tierTab === 'advanced') {
+      if (!limits.puzzle.advancedAllowed) return false;
       if (unlockPro) return true;
-      // Unlock advanced after completing all intermediate levels (premium required)
       const intermediateCompleted = intermediateCategory?.levels.filter(l => getPuzzleLevelProgress(l.id)?.completed).length || 0;
       return intermediateCompleted >= (intermediateCategory?.levels.length || 10) && isPremiumUser;
     }
     return false;
+  };
+
+  const isTierAccessLocked = (tierTab: TierTab): boolean => {
+    if (unlockAllLevels || unlockPro) return false;
+    if (tierTab === 'intermediate') return !limits.puzzle.intermediateAllowed;
+    if (tierTab === 'advanced') return !limits.puzzle.advancedAllowed;
+    return false;
+  };
+
+  const handleTierClick = (tierTab: TierTab) => {
+    if (isTierAccessLocked(tierTab)) {
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
+      return;
+    }
+    if (isTierUnlocked(tierTab)) {
+      setActiveTier(tierTab);
+    }
   };
 
   // Get current tier's levels
@@ -100,9 +127,23 @@ export default function PuzzlePage() {
     const category = getCategoryById(activeTier);
     if (!category) return;
 
+    // Beginner tier level limit check
+    if (activeTier === 'beginner' && !unlockAllLevels && levelIndex >= limits.puzzle.beginnerMaxLevel) {
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
+      return;
+    }
+
     const isLevelFree = levelIndex < category.freeLevels;
     if (isPremium && !isPremiumUser && !isLevelFree && !unlockAllLevels) {
-      alert(t('level.premiumRequired'));
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
       return;
     }
     router.push(`/puzzle/${activeTier}/${levelId}`);
@@ -138,7 +179,7 @@ export default function PuzzlePage() {
             className="flex items-center gap-4 pt-6 pb-0 -mt-[60px]"
           >
             {/* Character Image */}
-            <div className="relative w-[187px] h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
+            <div className="relative w-[140px] h-[140px] xs:w-[187px] xs:h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
               <Image
                 src="/images/word/wb_crt001.png"
                 alt="Word Builder Character"
@@ -199,14 +240,14 @@ export default function PuzzlePage() {
             <div className="flex items-center justify-around">
               {/* Levels */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalCompleted}
@@ -225,14 +266,14 @@ export default function PuzzlePage() {
 
               {/* Stars */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalStars}
@@ -271,17 +312,18 @@ export default function PuzzlePage() {
             transition={{ delay: 0.15 }}
             className="flex gap-2 mb-6"
           >
-            {(['beginner', 'intermediate', 'advanced'] as TierTab[]).map((tier) => {
-              const stats = getTierStats(tier);
-              const isActive = activeTier === tier;
-              const unlocked = isTierUnlocked(tier);
-              const isPremiumLocked = tier === 'advanced' && !isPremiumUser;
+            {(['beginner', 'intermediate', 'advanced'] as TierTab[]).map((tierTab) => {
+              const stats = getTierStats(tierTab);
+              const isActive = activeTier === tierTab;
+              const unlocked = isTierUnlocked(tierTab);
+              const accessLocked = isTierAccessLocked(tierTab);
+              const isPremiumLocked = (tierTab === 'advanced' && !isPremiumUser) || accessLocked;
 
               return (
                 <button
-                  key={tier}
-                  onClick={() => unlocked && setActiveTier(tier)}
-                  disabled={!unlocked}
+                  key={tierTab}
+                  onClick={() => handleTierClick(tierTab)}
+                  disabled={!unlocked && !accessLocked}
                   className={`flex-1 py-3 px-2 rounded-full text-center transition-all ${
                     isActive
                       ? 'bg-[#440687] text-white'
@@ -291,7 +333,7 @@ export default function PuzzlePage() {
                   }`}
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
-                  <p className="text-[16px] sm:text-[17px] text-white font-bold">{getTierName(tier)}</p>
+                  <p className="text-[16px] sm:text-[17px] text-white font-bold">{getTierName(tierTab)}</p>
                   <div className="flex items-center justify-center gap-1 text-[13px] sm:text-[14px] text-white">
                     {!unlocked || isPremiumLocked ? (
                       <svg className="w-4 h-4 text-[#38B6FF]" fill="currentColor" viewBox="0 0 24 24">
@@ -314,12 +356,13 @@ export default function PuzzlePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-4 gap-3 mb-6"
+            className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 xs:gap-3 sm:gap-4 mb-6"
           >
             {currentTierLevels.map((level, index) => {
               const levelProgress = getPuzzleLevelProgress(level.id);
               const isLevelFree = currentCategory ? index < currentCategory.freeLevels : false;
-              const isPremiumLocked = level.isPremium && !isPremiumUser && !isLevelFree && !unlockAllLevels;
+              const isTierLimited = activeTier === 'beginner' && !unlockAllLevels && index >= limits.puzzle.beginnerMaxLevel;
+              const isPremiumLocked = (level.isPremium && !isPremiumUser && !isLevelFree && !unlockAllLevels) || isTierLimited;
               const isCompleted = levelProgress?.completed;
               const stars = levelProgress?.stars || 0;
               const isFirstUnlocked = !isPremiumLocked && !isCompleted && index === 0;
@@ -334,7 +377,7 @@ export default function PuzzlePage() {
                   whileTap={!isPremiumLocked ? { scale: 0.95 } : {}}
                   onClick={() => handleLevelClick(level.id, level.isPremium, index)}
                   disabled={isPremiumLocked}
-                  className={`aspect-square rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
+                  className={`aspect-square rounded-[12px] xs:rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
                     isFirstUnlocked
                       ? 'bg-white border-l-4 border-l-[#38B6FF]'
                       : isCompleted
@@ -344,7 +387,7 @@ export default function PuzzlePage() {
                 >
                   {/* Level number */}
                   <p
-                    className={`text-[28px] sm:text-[32px] ${
+                    className={`text-[24px] xs:text-[28px] sm:text-[32px] ${
                       isCompleted ? 'text-[#440687]' : isFirstUnlocked ? 'text-[#38B6FF]' : 'text-[#1F2937]'
                     }`}
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
@@ -357,7 +400,7 @@ export default function PuzzlePage() {
                     {[1, 2].map((star) => (
                       <svg
                         key={star}
-                        className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                        className={`w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 ${
                           stars >= star ? 'text-[#38B6FF]' : 'text-gray-300'
                         }`}
                         fill="currentColor"
@@ -438,6 +481,10 @@ export default function PuzzlePage() {
       <HangulTutorial isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
 
       <Navigation />
+
+      {/* Modals */}
+      <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
     </div>
   );
 }

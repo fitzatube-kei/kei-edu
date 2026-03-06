@@ -190,7 +190,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
 
   return (
     <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col min-h-0">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button */}

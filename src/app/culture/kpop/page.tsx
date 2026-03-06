@@ -5,15 +5,16 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { useProgress } from '@/hooks/useProgress';
+import { useAccessControl } from '@/hooks/useAccessControl';
 import EmojiQuizGame, { QuizLevel, QuizQuestion } from '@/components/game/EmojiQuizGame';
 import PremiumContentModal from '@/components/ui/PremiumContentModal';
+import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
 import { kpopQuizData } from '@/data/kpopQuizData';
 
 type GameState = 'level-select' | 'playing';
 
 const QUESTIONS_PER_SET = 10; // 세트당 문제 수
 const SETS_PER_LEVEL = 20; // 레벨당 세트 수
-const FREE_SETS_PER_LEVEL = 5; // 무료 사용자용 세트 수
 
 // 레벨별 문제 분리
 const getLevelQuestions = (level: QuizLevel): typeof kpopQuizData => {
@@ -32,22 +33,37 @@ const getSetQuestions = (levelQuestions: typeof kpopQuizData, setIndex: number):
 export default function KpopQuizPage() {
   const { t } = useLanguage();
   const { progress } = useProgress();
+  const { tier, limits } = useAccessControl();
   const [gameState, setGameState] = useState<GameState>('level-select');
   const [selectedLevel, setSelectedLevel] = useState<QuizLevel>('beginner');
   const [selectedSetIndex, setSelectedSetIndex] = useState<number | null>(null);
   const [completedSets, setCompletedSets] = useState<Record<string, number>>({});
   const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const isPremium = progress.isPremium;
   const levelQuestions = getLevelQuestions(selectedLevel);
   const availableSets = Math.min(SETS_PER_LEVEL, Math.ceil(levelQuestions.length / QUESTIONS_PER_SET));
 
   const isSetLocked = (setIndex: number) => {
-    return !isPremium && setIndex >= FREE_SETS_PER_LEVEL;
+    if (selectedLevel !== 'beginner') return !limits.culture.intermediateAllowed && !isPremium;
+    return !isPremium && setIndex >= limits.culture.beginnerMaxSet;
+  };
+
+  const isLevelTabLocked = (level: QuizLevel) => {
+    if (level === 'beginner') return false;
+    return !limits.culture.intermediateAllowed && !isPremium;
   };
 
   const startGame = (setIndex: number) => {
-    if (isSetLocked(setIndex)) return;
+    if (isSetLocked(setIndex)) {
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
+      return;
+    }
     setSelectedSetIndex(setIndex);
     setGameState('playing');
   };
@@ -68,10 +84,13 @@ export default function KpopQuizPage() {
 
     const nextSetIndex = selectedSetIndex + 1;
 
-    // Check if next set is locked (premium content)
+    // Check if next set is locked
     if (isSetLocked(nextSetIndex)) {
-      // Show premium modal
-      setShowPremiumModal(true);
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
       return;
     }
 
@@ -153,7 +172,7 @@ export default function KpopQuizPage() {
             className="flex items-center gap-4 py-4 mb-4"
           >
             <motion.div
-              className="w-[100px] h-[100px] sm:w-[120px] sm:h-[120px] rounded-2xl bg-gradient-to-br from-[#FF7E00] to-[#FF3D00] flex items-center justify-center shadow-lg shrink-0"
+              className="w-[80px] h-[80px] xs:w-[100px] xs:h-[100px] sm:w-[120px] sm:h-[120px] rounded-2xl bg-gradient-to-br from-[#FF7E00] to-[#FF3D00] flex items-center justify-center shadow-lg shrink-0"
               animate={{ rotate: [0, 5, -5, 0] }}
               transition={{ repeat: Infinity, duration: 3 }}
             >
@@ -248,13 +267,23 @@ export default function KpopQuizPage() {
                 {levelTabs.map((tab) => {
                   const stats = getLevelStats(tab.level);
                   const isActive = selectedLevel === tab.level;
+                  const tabLocked = isLevelTabLocked(tab.level);
 
                   return (
                     <button
                       key={tab.level}
-                      onClick={() => setSelectedLevel(tab.level)}
+                      onClick={() => {
+                        if (tabLocked) {
+                          if (tier === 'guest') setShowLoginModal(true);
+                          else setShowPremiumModal(true);
+                          return;
+                        }
+                        setSelectedLevel(tab.level);
+                      }}
                       className={`flex-1 py-3 px-2 rounded-full text-center transition-all ${
-                        isActive
+                        tabLocked
+                          ? 'bg-gray-300 text-white cursor-not-allowed'
+                          : isActive
                           ? 'bg-[#440687] text-white'
                           : 'bg-[#9038EF] text-white'
                       }`}
@@ -262,9 +291,15 @@ export default function KpopQuizPage() {
                     >
                       <p className="text-[16px] sm:text-[17px] text-white font-bold">{tab.label}</p>
                       <div className="flex items-center justify-center gap-1 text-[13px] sm:text-[14px] text-white">
-                        <svg className="w-4 h-4 text-[#B4D700]" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                        </svg>
+                        {tabLocked ? (
+                          <svg className="w-4 h-4 text-[#B4D700]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4 text-[#B4D700]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                        )}
                         <span className="font-semibold text-white">{stats.completed}/{stats.total}</span>
                       </div>
                     </button>
@@ -277,7 +312,7 @@ export default function KpopQuizPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="grid grid-cols-4 sm:grid-cols-5 gap-3 mb-6"
+                className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3 mb-6"
               >
                 {Array.from({ length: availableSets }, (_, index) => {
                   const key = `${selectedLevel}-${index}`;
@@ -429,10 +464,18 @@ export default function KpopQuizPage() {
         </div>
       </main>
 
-      {/* Premium Content Modal */}
+      {/* Modals */}
       <PremiumContentModal
         isOpen={showPremiumModal}
         onClose={handlePremiumModalClose}
+      />
+      <LoginRequiredModal
+        isOpen={showLoginModal}
+        onClose={() => {
+          setShowLoginModal(false);
+          setGameState('level-select');
+          setSelectedSetIndex(null);
+        }}
       />
     </div>
   );

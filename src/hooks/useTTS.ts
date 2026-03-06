@@ -5,9 +5,9 @@ import { useState, useCallback, useEffect } from 'react';
 export type TTSSpeed = 'slow' | 'normal' | 'fast';
 
 const speedMap: Record<TTSSpeed, number> = {
-  slow: 0.6,
-  normal: 0.8,
-  fast: 1.0,
+  slow: 0.5,
+  normal: 0.7,
+  fast: 0.9,
 };
 
 // Helper to extract Korean text
@@ -27,7 +27,7 @@ export function useTTS() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [speakingId, setSpeakingId] = useState<string | null>(null);
   const [speed, setSpeed] = useState<TTSSpeed>('normal');
-  const [speedValue, setSpeedValue] = useState(0.8); // Numeric speed for slider
+  const [speedValue, setSpeedValue] = useState(0.7); // Numeric speed for slider
   const [isSupported, setIsSupported] = useState(true);
 
   // Check if Web Speech API is supported
@@ -181,7 +181,7 @@ export function useTTS() {
 }
 
 // Standalone function for simple usage
-export function speakKorean(text: string, rate: number = 0.8) {
+export function speakKorean(text: string, rate: number = 0.7) {
   if (typeof window === 'undefined' || !window.speechSynthesis) {
     return;
   }

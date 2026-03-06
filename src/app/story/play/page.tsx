@@ -4,12 +4,20 @@ import React, { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { TravelDayGame } from '@/components/travel';
 import { TravelArea } from '@/types/travel';
+import { useAccessControl } from '@/hooks/useAccessControl';
 
 function TravelGameWrapper() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { tier, limits } = useAccessControl();
 
   const area = (searchParams.get('area') as TravelArea) || 'seoul';
+
+  // Redirect guests away from story mode
+  if (tier === 'guest') {
+    router.push('/story');
+    return null;
+  }
 
   const handleComplete = (xp: number, visitedCount: number) => {
     console.log(`Travel complete! XP: ${xp}, Visited: ${visitedCount}`);
@@ -20,11 +28,17 @@ function TravelGameWrapper() {
     router.push('/story');
   };
 
+  // For free users, only allow specific locations
+  const allowedLocations = limits.story.allowedLocations.length > 0
+    ? limits.story.allowedLocations
+    : undefined;
+
   return (
     <TravelDayGame
       initialArea={area}
       onComplete={handleComplete}
       onBack={handleBack}
+      allowedLocations={allowedLocations}
     />
   );
 }

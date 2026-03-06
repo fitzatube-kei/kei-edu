@@ -9,6 +9,9 @@ import Navigation from '@/components/layout/Navigation';
 import { useLanguage } from '@/context/LanguageContext';
 import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
+import { useAccessControl } from '@/hooks/useAccessControl';
+import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
+import PremiumContentModal from '@/components/ui/PremiumContentModal';
 import { TravelArea } from '@/types/travel';
 import { getLocationsByArea } from '@/data/travel/locations';
 
@@ -103,17 +106,27 @@ export default function StoryPage() {
   const { t, language } = useLanguage();
   const { progress, loading } = useProgress();
   const { unlockPro } = useDevMode();
+  const { tier, limits } = useAccessControl();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
   const getText = (textObj: Record<string, string>) => textObj[language] || textObj.en;
-
-  // Debug premium status
-  console.log('[StoryPage] loading:', loading, 'progress.isPremium:', progress.isPremium, 'unlockPro:', unlockPro);
 
   // Calculate total visited locations (would need to be loaded from progress)
   const totalLocations = areaConfigs.reduce((sum, area) => sum + area.locationCount, 0);
   const totalVisited = 0; // TODO: Load from progress
 
   const handleStartTravel = (area: TravelArea) => {
+    // Guest: entire Story Mode blocked
+    if (tier === 'guest') {
+      setShowLoginModal(true);
+      return;
+    }
+    // Free: only Seoul allowed, premium areas blocked
+    if (tier === 'free' && area !== 'seoul') {
+      setShowPremiumModal(true);
+      return;
+    }
     router.push(`/story/play?area=${area}`);
   };
 
@@ -130,7 +143,7 @@ export default function StoryPage() {
             className="flex items-center gap-4 pt-6 pb-0"
           >
             {/* Character Image */}
-            <div className="relative w-[150px] h-[150px] sm:w-[187px] sm:h-[187px] shrink-0 ml-[5px]">
+            <div className="relative w-[120px] h-[120px] xs:w-[150px] xs:h-[150px] sm:w-[187px] sm:h-[187px] md:w-[220px] md:h-[220px] shrink-0 ml-[5px]">
               <Image
                 src="/images/story/crt_kei01.png"
                 alt="Travel Guide KEI"
@@ -201,12 +214,12 @@ export default function StoryPage() {
             <div className="flex items-center justify-around">
               {/* Locations */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
                   <span className="text-xl">📍</span>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalVisited}
@@ -225,12 +238,12 @@ export default function StoryPage() {
 
               {/* XP */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
                   <span className="text-xl">⭐</span>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     0
@@ -268,10 +281,12 @@ export default function StoryPage() {
           </div>
 
           {/* Area Selection */}
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {areaConfigs.map((area, index) => {
-              // Only lock premium areas after loading is complete and user is not premium
+              // Guest: all areas locked. Free: only seoul. Premium: all.
+              const isGuestLocked = !loading && tier === 'guest';
               const isPremiumLocked = !loading && area.isPremium && !progress.isPremium && !unlockPro;
+              const isAreaLocked = isGuestLocked || isPremiumLocked;
               const locations = getLocationsByArea(area.id);
 
               return (
@@ -280,12 +295,11 @@ export default function StoryPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + index * 0.1 }}
-                  whileHover={!isPremiumLocked ? { scale: 1.02, y: -4 } : {}}
-                  whileTap={!isPremiumLocked ? { scale: 0.98 } : {}}
-                  onClick={() => !isPremiumLocked && handleStartTravel(area.id)}
-                  disabled={isPremiumLocked}
+                  whileHover={!isAreaLocked ? { scale: 1.02, y: -4 } : {}}
+                  whileTap={!isAreaLocked ? { scale: 0.98 } : {}}
+                  onClick={() => handleStartTravel(area.id)}
                   className={`bg-white rounded-2xl p-6 shadow-md text-left w-full border-l-4 transition-all relative ${
-                    isPremiumLocked ? 'opacity-60' : 'hover:shadow-lg'
+                    isAreaLocked ? 'opacity-60' : 'hover:shadow-lg'
                   }`}
                   style={{ borderLeftColor: area.color }}
                 >
@@ -296,6 +310,13 @@ export default function StoryPage() {
                       style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                     >
                       PREMIUM
+                    </span>
+                  ) : tier === 'free' && area.id === 'seoul' ? (
+                    <span
+                      className="absolute top-4 right-4 bg-[#38B6FF] text-white text-xs px-3 py-1 rounded-full"
+                      style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                    >
+                      Myeongdong Only
                     </span>
                   ) : (
                     <span
@@ -361,7 +382,7 @@ export default function StoryPage() {
                     </div>
 
                     {/* Start button */}
-                    {!isPremiumLocked && (
+                    {!isAreaLocked && (
                       <span
                         className="px-4 py-2 rounded-lg text-white text-sm whitespace-nowrap flex-shrink-0"
                         style={{ backgroundColor: area.color, fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
@@ -377,19 +398,32 @@ export default function StoryPage() {
                   </div>
 
                   {/* Lock overlay */}
-                  {isPremiumLocked && (
+                  {isAreaLocked && (
                     <div className="absolute inset-0 bg-gray-100/80 rounded-2xl flex items-center justify-center">
                       <div className="flex flex-col items-center justify-center">
-                        <Image
-                          src="/images/story/crown001.png"
-                          alt="Premium"
-                          width={40}
-                          height={40}
-                          unoptimized
-                        />
-                        <p className="text-sm text-[#B4D700] mt-2" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
-                          PRO Required
-                        </p>
+                        {isGuestLocked ? (
+                          <>
+                            <div className="w-10 h-10 bg-[#440687] rounded-full flex items-center justify-center">
+                              <span className="text-xl">🔐</span>
+                            </div>
+                            <p className="text-sm text-[#440687] mt-2" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
+                              Login Required
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <Image
+                              src="/images/story/crown001.png"
+                              alt="Premium"
+                              width={40}
+                              height={40}
+                              unoptimized
+                            />
+                            <p className="text-sm text-[#B4D700] mt-2" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
+                              PRO Required
+                            </p>
+                          </>
+                        )}
                       </div>
                     </div>
                   )}
@@ -524,6 +558,10 @@ export default function StoryPage() {
       </main>
 
       <Navigation />
+
+      {/* Modals */}
+      <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
     </div>
   );
 }

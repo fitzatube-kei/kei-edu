@@ -29,7 +29,7 @@ const translations: Record<string, {
   chooseQuiz: string;
 }> = {
   en: {
-    pageTitle: 'K-Culture Quiz',
+    pageTitle: 'K EMOJI QUIZ',
     pageSubtitle: 'Guess K-POP songs and K-Drama titles from emojis!',
     kpopTitle: 'K-POP Title Quiz',
     kpopDesc: 'Guess K-POP song titles from emojis! 3 difficulty levels available.',
@@ -208,7 +208,7 @@ export default function CulturePage() {
             className="flex items-center gap-4 pt-6 pb-0 -mt-[40px]"
           >
             {/* Character Image */}
-            <div className="relative w-[150px] h-[150px] sm:w-[187px] sm:h-[187px] shrink-0 ml-[5px]">
+            <div className="relative w-[120px] h-[120px] xs:w-[150px] xs:h-[150px] sm:w-[187px] sm:h-[187px] md:w-[220px] md:h-[220px] shrink-0 ml-[5px]">
               <Image
                 src="/images/culture/ct_crt001.png"
                 alt="K-Culture Character"
@@ -264,12 +264,12 @@ export default function CulturePage() {
             <div className="flex items-center justify-around">
               {/* Quiz Played */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
                   <span className="text-xl">🎯</span>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     0
@@ -288,12 +288,12 @@ export default function CulturePage() {
 
               {/* Best Score */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
                   <span className="text-xl">🏆</span>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     -
@@ -326,7 +326,7 @@ export default function CulturePage() {
           </div>
 
           {/* Feature Cards */}
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {cultureFeatures.map((feature, index) => {
               const content = getFeatureContent(feature.id);
               return (

@@ -281,7 +281,7 @@ export default function EmojiQuizGame({
         animate={{ opacity: 1, y: 0 }}
         className="bg-white rounded-2xl p-6 shadow-lg text-center"
       >
-        <div className="text-6xl sm:text-7xl mb-4">{currentQuestion.emoji}</div>
+        <div className="text-5xl sm:text-6xl md:text-7xl mb-4">{currentQuestion.emoji}</div>
 
         {/* 아티스트/연도 힌트 */}
         {(currentQuestion.artist || currentQuestion.year) && (
@@ -319,7 +319,7 @@ export default function EmojiQuizGame({
                 key={index}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleBeginnerSelect(option)}
-                className={`p-4 rounded-xl font-bold text-lg border-2 ${colors.border} hover:bg-gray-50 transition-colors`}
+                className={`p-3 sm:p-4 rounded-xl font-bold text-base sm:text-lg border-2 ${colors.border} hover:bg-gray-50 transition-colors`}
               >
                 {option}
               </motion.button>
@@ -453,7 +453,7 @@ export default function EmojiQuizGame({
                 }
               }}
               placeholder={t('quiz.typeAnswer')}
-              className={`w-full p-4 text-center text-xl font-bold border-2 ${colors.border} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#440687]`}
+              className={`w-full p-3 sm:p-4 text-center text-lg sm:text-xl font-bold border-2 ${colors.border} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#440687]`}
               autoFocus
             />
 

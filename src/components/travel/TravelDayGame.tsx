@@ -42,12 +42,14 @@ interface TravelDayGameProps {
   initialArea?: TravelArea;
   onComplete?: (xp: number, visitedCount: number) => void;
   onBack?: () => void;
+  allowedLocations?: string[]; // empty/undefined = all allowed
 }
 
 export default function TravelDayGame({
   initialArea = 'seoul',
   onComplete,
   onBack,
+  allowedLocations,
 }: TravelDayGameProps) {
   const { t, getText, language } = useLanguage();
   const { progress } = useProgress();
@@ -100,10 +102,14 @@ export default function TravelDayGame({
 
   // Start the game
   const handleStartGame = useCallback(() => {
-    const options = getDestinationOptions(currentArea, visitedLocations);
+    let options = getDestinationOptions(currentArea, visitedLocations);
+    // Filter by allowed locations if specified
+    if (allowedLocations && allowedLocations.length > 0) {
+      options = options.filter(loc => allowedLocations.includes(loc.id));
+    }
     setDestinationOptions(options);
     setPhase('selecting');
-  }, [currentArea, visitedLocations]);
+  }, [currentArea, visitedLocations, allowedLocations]);
 
   // Select destination
   const handleSelectDestination = useCallback((location: TravelLocation) => {

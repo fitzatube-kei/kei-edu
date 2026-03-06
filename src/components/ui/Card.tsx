@@ -35,7 +35,7 @@ export default function Card({
       whileTap={onClick ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={cn(
-        'rounded-card border-2 shadow-card p-5 transition-all duration-200',
+        'rounded-card border-2 shadow-card p-3 sm:p-4 md:p-5 transition-all duration-200',
         variantClasses[variant],
         hover && 'cursor-pointer hover:shadow-card-hover hover:border-gray-300',
         onClick && 'cursor-pointer',

@@ -195,17 +195,17 @@ export interface HangulLevel {
   titleKey?: string; // Translation key for title
   description: string;
   descriptionKey?: string; // Translation key for description
-  tier: LearningTier; // Beginner (1-20), Intermediate (21-40), Advanced (41-60)
-  characters?: HangulCharacter[];
+  tier?: LearningTier; // Beginner (1-20), Intermediate (21-40), Advanced (41-60)
+  characters?: HangulCharacter[] | string[];
   words?: HangulWord[];
-  quizQuestions: QuizQuestion[];
+  quizQuestions?: QuizQuestion[];
   multilingualQuizQuestions?: MultilingualQuizQuestion[];
   matchingPairs?: MatchingPair[];
   multilingualMatchingPairs?: MultilingualMatchingPair[]; // For international learners
   fillInBlankQuestions?: FillInBlankQuestion[]; // Fill-in-the-blank game
   reviewItems?: string[]; // Items to review with pronunciation after level completion
-  requiredScore: number;
-  isPremium: boolean;
+  requiredScore?: number;
+  isPremium?: boolean;
 }
 
 // History data types

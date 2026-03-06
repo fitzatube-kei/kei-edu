@@ -935,7 +935,7 @@ function CharacterCard({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        speak(character.example!.word, `example-${index}`);
+                        speak(character.pronunciation || character.character, `example-${index}`);
                       }}
                       className={`ml-auto w-10 h-10 rounded-full flex items-center justify-center ${
                         speakingId === `example-${index}`
@@ -1098,7 +1098,7 @@ export default function HangulLearnPage() {
              'Please proceed to the quiz'}
           </p>
           <button
-            onClick={() => router.push(`/hangul/${levelNumber}`)}
+            onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
             className="bg-[#440687] text-white px-6 py-3 rounded-full text-[14px]"
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
           >
@@ -1126,7 +1126,7 @@ export default function HangulLearnPage() {
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          onClick={() => router.push(`/hangul/${levelNumber}`)}
+          onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
           className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
         >
@@ -1263,7 +1263,7 @@ export default function HangulLearnPage() {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push(`/hangul/${levelNumber}`)}
+            onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
             className="w-full py-4 bg-[#B4D700] text-[#440687] rounded-[16px] shadow-lg flex items-center justify-center gap-3"
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: '18px' }}
           >

@@ -388,7 +388,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
       </div>
 
       {/* ===== TITLE - 흰색 ===== */}
-      <h2 className="text-[24px] font-black text-white text-center mb-3">
+      <h2 className="text-[20px] xs:text-[22px] sm:text-[24px] md:text-[28px] font-black text-white text-center mb-3">
         &ldquo;{getWordTranslation(currentWord.korean, language as SupportedLanguage) || currentWord.english}&rdquo;
       </h2>
 
@@ -467,7 +467,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
             return (
               <span
                 key={syllableIdx}
-                className={`text-[44px] font-black leading-none ${
+                className={`text-[32px] xs:text-[38px] sm:text-[44px] md:text-[52px] font-black leading-none ${
                   showCorrectChar
                     ? 'text-[#B4D700]'
                     : 'text-[#421785]'
@@ -498,7 +498,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
                       key={slotIdx}
                       onClick={(e) => { e.stopPropagation(); handleSlotTap(slotIdx); }}
                       disabled={showResult}
-                      className={`w-[32px] h-[42px] rounded-[6px] flex items-center justify-center text-[16px] font-bold transition-all ${
+                      className={`w-[26px] h-[34px] xs:w-[30px] xs:h-[38px] sm:w-[32px] sm:h-[42px] rounded-[6px] flex items-center justify-center text-[16px] font-bold transition-all ${
                         slot?.jamo
                           ? 'bg-[#B4D700] text-[#1B0440]'
                           : isHinted
@@ -586,7 +586,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
               style={{
                 boxShadow: '3px 3px 0px #1B0440',
               }}
-              className={`w-[57px] h-[75px] rounded-[10px] flex items-center justify-center text-[34px] font-black cursor-grab active:cursor-grabbing select-none border-[1.5px] relative ${
+              className={`w-[44px] h-[58px] xs:w-[52px] xs:h-[68px] sm:w-[57px] sm:h-[75px] md:w-[64px] md:h-[82px] rounded-[10px] flex items-center justify-center text-[26px] xs:text-[30px] sm:text-[34px] md:text-[38px] font-black cursor-grab active:cursor-grabbing select-none border-[1.5px] relative ${
                 isSelected
                   ? 'bg-[#B4D700] text-[#1B0440] border-[#1B0440] z-20'
                   : isHinted

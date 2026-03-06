@@ -356,7 +356,7 @@ export default function LevelComplete({
       )}
 
       {/* Main Content - Flex layout for 100dvh */}
-      <div className="h-[100dvh] flex flex-col p-4 max-w-lg mx-auto">
+      <div className="h-[100dvh] flex flex-col p-4 max-w-lg md:max-w-xl mx-auto">
         {/* Header with Hangeuli and Stars */}
         <div className="flex-shrink-0 text-center pt-2 pb-3">
           {stars < 2 && (

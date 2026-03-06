@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import QuizGame, { QuestionResult } from '@/components/game/QuizGame';
 import MatchingGame from '@/components/game/MatchingGame';
@@ -21,6 +21,7 @@ type GameMode = 'select' | 'quiz' | 'matching' | 'fill-in-blank' | 'retry-wrong'
 export default function HangulLevelPage() {
   const params = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t, language } = useLanguage();
   const levelNumber = parseInt(params.level as string, 10);
   const { updateLevelProgress, isLevelUnlocked, progress } = useProgress();
@@ -33,7 +34,11 @@ export default function HangulLevelPage() {
     }
     return false;
   });
-  const [gameMode, setGameMode] = useState<GameMode>('select');
+  const [gameMode, setGameMode] = useState<GameMode>(() => {
+    const mode = searchParams.get('mode');
+    if (mode === 'quiz') return 'quiz';
+    return 'select';
+  });
   const [showComplete, setShowComplete] = useState(false);
   const [result, setResult] = useState({ score: 0, correct: 0, total: 0 });
   const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
@@ -367,7 +372,7 @@ export default function HangulLevelPage() {
       {/* Game mode select */}
       {gameMode === 'select' && (
         <main className="px-4 md:px-8 pt-6">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md md:max-w-lg mx-auto">
             {/* Back button */}
             <button
               onClick={handleExit}

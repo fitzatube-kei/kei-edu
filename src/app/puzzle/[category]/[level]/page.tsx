@@ -136,7 +136,7 @@ export default function PuzzleLevelPage() {
 
   return (
     <div className="h-[100dvh] bg-[#421785] py-4 px-4 overflow-hidden flex flex-col">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col">
+      <div className="max-w-md md:max-w-lg mx-auto w-full flex-1 flex flex-col">
         <WordBuilder
           words={level.words}
           onComplete={handleGameComplete}

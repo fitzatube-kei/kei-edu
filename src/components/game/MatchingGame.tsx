@@ -34,7 +34,7 @@ function getLocalizedText(content: MultilingualText | string, language: Language
 
 export default function MatchingGame({ pairs, multilingualPairs, variant, onComplete, onExit }: MatchingGameProps) {
   const { t, language } = useLanguage();
-  const { speak } = useTTS();
+  const { speak, speakAsync } = useTTS();
   const [cards, setCards] = useState<CardItem[]>([]);
   const [selectedCards, setSelectedCards] = useState<CardItem[]>([]);
   const [matchedCount, setMatchedCount] = useState(0);
@@ -106,7 +106,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
     }
   }, [pairs, multilingualPairs, language, variant]);
 
-  const handleCardClick = useCallback((card: CardItem) => {
+  const handleCardClick = useCallback(async (card: CardItem) => {
     if (card.isMatched || showMismatch) return;
     if (selectedCards.length >= 2) return;
     if (selectedCards.find((c) => c.id === card.id)) return;
@@ -124,7 +124,8 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
         // Correct match - play the Korean pronunciation
         const leftCard = first.side === 'left' ? first : second;
         const koreanText = leftCard.koreanContent || leftCard.content;
-        speak(koreanText);
+
+        const isLastMatch = matchedCount + 1 >= pairsCount;
 
         // Show match celebration
         setShowMatch(true);
@@ -139,11 +140,14 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
         setScore((prev) => prev + 50);
         setSelectedCards([]);
 
-        // Check completion
-        if (matchedCount + 1 >= pairsCount) {
+        if (isLastMatch) {
+          // Last match: wait for TTS to finish before completing
+          await speakAsync(koreanText);
           setIsComplete(true);
           const finalScore = score + 50;
           onComplete(finalScore, matchedCount + 1, pairsCount);
+        } else {
+          speak(koreanText);
         }
       } else {
         // Wrong match
@@ -154,7 +158,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
         }, 1000);
       }
     }
-  }, [selectedCards, showMismatch, matchedCount, pairsCount, score, onComplete, speak]);
+  }, [selectedCards, showMismatch, matchedCount, pairsCount, score, onComplete, speak, speakAsync]);
 
   const leftCards = cards.filter((c) => c.side === 'left');
   const rightCards = cards.filter((c) => c.side === 'right');
@@ -192,7 +196,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
 
   return (
     <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md mx-auto w-full flex-1 flex flex-col min-h-0">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button */}
@@ -280,7 +284,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
           </div>
 
           {/* Cards grid */}
-          <div className="grid grid-cols-2 gap-3 pb-2">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 md:gap-4 pb-2">
             {/* Left column */}
             <div className="space-y-2.5">
               <AnimatePresence>
@@ -296,13 +300,13 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
                       onClick={() => handleCardClick(card)}
                       disabled={card.isMatched}
                       className={cn(
-                        'w-full p-3 rounded-[12px] border-[2px] text-center transition-all',
+                        'w-full p-2.5 sm:p-3 md:p-4 rounded-[12px] border-[2px] text-center transition-all',
                         style.className,
                         card.isMatched && 'cursor-default'
                       )}
                       style={{ boxShadow: style.shadow }}
                     >
-                      <span className="text-[15px] font-bold">{card.content}</span>
+                      <span className="text-[14px] sm:text-[15px] md:text-[16px] font-bold">{card.content}</span>
                       {card.isMatched && (
                         <motion.span
                           initial={{ scale: 0 }}
@@ -335,13 +339,13 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
                       onClick={() => handleCardClick(card)}
                       disabled={card.isMatched}
                       className={cn(
-                        'w-full p-3 rounded-[12px] border-[2px] text-center transition-all',
+                        'w-full p-2.5 sm:p-3 md:p-4 rounded-[12px] border-[2px] text-center transition-all',
                         style.className,
                         card.isMatched && 'cursor-default'
                       )}
                       style={{ boxShadow: style.shadow }}
                     >
-                      <span className="text-[15px] font-bold">{card.content}</span>
+                      <span className="text-[14px] sm:text-[15px] md:text-[16px] font-bold">{card.content}</span>
                       {card.isMatched && (
                         <motion.span
                           initial={{ scale: 0 }}

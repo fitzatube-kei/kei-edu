@@ -10,6 +10,9 @@ import Header from '@/components/layout/Header';
 import { useProgress } from '@/hooks/useProgress';
 import { useLanguage } from '@/context/LanguageContext';
 import { useDevMode } from '@/context/DevModeContext';
+import { useAccessControl } from '@/hooks/useAccessControl';
+import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
+import PremiumContentModal from '@/components/ui/PremiumContentModal';
 import { getLevelsByTier, TIER_COLORS, LEVELS_PER_TIER, TOTAL_LEVELS } from '@/data/hangul';
 import { LearningTier } from '@/types';
 
@@ -20,11 +23,28 @@ export default function HangulPage() {
   const { t, language } = useLanguage();
   const { progress, isLevelUnlocked, getLevelProgress } = useProgress();
   const { unlockPro, unlockAllLevels } = useDevMode();
+  const { tier, limits } = useAccessControl();
   const [activeTier, setActiveTier] = useState<TierTab>('beginner');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showPremiumModal, setShowPremiumModal] = useState(false);
 
-  const handleLevelClick = (level: number, isPremium: boolean) => {
+  const handleLevelClick = (level: number, isPremium: boolean, levelIndex: number) => {
+    // Intermediate/Advanced tier check
     if (isPremium && !progress.isPremium && !unlockPro) {
-      alert(t('level.premiumRequired'));
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
+      return;
+    }
+    // Beginner tier level limit check
+    if (activeTier === 'beginner' && !unlockAllLevels && levelIndex >= limits.hangul.beginnerMaxLevel) {
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
       return;
     }
     router.push(`/hangul/${level}`);
@@ -55,19 +75,43 @@ export default function HangulPage() {
   };
 
   // Check if tier is unlocked
-  const isTierUnlocked = (tier: TierTab): boolean => {
+  const isTierUnlocked = (tierTab: TierTab): boolean => {
     if (unlockAllLevels) return true;
-    if (tier === 'beginner') return true;
-    if (tier === 'intermediate') {
+    if (tierTab === 'beginner') return true;
+    if (tierTab === 'intermediate') {
+      if (!limits.hangul.intermediateAllowed) return false;
       const level15Progress = getLevelProgress('hangul', 15);
       return level15Progress?.completed || false;
     }
-    if (tier === 'advanced') {
+    if (tierTab === 'advanced') {
+      if (!limits.hangul.advancedAllowed) return false;
       if (unlockPro) return true;
       const level35Progress = getLevelProgress('hangul', 35);
       return (level35Progress?.completed && progress.isPremium) || false;
     }
     return false;
+  };
+
+  // Check if tier is locked due to access control (not progress)
+  const isTierAccessLocked = (tierTab: TierTab): boolean => {
+    if (unlockAllLevels || unlockPro) return false;
+    if (tierTab === 'intermediate') return !limits.hangul.intermediateAllowed;
+    if (tierTab === 'advanced') return !limits.hangul.advancedAllowed;
+    return false;
+  };
+
+  const handleTierClick = (tierTab: TierTab) => {
+    if (isTierAccessLocked(tierTab)) {
+      if (tier === 'guest') {
+        setShowLoginModal(true);
+      } else {
+        setShowPremiumModal(true);
+      }
+      return;
+    }
+    if (isTierUnlocked(tierTab)) {
+      setActiveTier(tierTab);
+    }
   };
 
   const currentTierLevels = getLevelsByTier(activeTier);
@@ -89,7 +133,7 @@ export default function HangulPage() {
             className="flex items-center gap-4 pt-6 pb-0 -mt-[60px]"
           >
             {/* Character Image */}
-            <div className="relative w-[187px] h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
+            <div className="relative w-[140px] h-[140px] xs:w-[187px] xs:h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
               <Image
                 src="/images/hangul/crt001.png"
                 alt="Hangul Character"
@@ -145,14 +189,14 @@ export default function HangulPage() {
             <div className="flex items-center justify-around">
               {/* Levels */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalCompleted}
@@ -171,14 +215,14 @@ export default function HangulPage() {
 
               {/* Stars */}
               <div className="flex items-center gap-3">
-                <div className="w-[40px] h-[40px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[28px] text-[#1F2937]"
+                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalStars}
@@ -217,17 +261,18 @@ export default function HangulPage() {
             transition={{ delay: 0.15 }}
             className="flex gap-2 mb-6"
           >
-            {(['beginner', 'intermediate', 'advanced'] as TierTab[]).map((tier) => {
-              const stats = getTierStats(tier);
-              const isActive = activeTier === tier;
-              const unlocked = isTierUnlocked(tier);
-              const isPremiumLocked = tier === 'advanced' && !progress.isPremium && !unlockPro;
+            {(['beginner', 'intermediate', 'advanced'] as TierTab[]).map((tierTab) => {
+              const stats = getTierStats(tierTab);
+              const isActive = activeTier === tierTab;
+              const unlocked = isTierUnlocked(tierTab);
+              const accessLocked = isTierAccessLocked(tierTab);
+              const isPremiumLocked = (tierTab === 'advanced' && !progress.isPremium && !unlockPro) || accessLocked;
 
               return (
                 <button
-                  key={tier}
-                  onClick={() => unlocked && setActiveTier(tier)}
-                  disabled={!unlocked}
+                  key={tierTab}
+                  onClick={() => handleTierClick(tierTab)}
+                  disabled={!unlocked && !accessLocked}
                   className={`flex-1 py-3 px-2 rounded-full text-center transition-all ${
                     isActive
                       ? 'bg-[#440687] text-white'
@@ -237,7 +282,7 @@ export default function HangulPage() {
                   }`}
                   style={{ fontFamily: 'Poppins, sans-serif' }}
                 >
-                  <p className="text-[16px] sm:text-[17px] text-white font-bold">{getTierName(tier)}</p>
+                  <p className="text-[16px] sm:text-[17px] text-white font-bold">{getTierName(tierTab)}</p>
                   <div className="flex items-center justify-center gap-1 text-[13px] sm:text-[14px] text-white">
                     {!unlocked || isPremiumLocked ? (
                       <svg className="w-4 h-4 text-[#B4D700]" fill="currentColor" viewBox="0 0 24 24">
@@ -260,14 +305,16 @@ export default function HangulPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-4 gap-3 mb-6"
+            className="grid grid-cols-3 xs:grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 xs:gap-3 sm:gap-4 mb-6"
           >
             {currentTierLevels.map((level, index) => {
               const levelProgress = getLevelProgress('hangul', level.level);
               const unlocked = isLevelUnlocked('hangul', level.level) || unlockAllLevels;
               const isPremiumLocked = level.isPremium && !progress.isPremium && !unlockPro;
+              const isTierLimited = activeTier === 'beginner' && !unlockAllLevels && index >= limits.hangul.beginnerMaxLevel;
+              const isLocked = isPremiumLocked || isTierLimited;
               const isCompleted = levelProgress?.completed;
-              const isFirstUnlocked = unlocked && !isCompleted && index === 0;
+              const isFirstUnlocked = unlocked && !isCompleted && !isLocked && index === 0;
 
               return (
                 <motion.button
@@ -275,21 +322,21 @@ export default function HangulPage() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.015 }}
-                  whileHover={unlocked && !isPremiumLocked ? { scale: 1.05 } : {}}
-                  whileTap={unlocked && !isPremiumLocked ? { scale: 0.95 } : {}}
-                  onClick={() => handleLevelClick(level.level, level.isPremium)}
-                  disabled={!unlocked || isPremiumLocked}
-                  className={`aspect-square rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
+                  whileHover={unlocked && !isLocked ? { scale: 1.05 } : {}}
+                  whileTap={unlocked && !isLocked ? { scale: 0.95 } : {}}
+                  onClick={() => handleLevelClick(level.level, level.isPremium ?? false, index)}
+                  disabled={!unlocked && !isTierLimited}
+                  className={`aspect-square rounded-[12px] xs:rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
                     isFirstUnlocked
                       ? 'bg-white border-l-4 border-l-[#B4D700]'
                       : isCompleted
                       ? 'bg-[#F6FFC7]'
                       : 'bg-white'
-                  } ${(!unlocked || isPremiumLocked) ? 'opacity-40 cursor-not-allowed' : ''}`}
+                  } ${(!unlocked || isLocked) ? 'opacity-40 cursor-not-allowed' : ''}`}
                 >
                   {/* Level number */}
                   <p
-                    className={`text-[28px] sm:text-[32px] ${
+                    className={`text-[24px] xs:text-[28px] sm:text-[32px] ${
                       isCompleted ? 'text-[#440687]' : isFirstUnlocked ? 'text-[#B4D700]' : 'text-[#1F2937]'
                     }`}
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
@@ -302,7 +349,7 @@ export default function HangulPage() {
                     {[1, 2].map((star) => (
                       <svg
                         key={star}
-                        className={`w-4 h-4 sm:w-5 sm:h-5 ${
+                        className={`w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 ${
                           (levelProgress?.stars || 0) >= star ? 'text-[#B4D700]' : 'text-gray-300'
                         }`}
                         fill="currentColor"
@@ -314,7 +361,7 @@ export default function HangulPage() {
                   </div>
 
                   {/* Lock overlay */}
-                  {(!unlocked || isPremiumLocked) && (
+                  {(!unlocked || isLocked) && (
                     <div className="absolute inset-0 bg-white/70 rounded-[16px] flex items-center justify-center">
                       <svg className="w-7 h-7 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
@@ -373,6 +420,10 @@ export default function HangulPage() {
       </main>
 
       <Navigation />
+
+      {/* Modals */}
+      <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
     </div>
   );
 }
