@@ -26,7 +26,11 @@
       "Bash(git remote add origin https://github.com/fitzatube-kei/kei-edu.git)",
       "Bash(git branch -M main)",
       "Bash(npx next build 2>&1 | tail -20)",
-      "Bash(git stash && npm run build 2>&1 | tail -15)"
+      "Bash(git stash && npm run build 2>&1 | tail -15)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | grep -E \"\\(error|Error|failed|Failed\\)\" | head -10)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | grep -E \"\\(Compiled|✓|✗|Type error\\)\" | head -5)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | grep -E \"\\(Compiled|✓|✗|Type error|Failed\\)\" | head -5)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build 2>&1 | tail -5)"
     ]
   }
 }
