@@ -10,9 +10,11 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
 import { useAccessControl } from '@/hooks/useAccessControl';
+import { useCurrency } from '@/context/CurrencyContext';
 import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
-import PremiumContentModal from '@/components/ui/PremiumContentModal';
+import PaywallModal from '@/components/ui/PaywallModal';
 import { TravelArea } from '@/types/travel';
+import { ContentId } from '@/types/iap';
 import { getLocationsByArea } from '@/data/travel/locations';
 
 interface AreaConfig {
@@ -107,8 +109,9 @@ export default function StoryPage() {
   const { progress, loading } = useProgress();
   const { unlockPro } = useDevMode();
   const { tier, limits } = useAccessControl();
+  const { isContentUnlocked } = useCurrency();
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [paywallContentId, setPaywallContentId] = useState<ContentId | null>(null);
 
   const getText = (textObj: Record<string, string>) => textObj[language] || textObj.en;
 
@@ -122,10 +125,14 @@ export default function StoryPage() {
       setShowLoginModal(true);
       return;
     }
-    // Free: only Seoul allowed, premium areas blocked
-    if (tier === 'free' && area !== 'seoul') {
-      setShowPremiumModal(true);
-      return;
+    // Premium areas: check if individually unlocked or premium user
+    if (area !== 'seoul' && tier !== 'premium') {
+      const contentId = area === 'busan' ? 'story_busan' : 'story_jeju';
+      // Allow if individually purchased
+      if (!isContentUnlocked(contentId)) {
+        setPaywallContentId(contentId as ContentId);
+        return;
+      }
     }
     router.push(`/story/play?area=${area}`);
   };
@@ -283,9 +290,11 @@ export default function StoryPage() {
           {/* Area Selection */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {areaConfigs.map((area, index) => {
-              // Guest: all areas locked. Free: only seoul. Premium: all.
+              // Guest: all areas locked. Free: only seoul (unless individually unlocked). Premium: all.
               const isGuestLocked = !loading && tier === 'guest';
-              const isPremiumLocked = !loading && area.isPremium && !progress.isPremium && !unlockPro;
+              const areaContentId = area.id === 'busan' ? 'story_busan' : area.id === 'jeju' ? 'story_jeju' : null;
+              const isIndividuallyUnlocked = areaContentId ? isContentUnlocked(areaContentId) : false;
+              const isPremiumLocked = !loading && area.isPremium && !progress.isPremium && !unlockPro && !isIndividuallyUnlocked;
               const isAreaLocked = isGuestLocked || isPremiumLocked;
               const locations = getLocationsByArea(area.id);
 
@@ -561,7 +570,7 @@ export default function StoryPage() {
 
       {/* Modals */}
       <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+      <PaywallModal isOpen={!!paywallContentId} onClose={() => setPaywallContentId(null)} contentId={paywallContentId} />
     </div>
   );
 }

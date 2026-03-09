@@ -37,17 +37,17 @@ const navItemsConfig: NavItem[] = [
     size: 26,
   },
   {
-    href: '/story',
-    labelKey: 'story',
-    icon: '/images/intro_1/icon2/story1.png',
-    iconActive: '/images/intro_1/icon2/story2.png',
-    size: 26,
-  },
-  {
     href: '/culture',
     labelKey: 'culture',
     icon: '/images/intro_1/icon2/culture1.png',
     iconActive: '/images/intro_1/icon2/culture2.png',
+    size: 26,
+  },
+  {
+    href: '/story',
+    labelKey: 'story',
+    icon: '/images/intro_1/icon2/story1.png',
+    iconActive: '/images/intro_1/icon2/story2.png',
     size: 26,
   },
 ];

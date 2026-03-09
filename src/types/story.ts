@@ -77,6 +77,51 @@ export interface StoryChoice {
   nextSceneId: string; // branching
 }
 
+// Review Quiz Types
+export type ReviewQuizType = 'fill-in-blank' | 'matching' | 'multiple-choice';
+
+export interface FillBlankQuestion {
+  type: 'fill-in-blank';
+  id: string;
+  sentence: MultilingualText; // sentence with _____ blank
+  correctAnswer: string; // Korean word
+  options: string[]; // 4 Korean options
+  explanation: MultilingualText;
+}
+
+export interface MatchingQuestion {
+  type: 'matching';
+  id: string;
+  pairs: { korean: string; translation: MultilingualText }[]; // 6 pairs
+  explanation: MultilingualText;
+}
+
+export interface MultipleChoiceQuestion {
+  type: 'multiple-choice';
+  id: string;
+  question: string; // Korean sentence
+  questionRomanization: string;
+  options: MultilingualText[]; // 4 translation options
+  correctIndex: number;
+  explanation: MultilingualText;
+}
+
+export type ReviewQuestion = FillBlankQuestion | MatchingQuestion | MultipleChoiceQuestion;
+
+export interface ReviewQuiz {
+  id: string;
+  triggerAfterEpisode: string; // e.g. "s1e2"
+  title: MultilingualText;
+  description: MultilingualText;
+  questions: ReviewQuestion[];
+  passingScore: number; // percentage 0-100
+  rewards: {
+    xp: number;
+    badge?: string;
+    badgeName?: MultilingualText;
+  };
+}
+
 // Progress tracking
 export interface StoryProgress {
   odessaId: string;

@@ -21,15 +21,8 @@ const defaultProgress: UserProgress = {
 };
 
 // Premium users list (for testing) - all lowercase for comparison
-const PREMIUM_EMAILS = [
-  'han0726k@gmail.com',
-];
-
-// Helper function for case-insensitive email check
-const isPremiumEmail = (email: string | null | undefined): boolean => {
-  if (!email) return false;
-  return PREMIUM_EMAILS.includes(email.toLowerCase());
-};
+// Premium status is determined solely by Firestore data.isPremium field.
+// Previously used a hardcoded PREMIUM_EMAILS list, now removed in favor of IAP system.
 
 export function useProgress() {
   const { user } = useAuth();
@@ -51,24 +44,21 @@ export function useProgress() {
 
         if (progressDoc.exists()) {
           const data = progressDoc.data() as UserProgress;
-          // Check if user email is in premium list (case-insensitive)
-          const isPremiumUser = isPremiumEmail(user.email);
-          const finalIsPremium = data.isPremium || isPremiumUser;
-          console.log('[useProgress] User:', user.email, 'isPremiumUser:', isPremiumUser, 'data.isPremium:', data.isPremium, 'final:', finalIsPremium);
+          // Premium status determined by Firestore data only
+          console.log('[useProgress] User:', user.email, 'data.isPremium:', data.isPremium);
           setProgress({
             ...data,
             cultureProgress: data.cultureProgress || [],
             puzzleProgress: data.puzzleProgress || [],
-            isPremium: finalIsPremium,
+            isPremium: data.isPremium || false,
             lastPlayedAt: data.lastPlayedAt instanceof Date
               ? data.lastPlayedAt
               : new Date((data.lastPlayedAt as { seconds: number }).seconds * 1000),
           });
         } else {
-          // Initialize progress for new user
-          const isPremiumUser = isPremiumEmail(user.email);
-          console.log('[useProgress] New user:', user.email, 'isPremiumUser:', isPremiumUser);
-          const newProgress = { ...defaultProgress, userId: user.uid, isPremium: isPremiumUser };
+          // Initialize progress for new user (not premium by default)
+          console.log('[useProgress] New user:', user.email);
+          const newProgress = { ...defaultProgress, userId: user.uid, isPremium: false };
           await setDoc(progressRef, newProgress);
           setProgress(newProgress);
         }
@@ -94,11 +84,15 @@ export function useProgress() {
   }, [fetchProgress]);
 
   // Update level progress (for hangul and old history levels)
+  // completedGame: which game mode was just completed (e.g. 'quiz', 'matching')
+  // requiredGames: all game modes that must be completed for level completion
   const updateLevelProgress = async (
     category: GameCategory,
     level: number,
     stars: number,
-    score: number
+    score: number,
+    completedGame?: string,
+    requiredGames?: string[]
   ) => {
     const progressKey = category === 'hangul' ? 'hangulProgress' : 'historyProgress';
     const currentProgress = progress[progressKey];
@@ -107,11 +101,24 @@ export function useProgress() {
     const existingIndex = currentProgress.findIndex(p => p.level === level);
     const existingLevel = currentProgress[existingIndex];
 
+    // Merge completedGames list
+    const prevGames = existingLevel?.completedGames || [];
+    const updatedGames = completedGame
+      ? Array.from(new Set([...prevGames, completedGame]))
+      : prevGames;
+
+    // Level is completed only when all required games are done (or stars >= 1 if no requirements)
+    const allGamesDone = requiredGames && requiredGames.length > 0
+      ? requiredGames.every(g => updatedGames.includes(g))
+      : true;
+    const isCompleted = stars >= 1 && allGamesDone;
+
     const newLevelProgress: LevelProgress = {
       level,
       stars: existingLevel ? Math.max(existingLevel.stars, stars) : stars,
       score: existingLevel ? Math.max(existingLevel.score, score) : score,
-      completed: stars >= 1,
+      completed: existingLevel?.completed || isCompleted,
+      completedGames: updatedGames,
       completedAt: new Date(),
     };
 

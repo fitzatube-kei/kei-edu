@@ -12,9 +12,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useDevMode } from '@/context/DevModeContext';
 import { useAccessControl } from '@/hooks/useAccessControl';
 import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
-import PremiumContentModal from '@/components/ui/PremiumContentModal';
+import PaywallModal from '@/components/ui/PaywallModal';
 import { getLevelsByTier, TIER_COLORS, LEVELS_PER_TIER, TOTAL_LEVELS } from '@/data/hangul';
 import { LearningTier } from '@/types';
+import { ContentId } from '@/types/iap';
 
 type TierTab = LearningTier;
 
@@ -26,15 +27,16 @@ export default function HangulPage() {
   const { tier, limits } = useAccessControl();
   const [activeTier, setActiveTier] = useState<TierTab>('beginner');
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [paywallContentId, setPaywallContentId] = useState<ContentId | null>(null);
 
   const handleLevelClick = (level: number, isPremium: boolean, levelIndex: number) => {
     // Intermediate/Advanced tier check
-    if (isPremium && !progress.isPremium && !unlockPro) {
+    if (isPremium && !progress.isPremium && !unlockPro && !limits.hangul.intermediateAllowed && !limits.hangul.advancedAllowed) {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        const contentId = activeTier === 'advanced' ? 'hangul_advanced' : 'hangul_intermediate';
+        setPaywallContentId(contentId as ContentId);
       }
       return;
     }
@@ -43,7 +45,7 @@ export default function HangulPage() {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        setPaywallContentId('hangul_intermediate');
       }
       return;
     }
@@ -105,7 +107,8 @@ export default function HangulPage() {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        const contentId = tierTab === 'advanced' ? 'hangul_advanced' : 'hangul_intermediate';
+        setPaywallContentId(contentId as ContentId);
       }
       return;
     }
@@ -423,7 +426,7 @@ export default function HangulPage() {
 
       {/* Modals */}
       <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+      <PaywallModal isOpen={!!paywallContentId} onClose={() => setPaywallContentId(null)} contentId={paywallContentId} />
     </div>
   );
 }

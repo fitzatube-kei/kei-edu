@@ -12,6 +12,8 @@ import { useProgress } from '@/hooks/useProgress';
 import { useTTS } from '@/hooks/useTTS';
 import { getEpisodeById, allSeasons } from '@/data/story';
 import { VocabularyItem } from '@/types/story';
+import ReviewQuizPlayer from '@/components/story/ReviewQuizPlayer';
+import { getReviewQuizForEpisode } from '@/data/story/reviewQuizzes';
 import {
   QuestionIcon,
   StarIcon,
@@ -30,9 +32,13 @@ export default function StoryEpisodePage() {
   const episodeId = params.episodeId as string;
 
   const [showComplete, setShowComplete] = useState(false);
+  const [showReviewQuiz, setShowReviewQuiz] = useState(false);
   const [finalScore, setFinalScore] = useState(0);
   const [earnedBadge, setEarnedBadge] = useState<string | null>(null);
   const [showVocabReview, setShowVocabReview] = useState(false);
+
+  // Check if there's a review quiz for this episode
+  const reviewQuiz = getReviewQuizForEpisode(episodeId);
 
   // Find episode from all seasons
   const episode = getEpisodeById(episodeId);
@@ -64,11 +70,29 @@ export default function StoryEpisodePage() {
     if (badge) {
       setEarnedBadge(badge);
     }
-    setShowComplete(true);
 
     // Save progress to Firestore/localStorage
     await updateStoryProgress(episodeId, score, choices, badge);
-  }, [episode, episodeId, updateStoryProgress]);
+
+    // Show review quiz if one exists, otherwise show completion screen
+    if (reviewQuiz) {
+      setShowReviewQuiz(true);
+    } else {
+      setShowComplete(true);
+    }
+  }, [episode, episodeId, updateStoryProgress, reviewQuiz]);
+
+  // Handle review quiz completion
+  const handleReviewQuizComplete = useCallback(() => {
+    setShowReviewQuiz(false);
+    setShowComplete(true);
+  }, []);
+
+  // Handle review quiz skip
+  const handleReviewQuizSkip = useCallback(() => {
+    setShowReviewQuiz(false);
+    setShowComplete(true);
+  }, []);
 
   // Episode not found
   if (!episode) {
@@ -163,6 +187,17 @@ export default function StoryEpisodePage() {
           </Button>
         </motion.div>
       </div>
+    );
+  }
+
+  // Show review quiz
+  if (showReviewQuiz && reviewQuiz) {
+    return (
+      <ReviewQuizPlayer
+        quiz={reviewQuiz}
+        onComplete={handleReviewQuizComplete}
+        onSkip={handleReviewQuizSkip}
+      />
     );
   }
 

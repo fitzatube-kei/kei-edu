@@ -12,9 +12,11 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
 import { useAccessControl } from '@/hooks/useAccessControl';
+import { useCurrency } from '@/context/CurrencyContext';
 import LoginRequiredModal from '@/components/ui/LoginRequiredModal';
-import PremiumContentModal from '@/components/ui/PremiumContentModal';
+import PaywallModal from '@/components/ui/PaywallModal';
 import { puzzleCategories, getCategoryById } from '@/data/puzzle';
+import { ContentId } from '@/types/iap';
 
 type TierTab = 'beginner' | 'intermediate' | 'advanced';
 
@@ -31,10 +33,11 @@ export default function PuzzlePage() {
   const { progress, getPuzzleLevelProgress } = useProgress();
   const { unlockPro, unlockAllLevels } = useDevMode();
   const { tier, limits } = useAccessControl();
+  const { isContentUnlocked } = useCurrency();
   const [activeTier, setActiveTier] = useState<TierTab>('beginner');
   const [showTutorial, setShowTutorial] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [paywallContentId, setPaywallContentId] = useState<ContentId | null>(null);
 
   const isPremiumUser = progress.isPremium || unlockPro;
 
@@ -100,7 +103,8 @@ export default function PuzzlePage() {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        const contentId = tierTab === 'advanced' ? 'puzzle_advanced' : 'puzzle_intermediate';
+        setPaywallContentId(contentId as ContentId);
       }
       return;
     }
@@ -132,7 +136,7 @@ export default function PuzzlePage() {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        setPaywallContentId('puzzle_intermediate');
       }
       return;
     }
@@ -142,7 +146,8 @@ export default function PuzzlePage() {
       if (tier === 'guest') {
         setShowLoginModal(true);
       } else {
-        setShowPremiumModal(true);
+        const contentId = activeTier === 'advanced' ? 'puzzle_advanced' : 'puzzle_intermediate';
+        setPaywallContentId(contentId as ContentId);
       }
       return;
     }
@@ -376,7 +381,6 @@ export default function PuzzlePage() {
                   whileHover={!isPremiumLocked ? { scale: 1.05 } : {}}
                   whileTap={!isPremiumLocked ? { scale: 0.95 } : {}}
                   onClick={() => handleLevelClick(level.id, level.isPremium, index)}
-                  disabled={isPremiumLocked}
                   className={`aspect-square rounded-[12px] xs:rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
                     isFirstUnlocked
                       ? 'bg-white border-l-4 border-l-[#38B6FF]'
@@ -484,7 +488,7 @@ export default function PuzzlePage() {
 
       {/* Modals */}
       <LoginRequiredModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-      <PremiumContentModal isOpen={showPremiumModal} onClose={() => setShowPremiumModal(false)} />
+      <PaywallModal isOpen={!!paywallContentId} onClose={() => setPaywallContentId(null)} contentId={paywallContentId} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { LanguageProvider } from '@/context/LanguageContext';
 import { DevModeProvider } from '@/context/DevModeContext';
 import { ContentProvider } from '@/context/ContentContext';
+import { CurrencyProvider } from '@/context/CurrencyContext';
 import DevPanel from '@/components/dev/DevPanel';
 
 const poppins = Poppins({
@@ -39,12 +40,14 @@ export default function RootLayout({
       <body className={`min-h-screen bg-gray-100 ${poppins.className} font-medium`}>
         <LanguageProvider>
           <AuthProvider>
+            <CurrencyProvider>
             <ContentProvider>
               <DevModeProvider>
                 {children}
                 <DevPanel />
               </DevModeProvider>
             </ContentProvider>
+            </CurrencyProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

@@ -961,13 +961,11 @@ body {
 }
 
 /* Smooth scrolling & prevent horizontal overflow */
-html {
+html, body {
   scroll-behavior: smooth;
   overflow-x: hidden;
-}
-
-body {
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Mobile safe area */

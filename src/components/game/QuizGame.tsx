@@ -625,24 +625,26 @@ export default function QuizGame({
               {/* Success / Error Message - compact, just above options */}
               <AnimatePresence>
                 {showResult && isCorrect && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="flex items-center justify-center gap-2 mb-2 flex-shrink-0"
-                  >
-                    <div className="relative bg-white text-[#1B0440] px-3 py-1 rounded-[8px]">
-                      <p className="text-[11px] font-bold">Well done!</p>
-                      <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[6px] border-l-white" />
-                    </div>
-                    <motion.img
-                      src="/images/word/wb_crt002.png"
-                      alt="Character"
-                      className="w-[40px] sm:w-[50px] h-auto"
-                      animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
-                      transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 0.5 }}
-                    />
-                  </motion.div>
+                  <div className="flex items-center justify-center mb-2 flex-shrink-0">
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      className="flex items-center justify-center gap-3 scale-150 md:scale-[2] origin-center"
+                    >
+                      <div className="relative bg-white text-[#1B0440] px-3 py-1 rounded-[8px]">
+                        <p className="text-[11px] font-bold">Well done!</p>
+                        <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[5px] border-t-transparent border-b-[5px] border-b-transparent border-l-[6px] border-l-white" />
+                      </div>
+                      <motion.img
+                        src="/images/word/wb_crt002.png"
+                        alt="Character"
+                        className="w-[40px] sm:w-[50px] h-auto"
+                        animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
+                        transition={{ duration: 0.6, repeat: Infinity, repeatDelay: 0.5 }}
+                      />
+                    </motion.div>
+                  </div>
                 )}
                 {showResult && !isCorrect && (
                   <motion.div

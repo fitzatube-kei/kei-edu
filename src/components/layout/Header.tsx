@@ -8,6 +8,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import SettingsLayer from './SettingsLayer';
 import AvatarChangeLayer from './AvatarChangeLayer';
+import CurrencyBadge from '@/components/ui/CurrencyBadge';
 
 const DEFAULT_AVATAR = '/images/avatar/avt001.png';
 const GUEST_AVATAR = '/images/main/avt_none001.png'; // Default guest avatar (logged out)
@@ -167,8 +168,9 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Right: Avatar + Settings */}
+            {/* Right: Currency + Avatar + Settings */}
             <div className="flex items-center gap-2">
+              <CurrencyBadge />
               <button
                 onClick={() => setShowAvatarChange(true)}
                 className="flex-shrink-0 hover:opacity-80 transition-opacity"

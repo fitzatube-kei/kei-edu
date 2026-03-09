@@ -66,6 +66,7 @@ export interface LevelProgress {
   stars: number; // 0-3
   score: number;
   completed: boolean;
+  completedGames?: string[]; // e.g. ['quiz', 'matching']
   unlockedAt?: Date;
   completedAt?: Date;
 }

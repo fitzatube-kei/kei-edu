@@ -3,6 +3,7 @@
 import { useAuth } from '@/context/AuthContext';
 import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export type MembershipTier = 'guest' | 'free' | 'premium';
 
@@ -37,7 +38,7 @@ const GUEST_LIMITS: AccessLimits = {
 
 const FREE_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
-  puzzle: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
+  puzzle: { beginnerMaxLevel: 3, intermediateAllowed: false, advancedAllowed: false },
   culture: { beginnerMaxSet: 10, intermediateAllowed: false, advancedAllowed: false },
   story: { allowed: true, allowedLocations: ['myeongdong'] },
 };
@@ -53,6 +54,7 @@ export function useAccessControl() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const { unlockPro, unlockAllLevels } = useDevMode();
+  const { isContentUnlocked } = useCurrency();
 
   // Determine tier
   let tier: MembershipTier;
@@ -64,12 +66,39 @@ export function useAccessControl() {
     tier = 'guest';
   }
 
-  // Get limits based on tier
-  const limits: AccessLimits = tier === 'premium'
+  // Get base limits based on tier
+  const baseLimits: AccessLimits = tier === 'premium'
     ? PREMIUM_LIMITS
     : tier === 'free'
     ? FREE_LIMITS
     : GUEST_LIMITS;
+
+  // Override limits based on individually unlocked content (한글조각 purchases)
+  const limits: AccessLimits = {
+    hangul: {
+      ...baseLimits.hangul,
+      intermediateAllowed: baseLimits.hangul.intermediateAllowed || isContentUnlocked('hangul_intermediate'),
+      advancedAllowed: baseLimits.hangul.advancedAllowed || isContentUnlocked('hangul_advanced'),
+    },
+    puzzle: {
+      ...baseLimits.puzzle,
+      intermediateAllowed: baseLimits.puzzle.intermediateAllowed || isContentUnlocked('puzzle_intermediate'),
+      advancedAllowed: baseLimits.puzzle.advancedAllowed || isContentUnlocked('puzzle_advanced'),
+    },
+    culture: {
+      ...baseLimits.culture,
+      intermediateAllowed: baseLimits.culture.intermediateAllowed || isContentUnlocked('culture_kpop_hard') || isContentUnlocked('culture_kdrama_hard'),
+      advancedAllowed: baseLimits.culture.advancedAllowed,
+    },
+    story: {
+      allowed: baseLimits.story.allowed || isContentUnlocked('story_busan') || isContentUnlocked('story_jeju'),
+      allowedLocations: tier === 'premium' ? [] : [
+        ...(baseLimits.story.allowedLocations),
+        ...(isContentUnlocked('story_busan') ? ['haeundae', 'gamcheon', 'jagalchi'] : []),
+        ...(isContentUnlocked('story_jeju') ? ['hallasan', 'seogwipo', 'udo'] : []),
+      ],
+    },
+  };
 
   // Helper: check if a beginner level is accessible (1-indexed level number)
   const isBeginnerLevelAccessible = (section: 'hangul' | 'puzzle', levelIndex: number): boolean => {

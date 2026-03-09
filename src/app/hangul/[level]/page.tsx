@@ -14,7 +14,7 @@ import { useProgress } from '@/hooks/useProgress';
 import { useDevMode } from '@/context/DevModeContext';
 import { hangulLevels, TIER_COLORS, getTierForLevel } from '@/data/hangul';
 import { calculateStars } from '@/lib/utils';
-import { MultilingualQuizQuestion } from '@/types';
+import { MultilingualQuizQuestion, LevelProgress } from '@/types';
 
 type GameMode = 'select' | 'quiz' | 'matching' | 'fill-in-blank' | 'retry-wrong';
 
@@ -24,7 +24,7 @@ export default function HangulLevelPage() {
   const searchParams = useSearchParams();
   const { t, language } = useLanguage();
   const levelNumber = parseInt(params.level as string, 10);
-  const { updateLevelProgress, isLevelUnlocked, progress } = useProgress();
+  const { updateLevelProgress, isLevelUnlocked, getLevelProgress, progress } = useProgress();
 
   // Check if user has seen the tutorial prompt for level 1
   const [showTutorialPrompt, setShowTutorialPrompt] = useState(() => {
@@ -55,6 +55,22 @@ export default function HangulLevelPage() {
   const isUnlocked = isLevelUnlocked('hangul', levelNumber) || unlockAllLevels;
   const isPremiumLocked = level?.isPremium && !progress.isPremium && !unlockPro;
 
+  // Determine which games this level requires for completion
+  const levelData = hangulLevels.find((l) => l.level === levelNumber);
+  const levelHasQuiz = !!(levelData?.quizQuestions?.length || levelData?.multilingualQuizQuestions?.length);
+  const levelHasMatching = !!((levelData?.matchingPairs && levelData.matchingPairs.length >= 4) ||
+    (levelData?.multilingualMatchingPairs && levelData.multilingualMatchingPairs.length >= 4));
+  const requiredGames: string[] = [
+    ...(levelHasQuiz ? ['quiz'] : []),
+    ...(levelHasMatching ? ['matching'] : []),
+  ];
+
+  // Track which game mode is currently being played for completion tracking
+  const [currentGameForComplete, setCurrentGameForComplete] = useState<string>(() => {
+    const mode = searchParams.get('mode');
+    return mode === 'quiz' ? 'quiz' : '';
+  });
+
   // All hooks must be called before any conditional returns
   const handleGameComplete = useCallback(async (
     score: number,
@@ -74,8 +90,8 @@ export default function HangulLevelPage() {
       setWrongQuestions(wrong);
     }
     setShowComplete(true);
-    await updateLevelProgress('hangul', levelNumber, stars, score);
-  }, [levelNumber, updateLevelProgress]);
+    await updateLevelProgress('hangul', levelNumber, stars, score, currentGameForComplete, requiredGames);
+  }, [levelNumber, updateLevelProgress, currentGameForComplete, requiredGames]);
 
   const handleReplay = useCallback(() => {
     setShowComplete(false);
@@ -87,6 +103,7 @@ export default function HangulLevelPage() {
   const handleRetryWrong = useCallback(() => {
     if (wrongQuestions.length > 0) {
       setShowComplete(false);
+      setCurrentGameForComplete('quiz');
       setGameMode('retry-wrong');
     }
   }, [wrongQuestions]);
@@ -579,80 +596,110 @@ export default function HangulLevelPage() {
                 </div>
               </motion.button>
 
-              {hasQuiz && (
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setGameMode('quiz')}
-                  className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left"
-                >
-                  <div className="flex items-center gap-4 md:gap-5">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-[#9038EF] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
-                      <span className="text-[31px] text-white" style={{ fontWeight: 900 }}>?</span>
+              {hasQuiz && (() => {
+                const levelProg = getLevelProgress('hangul', levelNumber) as LevelProgress | undefined;
+                const quizDone = levelProg?.completedGames?.includes('quiz');
+                return (
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => { setCurrentGameForComplete('quiz'); setGameMode('quiz'); }}
+                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left ${quizDone ? 'border-2 border-[#B4D700]' : ''}`}
+                  >
+                    <div className="flex items-center gap-4 md:gap-5">
+                      <div className="w-14 h-14 md:w-16 md:h-16 bg-[#9038EF] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
+                        <span className="text-[31px] text-white" style={{ fontWeight: 900 }}>?</span>
+                        {quizDone && (
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#B4D700] rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3
+                          className="text-[16px] md:text-[17px] text-[#1F2937]"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                        >
+                          {t('game.quiz')}
+                        </h3>
+                        <p
+                          className="text-[13px] text-gray-500"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
+                        >
+                          {t('game.quizDesc')}
+                        </p>
+                      </div>
+                      {quizDone ? (
+                        <span className="text-[12px] font-bold text-[#B4D700]" style={{ fontFamily: 'Poppins, sans-serif' }}>CLEAR</span>
+                      ) : (
+                        <svg className="w-6 h-6 text-[#440687]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
                     </div>
-                    <div className="flex-1">
-                      <h3
-                        className="text-[16px] md:text-[17px] text-[#1F2937]"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                      >
-                        {t('game.quiz')}
-                      </h3>
-                      <p
-                        className="text-[13px] text-gray-500"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
-                      >
-                        {t('game.quizDesc')}
-                      </p>
-                    </div>
-                    <svg className="w-6 h-6 text-[#440687]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </motion.button>
-              )}
+                  </motion.button>
+                );
+              })()}
 
-              {hasMatching && (
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.25 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setGameMode('matching')}
-                  className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left"
-                >
-                  <div className="flex items-center gap-4 md:gap-5">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-[#B4D700] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
-                      <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
-                        {language === 'ja' ? 'あいう' :
-                         language.startsWith('zh') ? '甲乙丙' :
-                         language === 'th' ? 'กขค' :
-                         'ABC'}
-                      </span>
+              {hasMatching && (() => {
+                const levelProg = getLevelProgress('hangul', levelNumber) as LevelProgress | undefined;
+                const matchingDone = levelProg?.completedGames?.includes('matching');
+                return (
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => { setCurrentGameForComplete('matching'); setGameMode('matching'); }}
+                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left ${matchingDone ? 'border-2 border-[#B4D700]' : ''}`}
+                  >
+                    <div className="flex items-center gap-4 md:gap-5">
+                      <div className="w-14 h-14 md:w-16 md:h-16 bg-[#B4D700] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
+                        <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
+                          {language === 'ja' ? 'あいう' :
+                           language.startsWith('zh') ? '甲乙丙' :
+                           language === 'th' ? 'กขค' :
+                           'ABC'}
+                        </span>
+                        {matchingDone && (
+                          <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#B4D700] rounded-full flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3
+                          className="text-[16px] md:text-[17px] text-[#1F2937]"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                        >
+                          {t('game.matching')}
+                        </h3>
+                        <p
+                          className="text-[13px] text-gray-500"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
+                        >
+                          {t('game.matchingDesc')}
+                        </p>
+                      </div>
+                      {matchingDone ? (
+                        <span className="text-[12px] font-bold text-[#B4D700]" style={{ fontFamily: 'Poppins, sans-serif' }}>CLEAR</span>
+                      ) : (
+                        <svg className="w-6 h-6 text-[#440687]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      )}
                     </div>
-                    <div className="flex-1">
-                      <h3
-                        className="text-[16px] md:text-[17px] text-[#1F2937]"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                      >
-                        {t('game.matching')}
-                      </h3>
-                      <p
-                        className="text-[13px] text-gray-500"
-                        style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
-                      >
-                        {t('game.matchingDesc')}
-                      </p>
-                    </div>
-                    <svg className="w-6 h-6 text-[#440687]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </motion.button>
-              )}
+                  </motion.button>
+                );
+              })()}
 
               {hasFillInBlank && (
                 <motion.button
@@ -661,7 +708,7 @@ export default function HangulLevelPage() {
                   transition={{ delay: 0.3 }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setGameMode('fill-in-blank')}
+                  onClick={() => { setCurrentGameForComplete('fill-in-blank'); setGameMode('fill-in-blank'); }}
                   className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left"
                 >
                   <div className="flex items-center gap-4 md:gap-5">

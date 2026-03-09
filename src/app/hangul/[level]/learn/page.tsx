@@ -15,6 +15,34 @@ interface VocabularyItem {
   translation: string;
 }
 
+// Hangul syllable decomposition to check if a syllable contains a specific jamo
+const CHOSEONG = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNGSEONG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONGSEONG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+function syllableContainsJamo(syllable: string, jamo: string): boolean {
+  const code = syllable.charCodeAt(0);
+  if (code < 0xAC00 || code > 0xD7A3) return false;
+  const idx = code - 0xAC00;
+  const cho = CHOSEONG[Math.floor(idx / (21 * 28))];
+  const jung = JUNGSEONG[Math.floor((idx % (21 * 28)) / 28)];
+  // Only match 초성 for consonants, 중성 for vowels (not 종성)
+  if (CHOSEONG.includes(jamo)) return cho === jamo;
+  if (JUNGSEONG.includes(jamo)) return jung === jamo;
+  return false;
+}
+
+function highlightWord(word: string, targetJamo: string): React.ReactNode {
+  return word.split('').map((char, i) => {
+    const contains = syllableContainsJamo(char, targetJamo);
+    return (
+      <span key={i} style={{ color: contains ? '#440687' : '#8BB700', fontWeight: 700 }}>
+        {char}
+      </span>
+    );
+  });
+}
+
 // Sound descriptions for consonants
 const consonantSoundDescriptions: Record<string, { en: string; ja: string; zh: string; th: string; vi: string; es: string }> = {
   'ㄱ': {
@@ -890,10 +918,10 @@ function CharacterCard({
                         className="flex items-center gap-4 p-3 bg-gray-50 rounded-[12px]"
                       >
                         <span
-                          className="text-[20px] text-[#440687] min-w-[80px]"
-                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                          className="text-[20px] min-w-[80px]"
+                          style={{ fontFamily: 'Poppins, sans-serif' }}
                         >
-                          {word.word}
+                          {highlightWord(word.word, character.character)}
                         </span>
                         <span className="text-[14px] text-gray-500">
                           {word.romanization}
@@ -1034,7 +1062,7 @@ export default function HangulLearnPage() {
   // Not found
   if (!level) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#440687] to-[#6B21A8] flex items-center justify-center p-4">
+      <div className="min-h-screen w-full bg-gradient-to-b from-[#440687] to-[#6B21A8] flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -1066,7 +1094,7 @@ export default function HangulLearnPage() {
 
   if (!hasLearningContent) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-[#440687] to-[#6B21A8] flex items-center justify-center p-4">
+      <div className="min-h-screen w-full bg-gradient-to-b from-[#440687] to-[#6B21A8] flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -1120,7 +1148,7 @@ export default function HangulLearnPage() {
     : vocabularyItems.length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#440687] via-[#5B1A9A] to-[#6B21A8] pb-32">
+    <div className="min-h-screen w-full bg-gradient-to-b from-[#440687] via-[#5B1A9A] to-[#6B21A8] pb-32">
       {/* Back Navigation */}
       <div className="px-4 pt-4">
         <motion.button

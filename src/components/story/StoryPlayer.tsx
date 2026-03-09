@@ -395,6 +395,16 @@ export default function StoryPlayer({ episode, onComplete }: StoryPlayerProps) {
                           </div>
                         </div>
 
+                        {/* Grammar point */}
+                        {currentScene.teaching.grammar && (
+                          <div className="bg-indigo-50 rounded-xl p-3 sm:p-4 border-2 border-[#2d3436] shadow-[2px_2px_0_#2d3436]">
+                            <h5 className="font-bold text-indigo-700 mb-1 sm:mb-2 text-sm sm:text-base flex items-center gap-1">
+                              <span>📝</span> Grammar Point
+                            </h5>
+                            <p className="text-indigo-800 text-sm sm:text-base">{getText(currentScene.teaching.grammar)}</p>
+                          </div>
+                        )}
+
                         {/* Cultural note */}
                         {currentScene.teaching.culturalNote && (
                           <div className="bg-yellow-50 rounded-xl p-3 sm:p-4 border-2 border-[#2d3436] shadow-[2px_2px_0_#2d3436]">
