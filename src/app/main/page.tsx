@@ -262,7 +262,7 @@ export default function MainPage() {
         <div className="max-w-4xl mx-auto">
           {/* Section Title */}
           <p
-            className="text-[#6B7280] text-[11px] xs:text-[12px] sm:text-[14px] mb-0"
+            className="text-[#6B7280] text-[11px] xs:text-[12px] sm:text-[14px] mb-[-2px]"
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
           >
             {t.courseSubtitle}

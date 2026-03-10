@@ -3,6 +3,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTTS } from '@/hooks/useTTS';
+import { romanize } from '@/lib/koreanRomanize';
+import { kpopMeanings, kdramaMeanings } from '@/data/quizMeanings';
 
 export type QuizLevel = 'beginner' | 'intermediate' | 'advanced';
 
@@ -15,6 +18,8 @@ export interface QuizQuestion {
   artist?: string;
   year?: string;
   cast?: string;
+  pronunciation?: string;
+  meaning?: string;
 }
 
 interface EmojiQuizGameProps {
@@ -41,6 +46,7 @@ export default function EmojiQuizGame({
   onContinueToNextSet,
 }: EmojiQuizGameProps) {
   const { t } = useLanguage();
+  const { speak } = useTTS();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -93,11 +99,16 @@ export default function EmojiQuizGame({
     setSelectedAnswer(option);
     const correct = option === currentQuestion.answer;
     setIsCorrect(correct);
-    if (correct) setScore(prev => prev + 1);
+    if (correct) {
+      setScore(prev => prev + 1);
+      speak(currentQuestion.answer);
+    }
 
-    setTimeout(() => {
-      moveToNext();
-    }, 1500);
+    if (!correct) {
+      setTimeout(() => {
+        moveToNext();
+      }, 1500);
+    }
   };
 
   // 초급: 힌트 사용 - 오답 하나 제거
@@ -130,11 +141,16 @@ export default function EmojiQuizGame({
     const correct = userAnswer === currentQuestion.answer;
     setIsCorrect(correct);
     setSelectedAnswer(userAnswer);
-    if (correct) setScore(prev => prev + 1);
+    if (correct) {
+      setScore(prev => prev + 1);
+      speak(currentQuestion.answer);
+    }
 
-    setTimeout(() => {
-      moveToNext();
-    }, 1500);
+    if (!correct) {
+      setTimeout(() => {
+        moveToNext();
+      }, 1500);
+    }
   };
 
   // 고급: 정답 확인
@@ -142,11 +158,16 @@ export default function EmojiQuizGame({
     const correct = typedAnswer.trim() === currentQuestion.answer;
     setIsCorrect(correct);
     setSelectedAnswer(typedAnswer);
-    if (correct) setScore(prev => prev + 1);
+    if (correct) {
+      setScore(prev => prev + 1);
+      speak(currentQuestion.answer);
+    }
 
-    setTimeout(() => {
-      moveToNext();
-    }, 1500);
+    if (!correct) {
+      setTimeout(() => {
+        moveToNext();
+      }, 1500);
+    }
   };
 
   // 다음 문제로 이동
@@ -346,11 +367,56 @@ export default function EmojiQuizGame({
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
-                      className="flex items-center justify-center mt-3 sm:mt-4"
+                      className="flex flex-col items-center justify-center mt-3 sm:mt-4"
                     >
                       {isCorrect ? (
-                        <div className="bg-[#B4D700] text-[#440687] px-4 sm:px-5 py-1.5 sm:py-2 rounded-[10px]">
-                          <p className="text-[16px] sm:text-[18px] md:text-[20px] text-[#440687]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>✓ {t('quiz.correct')}</p>
+                        <div className="flex flex-col items-center gap-2 sm:gap-3">
+                          <div className="bg-[#B4D700] text-[#440687] px-4 sm:px-5 py-1.5 sm:py-2 rounded-[10px]">
+                            <p className="text-[16px] sm:text-[18px] md:text-[20px] text-[#440687]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>✓ {t('quiz.correct')}</p>
+                          </div>
+                          {/* Pronunciation & Meaning */}
+                          {(() => {
+                            const pron = currentQuestion.pronunciation || romanize(currentQuestion.answer);
+                            const meanings = type === 'kpop' ? kpopMeanings : kdramaMeanings;
+                            const mean = currentQuestion.meaning || meanings[currentQuestion.answer] || '';
+                            return (
+                              <motion.div
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                                className="bg-white/15 rounded-[12px] px-5 sm:px-6 py-3 sm:py-4 text-center w-full max-w-[320px]"
+                              >
+                                <p className="text-[20px] sm:text-[22px] md:text-[24px] text-white mb-1" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 800 }}>
+                                  {currentQuestion.answer}
+                                </p>
+                                <p className="text-[14px] sm:text-[15px] text-[#B4D700] mb-1" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}>
+                                  [ {pron} ]
+                                </p>
+                                {mean && (
+                                  <p className="text-[13px] sm:text-[14px] text-white/70" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}>
+                                    {mean}
+                                  </p>
+                                )}
+                                <button
+                                  onClick={() => speak(currentQuestion.answer)}
+                                  className="mt-2 px-3 py-1 bg-white/20 rounded-full text-white text-[12px] flex items-center gap-1 mx-auto"
+                                >
+                                  <img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4" /> {pron}
+                                </button>
+                              </motion.div>
+                            );
+                          })()}
+                          {/* Next Button */}
+                          <motion.button
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                            onClick={moveToNext}
+                            className="bg-[#B4D700] text-[#1B0440] px-8 sm:px-10 py-2.5 sm:py-3 rounded-[12px] text-[15px] sm:text-[16px] border-2 border-[#1B0440]"
+                            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 800, boxShadow: '3px 3px 0px #1B0440' }}
+                          >
+                            {currentIndex + 1 >= totalQuestions ? 'Complete ✓' : 'Next →'}
+                          </motion.button>
                         </div>
                       ) : (
                         <div className="text-center">

@@ -356,7 +356,7 @@ export default function LevelComplete({
       )}
 
       {/* Main Content - Flex layout for 100dvh */}
-      <div className="h-[100dvh] flex flex-col p-4 max-w-lg md:max-w-xl mx-auto">
+      <div className="h-[100dvh] flex flex-col p-4 md:p-6 max-w-lg md:max-w-xl xl:max-w-2xl mx-auto">
         {/* Header with Hangeuli and Stars */}
         <div className="flex-shrink-0 text-center pt-2 pb-3">
           {stars < 2 && (
@@ -496,7 +496,7 @@ export default function LevelComplete({
                 )}
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
               >
-                {isPlayingAll ? '⏹ Stop' : '🔊 Play All'}
+                {isPlayingAll ? '⏹ Stop' : <><img src="/images/icon/sound001_p.png" alt="sound" className="w-4 h-4" /> Play All</>}
               </button>
             </div>
           </div>
@@ -564,13 +564,13 @@ export default function LevelComplete({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                     >
-                      <motion.span
+                      <motion.img
+                        src="/images/icon/sound001_p.png"
+                        alt="sound"
+                        className="w-8 h-8"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ repeat: Infinity, duration: 0.6 }}
-                        className="text-2xl"
-                      >
-                        🔊
-                      </motion.span>
+                      />
                     </motion.div>
                   )}
                 </motion.button>

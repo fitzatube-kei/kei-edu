@@ -8,6 +8,7 @@ interface DayProgressProps {
   currentPhase: TravelGamePhase;
   completedPhases: TravelGamePhase[];
   xpEarned: number;
+  onStepClick?: (stepId: string) => void;
 }
 
 interface PhaseStep {
@@ -30,6 +31,7 @@ export default function DayProgress({
   currentPhase,
   completedPhases,
   xpEarned,
+  onStepClick,
 }: DayProgressProps) {
   const getStepStatus = (step: PhaseStep): 'completed' | 'current' | 'pending' => {
     // Check if any phase in this step is current
@@ -76,17 +78,26 @@ export default function DayProgress({
                 transition={{ delay: index * 0.1 }}
                 className="flex flex-col items-center"
               >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all ${
-                    status === 'completed'
-                      ? 'bg-green-500'
-                      : status === 'current'
-                        ? 'bg-[#B4D700] animate-pulse'
-                        : 'bg-white/10'
-                  }`}
-                >
-                  {status === 'completed' ? '✓' : step.icon}
-                </div>
+                {status === 'completed' && onStepClick ? (
+                  <button
+                    onClick={() => onStepClick(step.id)}
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all bg-green-500 cursor-pointer hover:ring-2 hover:ring-white/50 hover:scale-110 active:scale-95"
+                  >
+                    ✓
+                  </button>
+                ) : (
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center text-lg transition-all ${
+                      status === 'completed'
+                        ? 'bg-green-500'
+                        : status === 'current'
+                          ? 'bg-[#B4D700] animate-pulse'
+                          : 'bg-white/10'
+                    }`}
+                  >
+                    {status === 'completed' ? '✓' : step.icon}
+                  </div>
+                )}
                 <span
                   className={`text-xs mt-1 ${
                     status === 'current' ? 'text-[#B4D700]' : 'text-white/40'

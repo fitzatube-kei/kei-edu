@@ -108,7 +108,7 @@ export default function SituationQuiz({
                     className="p-1 rounded-full hover:bg-white/20 transition-colors inline-flex items-center justify-center"
                     aria-label="Listen to pronunciation"
                   >
-                    <span className={`text-lg ${isSpeaking ? 'animate-pulse' : ''}`}>🔊</span>
+                    <img src="/images/icon/sound001_w.png" alt="sound" className={`w-5 h-5 ${isSpeaking ? 'animate-pulse' : ''}`} />
                   </button>
                 </span>
                 {parts[1]}
@@ -172,7 +172,7 @@ export default function SituationQuiz({
                       }}
                       className="p-1 rounded-full hover:bg-white/10 transition-colors"
                     >
-                      <span className={`text-lg ${isSpeaking ? 'animate-pulse' : ''}`}>🔊</span>
+                      <img src="/images/icon/sound001_w.png" alt="sound" className={`w-5 h-5 ${isSpeaking ? 'animate-pulse' : ''}`} />
                     </button>
                   </div>
 

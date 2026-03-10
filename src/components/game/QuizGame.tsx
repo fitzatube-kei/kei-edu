@@ -455,27 +455,27 @@ export default function QuizGame({
   }
 
   return (
-    <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
+    <div className="fixed inset-0 bg-[#421785] py-4 px-4 md:px-6 lg:px-8 flex flex-col overflow-hidden">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button - 흰색 배경, 동그란 모양 */}
           <button
             onClick={onExit}
-            className="w-[42px] h-[42px] rounded-full bg-white flex items-center justify-center"
+            className="w-[42px] h-[42px] md:w-[48px] md:h-[48px] rounded-full bg-white flex items-center justify-center"
           >
-            <svg className="w-6 h-6 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 md:w-7 md:h-7 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           {/* Progress & Score */}
           <div className="flex items-center gap-2">
-            <span className="text-[13px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 rounded-[8px]">
+            <span className="text-[13px] md:text-[15px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 md:px-4 md:py-1.5 rounded-[8px]">
               {gameState.currentQuestion + 1}/{shuffledQuestions.length}
             </span>
-            <span className="text-[13px] font-bold bg-[#AE7DFD] text-[#1B0440] px-3 py-1 rounded-[8px] flex items-center gap-1">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <span className="text-[13px] md:text-[15px] font-bold bg-[#AE7DFD] text-[#1B0440] px-3 py-1 md:px-4 md:py-1.5 rounded-[8px] flex items-center gap-1">
+              <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
               {gameState.score}
@@ -494,7 +494,7 @@ export default function QuizGame({
         </div>
 
         {/* ===== MAIN GAME BOARD ===== */}
-        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[16px] sm:rounded-[20px] p-2.5 sm:p-3 flex flex-col relative overflow-y-auto">
+        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[16px] sm:rounded-[20px] md:rounded-[24px] p-2.5 sm:p-3 md:p-5 lg:p-6 flex flex-col relative overflow-y-auto">
 
           {/* Question */}
           <AnimatePresence mode="wait">
@@ -506,7 +506,7 @@ export default function QuizGame({
               className="flex-1 flex flex-col min-h-0"
             >
               {/* Top section: Title + Question - pushed down for better vertical balance */}
-              <div className="flex-shrink-0 mt-[6vh] sm:mt-[8vh]">
+              <div className="flex-shrink-0 mt-[6vh] sm:mt-[8vh] md:mt-[6vh] lg:mt-[4vh]">
                 {/* Fill in the blank title label */}
                 {isFillBlankQuestion && (
                   <div className="flex justify-center mb-2">
@@ -522,7 +522,7 @@ export default function QuizGame({
                   isFillBlankQuestion ? "mt-2 mb-2" : "mt-2 sm:mt-4 mb-3 sm:mb-4"
                 )}>
                   <h2
-                    className="text-[17px] sm:text-[20px] text-white leading-relaxed"
+                    className="text-[17px] sm:text-[20px] md:text-[22px] lg:text-[24px] text-white leading-relaxed"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {isFillBlankQuestion ? `"${questionText}"` : (koreanChar ? questionWithoutKorean : questionText)}
@@ -533,7 +533,7 @@ export default function QuizGame({
                 {!isFillBlankQuestion && koreanChar && (
                   <div className="text-center mb-3 sm:mb-4">
                     <span
-                      className="text-[48px] sm:text-[64px] text-white font-bold"
+                      className="text-[48px] sm:text-[64px] md:text-[72px] lg:text-[80px] text-white font-bold"
                       style={{ fontFamily: 'sans-serif' }}
                     >
                       {koreanChar}
@@ -659,7 +659,7 @@ export default function QuizGame({
               </AnimatePresence>
 
               {/* Options */}
-              <div className="grid gap-2 sm:gap-2.5 content-start flex-shrink-0">
+              <div className="grid gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 content-start flex-shrink-0">
                 {optionTexts.map((option, index) => {
                   let cardStyle = 'bg-[#AE7DFD] text-white border-[#1B0440]';
                   let shadowStyle = '3px 3px 0px #1B0440';
@@ -686,7 +686,7 @@ export default function QuizGame({
                       onClick={() => handleAnswerSelect(index)}
                       disabled={showResult}
                       className={cn(
-                        'w-full p-2.5 sm:p-3 rounded-[10px] sm:rounded-[12px] text-left transition-all border-[2px]',
+                        'w-full p-2.5 sm:p-3 md:p-4 rounded-[10px] sm:rounded-[12px] md:rounded-[14px] text-left transition-all border-[2px]',
                         cardStyle,
                         showResult && 'cursor-default'
                       )}
@@ -695,7 +695,7 @@ export default function QuizGame({
                       <span className="flex items-center gap-2 sm:gap-3">
                         <span
                           className={cn(
-                            'w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[12px] sm:text-[14px] font-bold flex-shrink-0',
+                            'w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center text-[12px] sm:text-[14px] md:text-[16px] font-bold flex-shrink-0',
                             showResult && index === correctAnswerIndex
                               ? 'bg-[#1B0440] text-[#B4D700]'
                               : showResult && index === selectedAnswer && !isCorrect
@@ -705,7 +705,7 @@ export default function QuizGame({
                         >
                           {['A', 'B', 'C', 'D'][index]}
                         </span>
-                        <span className="text-[14px] sm:text-[16px] font-semibold flex-1">
+                        <span className="text-[14px] sm:text-[16px] md:text-[17px] font-semibold flex-1">
                           {option}
                         </span>
                         {showResult && index === correctAnswerIndex && (
@@ -742,7 +742,7 @@ export default function QuizGame({
                 >
                   <button
                     onClick={handleNextQuestion}
-                    className="bg-[#B4D700] text-[#1B0440] font-bold px-6 sm:px-8 py-2 sm:py-2.5 rounded-[10px] text-[14px] sm:text-[16px] border border-[#1B0440]"
+                    className="bg-[#B4D700] text-[#1B0440] font-bold px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 rounded-[10px] md:rounded-[12px] text-[14px] sm:text-[16px] md:text-[18px] border border-[#1B0440]"
                     style={{ boxShadow: '3px 3px 0px #1B0440' }}
                   >
                     {gameState.currentQuestion >= shuffledQuestions.length - 1 ? 'Complete' : 'Next →'}

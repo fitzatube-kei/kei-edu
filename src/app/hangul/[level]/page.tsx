@@ -388,8 +388,8 @@ export default function HangulLevelPage() {
 
       {/* Game mode select */}
       {gameMode === 'select' && (
-        <main className="px-4 md:px-10 pt-6 md:pt-8">
-          <div className="max-w-md md:max-w-[540px] lg:max-w-xl mx-auto">
+        <main className="px-4 md:px-10 lg:px-12 pt-6 md:pt-8">
+          <div className="max-w-md md:max-w-[540px] lg:max-w-xl xl:max-w-2xl mx-auto">
             {/* Back button */}
             <button
               onClick={handleExit}
@@ -418,11 +418,11 @@ export default function HangulLevelPage() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-20 h-20 md:w-24 md:h-24 rounded-[16px] md:rounded-[20px] flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
+                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-[16px] md:rounded-[20px] flex items-center justify-center text-white mx-auto mb-4 shadow-lg"
                 style={{ backgroundColor: '#440687' }}
               >
                 <span
-                  className="text-[36px] md:text-[42px]"
+                  className="text-[36px] md:text-[42px] lg:text-[48px]"
                   style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
                 >
                   {levelNumber}
@@ -430,13 +430,13 @@ export default function HangulLevelPage() {
               </motion.div>
 
               <h1
-                className="text-[24px] md:text-[28px] text-[#1F2937] mb-2"
+                className="text-[24px] md:text-[28px] lg:text-[32px] text-[#1F2937] mb-2"
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
               >
                 {level.titleKey ? t(level.titleKey) : level.title}
               </h1>
               <p
-                className="text-gray-500 text-[14px] md:text-[15px]"
+                className="text-gray-500 text-[14px] md:text-[15px] lg:text-[16px]"
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
               >
                 {level.descriptionKey ? t(level.descriptionKey) : level.description}
@@ -558,17 +558,17 @@ export default function HangulLevelPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push(`/hangul/${levelNumber}/learn`)}
-                className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left border-2 border-[#3B82F6]"
+                className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left border-2 border-[#3B82F6]"
               >
                 <div className="flex items-center gap-4 md:gap-5">
-                  <div className="w-14 h-14 md:w-16 md:h-16 bg-[#3B82F6] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
+                  <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-[#3B82F6] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
                     <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
                   <div className="flex-1">
                     <h3
-                      className="text-[16px] md:text-[17px] text-[#1F2937]"
+                      className="text-[16px] md:text-[17px] lg:text-[18px] text-[#1F2937]"
                       style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                     >
                       {language === 'ja' ? 'まず学習' :
@@ -579,7 +579,7 @@ export default function HangulLevelPage() {
                        'Learn First'}
                     </h3>
                     <p
-                      className="text-[13px] text-gray-500"
+                      className="text-[13px] lg:text-[14px] text-gray-500"
                       style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
                     >
                       {language === 'ja' ? 'ゲームを始める前に文字を学ぼう' :
@@ -607,10 +607,10 @@ export default function HangulLevelPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => { setCurrentGameForComplete('quiz'); setGameMode('quiz'); }}
-                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left ${quizDone ? 'border-2 border-[#B4D700]' : ''}`}
+                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left ${quizDone ? 'border-2 border-[#B4D700]' : ''}`}
                   >
                     <div className="flex items-center gap-4 md:gap-5">
-                      <div className="w-14 h-14 md:w-16 md:h-16 bg-[#9038EF] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
+                      <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-[#9038EF] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
                         <span className="text-[31px] text-white" style={{ fontWeight: 900 }}>?</span>
                         {quizDone && (
                           <div className="absolute -top-1 -right-1 w-6 h-6 bg-[#B4D700] rounded-full flex items-center justify-center">
@@ -622,7 +622,7 @@ export default function HangulLevelPage() {
                       </div>
                       <div className="flex-1">
                         <h3
-                          className="text-[16px] md:text-[17px] text-[#1F2937]"
+                          className="text-[16px] md:text-[17px] lg:text-[18px] text-[#1F2937]"
                           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                         >
                           {t('game.quiz')}
@@ -657,10 +657,10 @@ export default function HangulLevelPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => { setCurrentGameForComplete('matching'); setGameMode('matching'); }}
-                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left ${matchingDone ? 'border-2 border-[#B4D700]' : ''}`}
+                    className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left ${matchingDone ? 'border-2 border-[#B4D700]' : ''}`}
                   >
                     <div className="flex items-center gap-4 md:gap-5">
-                      <div className="w-14 h-14 md:w-16 md:h-16 bg-[#B4D700] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
+                      <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-[#B4D700] rounded-[12px] md:rounded-[14px] flex items-center justify-center relative">
                         <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
                           {language === 'ja' ? 'あいう' :
                            language.startsWith('zh') ? '甲乙丙' :
@@ -677,7 +677,7 @@ export default function HangulLevelPage() {
                       </div>
                       <div className="flex-1">
                         <h3
-                          className="text-[16px] md:text-[17px] text-[#1F2937]"
+                          className="text-[16px] md:text-[17px] lg:text-[18px] text-[#1F2937]"
                           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                         >
                           {t('game.matching')}
@@ -709,10 +709,10 @@ export default function HangulLevelPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => { setCurrentGameForComplete('fill-in-blank'); setGameMode('fill-in-blank'); }}
-                  className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 text-left"
+                  className="w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left"
                 >
                   <div className="flex items-center gap-4 md:gap-5">
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-[#F59E0B] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
+                    <div className="w-14 h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-[#F59E0B] rounded-[12px] md:rounded-[14px] flex items-center justify-center">
                       <span className="text-[18px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}>
                         {language === 'ja' ? 'あいう' :
                          language.startsWith('zh') ? '甲乙丙' :
@@ -722,7 +722,7 @@ export default function HangulLevelPage() {
                     </div>
                     <div className="flex-1">
                       <h3
-                        className="text-[16px] md:text-[17px] text-[#1F2937]"
+                        className="text-[16px] md:text-[17px] lg:text-[18px] text-[#1F2937]"
                         style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                       >
                         {language === 'ja' ? '空欄を埋めよう' :

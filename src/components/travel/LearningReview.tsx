@@ -171,7 +171,7 @@ export default function LearningReview({
                           : 'bg-white/10 hover:bg-white/20'
                       }`}
                     >
-                      <span className="text-lg">{isPlaying ? '🔊' : '🔈'}</span>
+                      <img src={isPlaying ? '/images/icon/sound001_g.png' : '/images/icon/sound001_w.png'} alt="sound" className="w-5 h-5" />
                     </button>
                   </motion.div>
                 );

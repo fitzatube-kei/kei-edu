@@ -100,7 +100,7 @@ export default function SignReadingQuiz({
           onClick={handleSpeak}
           className="bg-white/20 hover:bg-white/30 transition-colors px-4 py-2 rounded-full text-white flex items-center gap-2 mx-auto"
         >
-          <span className={`text-xl ${isSpeaking ? 'animate-pulse' : ''}`}>🔊</span>
+          <img src="/images/icon/sound001_w.png" alt="sound" className={`w-5 h-5 ${isSpeaking ? 'animate-pulse' : ''}`} />
           <span className="text-sm">{quiz.sign.romanization}</span>
         </button>
       </motion.div>

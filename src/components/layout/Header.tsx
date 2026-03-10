@@ -108,19 +108,19 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-[#440687] px-4 sm:px-6 pt-[8px] sm:pt-2 pb-[6px] relative z-50">
+      <header className="bg-[#440687] px-2 sm:px-6 pt-[8px] sm:pt-2 pb-[6px] relative z-50">
         <div className="max-w-4xl mx-auto">
           {/* Single Row: Logo + Language + Avatar + Settings */}
-          <div className="flex items-center justify-between">
-            {/* Left: Logo + Language */}
-            <div className="flex items-center gap-2">
-              <Link href="/main" className="flex items-center gap-1.5 relative z-10">
+          <div className="flex items-center justify-between gap-1">
+            {/* Left: Logo + Language — shrinks on narrow screens */}
+            <div className="flex items-center gap-1 sm:gap-2 min-w-0 shrink">
+              <Link href="/main" className="flex items-center gap-1 sm:gap-1.5 relative z-10 shrink min-w-0">
                 <Image
                   src="/images/main/kbi01.png"
                   alt="KEI Brand"
                   width={30}
                   height={36}
-                  className="object-contain"
+                  className="object-contain w-[24px] h-[29px] sm:w-[30px] sm:h-[36px] shrink-0"
                   unoptimized
                 />
                 <Image
@@ -128,19 +128,19 @@ export default function Header() {
                   alt="KEI-EDU"
                   width={120}
                   height={36}
-                  className="object-contain"
+                  className="object-contain w-[80px] xs:w-[100px] sm:w-[120px] shrink min-w-0"
                   unoptimized
                 />
               </Link>
 
               {/* Language Dropdown */}
-              <div className="relative ml-2">
+              <div className="relative ml-0.5 sm:ml-2 shrink-0">
                 <button
                   onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-                  className="flex items-center gap-1.5 text-white"
+                  className="flex items-center gap-0.5 sm:gap-1.5 text-white"
                 >
-                  <span className="text-[36px]">{currentLanguage.flag}</span>
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <span className="text-[26px] sm:text-[36px]">{currentLanguage.flag}</span>
+                  <svg className="w-5 h-5 sm:w-7 sm:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -168,28 +168,29 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Right: Currency + Avatar + Settings */}
-            <div className="flex items-center gap-2">
+            {/* Right: Currency + Avatar + Settings — fixed sizes, never shrink */}
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               <CurrencyBadge />
               <button
                 onClick={() => setShowAvatarChange(true)}
-                className="flex-shrink-0 hover:opacity-80 transition-opacity"
+                className="shrink-0 hover:opacity-80 transition-opacity"
               >
                 <Image
                   src={userAvatar}
                   alt="Profile"
                   width={36}
                   height={40}
-                  className="object-contain"
+                  className="object-contain w-[30px] h-[33px] sm:w-[36px] sm:h-[40px]"
                   unoptimized
                 />
               </button>
               <button
                 onClick={() => setShowSettings(true)}
-                className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"
+                className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors shrink-0"
               >
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </button>
             </div>

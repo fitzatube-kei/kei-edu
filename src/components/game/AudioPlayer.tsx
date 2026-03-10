@@ -105,14 +105,15 @@ export default function AudioPlayer({
         aria-label={`Play pronunciation for ${text}`}
       >
         {isPlaying ? (
-          <motion.span
+          <motion.img
+            src="/images/icon/sound001_w.png"
+            alt="sound"
+            className="w-6 h-6"
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ repeat: Infinity, duration: 0.5 }}
-          >
-            🔊
-          </motion.span>
+          />
         ) : (
-          '🔊'
+          <img src="/images/icon/sound001_w.png" alt="sound" className="w-6 h-6" />
         )}
       </motion.button>
       {showLabel && (

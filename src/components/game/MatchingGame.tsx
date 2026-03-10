@@ -195,27 +195,27 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
   }
 
   return (
-    <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
+    <div className="fixed inset-0 bg-[#421785] py-4 px-4 md:px-6 lg:px-8 flex flex-col overflow-hidden">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button */}
           <button
             onClick={onExit}
-            className="w-[42px] h-[42px] rounded-full bg-white flex items-center justify-center"
+            className="w-[42px] h-[42px] md:w-[48px] md:h-[48px] rounded-full bg-white flex items-center justify-center"
           >
-            <svg className="w-6 h-6 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 md:w-7 md:h-7 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           {/* Progress & Score */}
           <div className="flex items-center gap-2">
-            <span className="text-[13px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 rounded-[8px]">
+            <span className="text-[13px] md:text-[15px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 md:px-4 md:py-1.5 rounded-[8px]">
               {matchedCount}/{pairsCount}
             </span>
-            <span className="text-[13px] font-bold bg-[#AE7DFD] text-[#1B0440] px-3 py-1 rounded-[8px] flex items-center gap-1">
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <span className="text-[13px] md:text-[15px] font-bold bg-[#AE7DFD] text-[#1B0440] px-3 py-1 md:px-4 md:py-1.5 rounded-[8px] flex items-center gap-1">
+              <svg className="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
               {score}
@@ -234,7 +234,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
         </div>
 
         {/* ===== MAIN GAME BOARD ===== */}
-        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[20px] p-3 flex flex-col relative overflow-hidden">
+        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[20px] md:rounded-[24px] p-3 md:p-5 lg:p-6 flex flex-col relative overflow-hidden">
           {/* Success Message */}
           <AnimatePresence>
             {showMatch && (
@@ -278,7 +278,7 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
 
           {/* Instructions */}
           <div className="text-center mb-4 flex-shrink-0">
-            <p className="text-white/80 text-[15px] font-medium">
+            <p className="text-white/80 text-[15px] md:text-[17px] lg:text-[18px] font-medium">
               {t('game.matchingInstruction')}
             </p>
           </div>
@@ -300,13 +300,13 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
                       onClick={() => handleCardClick(card)}
                       disabled={card.isMatched}
                       className={cn(
-                        'w-full p-2.5 sm:p-3 md:p-4 rounded-[12px] border-[2px] text-center transition-all',
+                        'w-full p-2.5 sm:p-3 md:p-4 lg:p-5 rounded-[12px] md:rounded-[14px] border-[2px] text-center transition-all',
                         style.className,
                         card.isMatched && 'cursor-default'
                       )}
                       style={{ boxShadow: style.shadow }}
                     >
-                      <span className="text-[14px] sm:text-[15px] md:text-[16px] font-bold">{card.content}</span>
+                      <span className="text-[14px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-bold">{card.content}</span>
                       {card.isMatched && (
                         <motion.span
                           initial={{ scale: 0 }}
@@ -339,13 +339,13 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
                       onClick={() => handleCardClick(card)}
                       disabled={card.isMatched}
                       className={cn(
-                        'w-full p-2.5 sm:p-3 md:p-4 rounded-[12px] border-[2px] text-center transition-all',
+                        'w-full p-2.5 sm:p-3 md:p-4 lg:p-5 rounded-[12px] md:rounded-[14px] border-[2px] text-center transition-all',
                         style.className,
                         card.isMatched && 'cursor-default'
                       )}
                       style={{ boxShadow: style.shadow }}
                     >
-                      <span className="text-[14px] sm:text-[15px] md:text-[16px] font-bold">{card.content}</span>
+                      <span className="text-[14px] sm:text-[15px] md:text-[17px] lg:text-[18px] font-bold">{card.content}</span>
                       {card.isMatched && (
                         <motion.span
                           initial={{ scale: 0 }}
@@ -371,13 +371,13 @@ export default function MatchingGame({ pairs, multilingualPairs, variant, onComp
           <div className="pt-3 border-t border-white/20 flex-shrink-0">
             <div className="flex justify-center gap-6">
               <div className="text-center">
-                <span className="text-white/60 text-[11px]">{t('game.attempts')}</span>
-                <p className="text-white font-bold text-[16px]">{attempts}</p>
+                <span className="text-white/60 text-[11px] md:text-[13px]">{t('game.attempts')}</span>
+                <p className="text-white font-bold text-[16px] md:text-[18px]">{attempts}</p>
               </div>
               <div className="w-px bg-white/20"></div>
               <div className="text-center">
-                <span className="text-white/60 text-[11px]">{t('game.accuracy')}</span>
-                <p className="text-[#B4D700] font-bold text-[16px]">
+                <span className="text-white/60 text-[11px] md:text-[13px]">{t('game.accuracy')}</span>
+                <p className="text-[#B4D700] font-bold text-[16px] md:text-[18px]">
                   {attempts > 0 ? Math.round((matchedCount / attempts) * 100) : 0}%
                 </p>
               </div>

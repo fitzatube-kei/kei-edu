@@ -666,23 +666,15 @@ function VocabularyCard({
             }`}
           >
             {speakingId === `vocab-${index}` ? (
-              <motion.div
+              <motion.img
+                src="/images/icon/sound001_g.png"
+                alt="sound"
+                className="w-6 h-6"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ repeat: Infinity, duration: 0.5 }}
-              >
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-                </svg>
-              </motion.div>
+              />
             ) : (
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                />
-              </svg>
+              <img src="/images/icon/sound001_p.png" alt="sound" className="w-6 h-6" />
             )}
           </motion.button>
         </div>
@@ -790,23 +782,15 @@ function CharacterCard({
             }`}
           >
             {speakingId === `char-${index}` ? (
-              <motion.div
+              <motion.img
+                src="/images/icon/sound001_g.png"
+                alt="sound"
+                className="w-7 h-7"
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ repeat: Infinity, duration: 0.5 }}
-              >
-                <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
-                </svg>
-              </motion.div>
+              />
             ) : (
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                />
-              </svg>
+              <img src="/images/icon/sound001_p.png" alt="sound" className="w-7 h-7" />
             )}
           </motion.button>
 
@@ -880,13 +864,11 @@ function CharacterCard({
                           }}
                           className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
                             speakingId === `syllable-${index}-${idx}`
-                              ? 'bg-[#440687] text-white'
-                              : 'bg-white text-[#440687]'
+                              ? 'bg-[#440687]'
+                              : 'bg-white'
                           }`}
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                          </svg>
+                          <img src={speakingId === `syllable-${index}-${idx}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'} alt="sound" className="w-5 h-5" />
                         </button>
                       </motion.div>
                     ))}
@@ -940,9 +922,11 @@ function CharacterCard({
                               : 'bg-[#F3E8FF] text-[#440687]'
                           }`}
                         >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                          </svg>
+                          <img
+                            src={speakingId === `word-${index}-${idx}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'}
+                            alt="sound"
+                            className="w-5 h-5"
+                          />
                         </button>
                       </motion.div>
                     ))}
@@ -971,9 +955,11 @@ function CharacterCard({
                           : 'bg-white text-[#440687]'
                       }`}
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                      </svg>
+                      <img
+                        src={speakingId === `example-${index}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'}
+                        alt="sound"
+                        className="w-5 h-5"
+                      />
                     </button>
                   </div>
                 </div>

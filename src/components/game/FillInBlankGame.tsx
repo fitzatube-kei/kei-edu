@@ -76,7 +76,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
     };
 
     return (
-      <div className="text-[20px] sm:text-[24px] text-white text-center leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
+      <div className="text-[20px] sm:text-[24px] md:text-[26px] lg:text-[28px] text-white text-center leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
         {parts.map((part, index) => (
           <React.Fragment key={index}>
             <span>{part}</span>
@@ -189,23 +189,23 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
   }
 
   return (
-    <div className="fixed inset-0 bg-[#421785] py-4 px-4 flex flex-col overflow-hidden">
-      <div className="max-w-md md:max-w-lg lg:max-w-xl mx-auto w-full flex-1 flex flex-col min-h-0">
+    <div className="fixed inset-0 bg-[#421785] py-4 px-4 md:px-6 lg:px-8 flex flex-col overflow-hidden">
+      <div className="max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto w-full flex-1 flex flex-col min-h-0">
         {/* ===== HEADER ===== */}
         <div className="flex items-center justify-between mb-2 flex-shrink-0">
           {/* Back Button */}
           <button
             onClick={onExit}
-            className="w-[42px] h-[42px] rounded-full bg-white flex items-center justify-center"
+            className="w-[42px] h-[42px] md:w-[48px] md:h-[48px] rounded-full bg-white flex items-center justify-center"
           >
-            <svg className="w-6 h-6 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-6 h-6 md:w-7 md:h-7 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           {/* Progress & Score */}
           <div className="flex items-center gap-2">
-            <span className="text-[13px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 rounded-[8px]">
+            <span className="text-[13px] md:text-[15px] font-bold bg-[#B4D700] text-[#1B0440] px-3 py-1 md:px-4 md:py-1.5 rounded-[8px]">
               {gameState.currentQuestion + 1}/{shuffledQuestions.length}
             </span>
             <span className="text-[13px] font-bold bg-[#AE7DFD] text-[#1B0440] px-3 py-1 rounded-[8px] flex items-center gap-1">
@@ -228,7 +228,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
         </div>
 
         {/* ===== MAIN GAME BOARD ===== */}
-        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[20px] p-4 sm:p-5 flex flex-col overflow-y-auto">
+        <div className="flex-1 min-h-0 bg-[#8A4AEF] rounded-[20px] md:rounded-[24px] p-4 sm:p-5 md:p-5 lg:p-6 flex flex-col overflow-y-auto">
 
           {/* Game mode label - Fixed at top */}
           <div className="flex justify-center mt-5 mb-4 flex-shrink-0">
@@ -264,7 +264,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
                 {/* Translation with highlighted keyword */}
                 {translationText && (
                   <div className="text-center mt-4 flex-shrink-0">
-                    <p className="text-white/80 text-[15px] sm:text-[16px] font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    <p className="text-white/80 text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] font-medium" style={{ fontFamily: 'Poppins, sans-serif' }}>
                       {renderTranslation}
                     </p>
                   </div>
@@ -309,7 +309,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
               </AnimatePresence>
 
               {/* Options */}
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 flex-shrink-0">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-4 lg:gap-5 flex-shrink-0">
                 {currentQuestion.options.map((option, index) => {
                   let cardStyle = 'bg-[#AE7DFD] text-white border-[#1B0440]';
                   let shadowStyle = '4px 4px 0px #1B0440';
@@ -336,13 +336,13 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
                       onClick={() => handleAnswerSelect(index)}
                       disabled={showResult}
                       className={cn(
-                        'p-4 sm:p-5 rounded-[12px] text-center transition-all border-2',
+                        'p-4 sm:p-5 md:p-5 lg:p-6 rounded-[12px] md:rounded-[14px] text-center transition-all border-2',
                         cardStyle,
                         showResult && 'cursor-default'
                       )}
                       style={{ boxShadow: shadowStyle }}
                     >
-                      <span className="text-[16px] sm:text-[18px] font-bold">
+                      <span className="text-[16px] sm:text-[18px] md:text-[19px] lg:text-[20px] font-bold">
                         {option}
                       </span>
                       {showResult && index === currentQuestion.correctAnswer && (
@@ -400,7 +400,7 @@ export default function FillInBlankGame({ questions, variant, onComplete, onExit
                 >
                   <button
                     onClick={handleNextQuestion}
-                    className="bg-[#B4D700] text-[#1B0440] font-bold px-8 py-3 rounded-[12px] text-[16px] border-2 border-[#1B0440]"
+                    className="bg-[#B4D700] text-[#1B0440] font-bold px-8 py-3 md:px-10 md:py-3 md:text-[18px] rounded-[12px] text-[16px] border-2 border-[#1B0440]"
                     style={{ boxShadow: '4px 4px 0px #1B0440' }}
                   >
                     {gameState.currentQuestion >= shuffledQuestions.length - 1 ? 'Complete' : 'Next →'}

@@ -8,6 +8,8 @@ export interface KpopQuizItem {
   artist: string;
   options: string[]; // 초급용 4지선다 보기
   syllables: string[]; // 중급용 조합할 음절들
+  pronunciation?: string; // 발음 (로마자)
+  meaning?: string; // 뜻 (영어)
 }
 
 export const kpopQuizData: KpopQuizItem[] = [
@@ -26,7 +28,7 @@ export const kpopQuizData: KpopQuizItem[] = [
   // BLACKPINK
   { id: 11, emoji: '💗🖤', answer: '블랙핑크', artist: 'BLACKPINK', options: ['블랙핑크', '레드벨벳', '아이즈원', '트와이스'], syllables: ['블', '랙', '핑', '크'] },
   { id: 12, emoji: '🔫💥', answer: '뚜두뚜두', artist: 'BLACKPINK', options: ['뚜두뚜두', '붐바야', '킬디스러브', '하우유라잇댓'], syllables: ['뚜', '두', '뚜', '두'] },
-  { id: 13, emoji: '🎵📞', answer: '휘파람', artist: 'BLACKPINK', options: ['휘파람', '전화벨', '노래', '멜로디'], syllables: ['휘', '파', '람'] },
+  { id: 13, emoji: '🎵👄', answer: '휘파람', artist: 'BLACKPINK', options: ['휘파람', '전화벨', '노래', '멜로디'], syllables: ['휘', '파', '람'] },
   { id: 14, emoji: '💀❤️', answer: '킬디스러브', artist: 'BLACKPINK', options: ['킬디스러브', '사랑해', '러브이즈데드', '킬러'], syllables: ['킬', '디', '스', '러', '브'] },
   { id: 15, emoji: '🔥🔥💃', answer: '붐바야', artist: 'BLACKPINK', options: ['붐바야', '불타오르네', '핫', '파이어'], syllables: ['붐', '바', '야'] },
   { id: 16, emoji: '🤷‍♀️❓', answer: '하우유라잇댓', artist: 'BLACKPINK', options: ['하우유라잇댓', '왓츠업', '웬유리브미', '왓이즈러브'], syllables: ['하', '우', '유', '라', '잇', '댓'] },

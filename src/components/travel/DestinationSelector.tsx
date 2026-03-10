@@ -10,6 +10,7 @@ interface DestinationSelectorProps {
   visitedIds: string[];
   onSelect: (location: TravelLocation) => void;
   userIsPremium?: boolean;
+  allowedLocations?: string[]; // undefined = all allowed
 }
 
 export default function DestinationSelector({
@@ -17,6 +18,7 @@ export default function DestinationSelector({
   visitedIds,
   onSelect,
   userIsPremium = false,
+  allowedLocations,
 }: DestinationSelectorProps) {
   const { t, getText } = useLanguage();
 
@@ -46,8 +48,10 @@ export default function DestinationSelector({
       <div className="w-full max-w-md space-y-4">
         {destinations.map((location, index) => {
           const isVisited = visitedIds.includes(location.id);
-          // Only lock premium locations if user is not premium
-          const isLocked = location.isPremium && !userIsPremium;
+          // Lock if premium-only or not in allowed locations list
+          const isPremiumLocked = location.isPremium && !userIsPremium;
+          const isAccessLocked = allowedLocations ? !allowedLocations.includes(location.id) : false;
+          const isLocked = isPremiumLocked || isAccessLocked;
 
           return (
             <motion.button
@@ -92,7 +96,7 @@ export default function DestinationSelector({
                     </span>
                     {isLocked && (
                       <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded-full">
-                        Premium
+                        PRO
                       </span>
                     )}
                   </div>

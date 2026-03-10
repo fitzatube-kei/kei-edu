@@ -9,14 +9,30 @@ interface ActivitySelectorProps {
   activities: DayActivity[];
   onSelect: (type: ActivityType) => void;
   title?: string;
+  arrivalMessage?: string; // destination name for arrival context
 }
+
+const arrivedText: Record<string, (name: string) => string> = {
+  en: (name) => `You have arrived at ${name}!`,
+  ja: (name) => `${name}に到着しました！`,
+  zh: (name) => `您已到达${name}！`,
+  th: (name) => `คุณมาถึง${name}แล้ว!`,
+  vi: (name) => `Bạn đã đến ${name}!`,
+  es: (name) => `¡Has llegado a ${name}!`,
+};
 
 export default function ActivitySelector({
   activities,
   onSelect,
   title,
+  arrivalMessage,
 }: ActivitySelectorProps) {
-  const { t, getText } = useLanguage();
+  const { t, getText, language } = useLanguage();
+
+  const getArrivedText = (name: string) => {
+    const fn = arrivedText[language] || arrivedText.en;
+    return fn(name);
+  };
 
   return (
     <motion.div
@@ -25,6 +41,19 @@ export default function ActivitySelector({
       exit={{ opacity: 0, x: -100 }}
       className="min-h-[calc(100vh-4rem)] flex flex-col items-center px-4 py-8"
     >
+      {/* Arrival announcement */}
+      {arrivalMessage && (
+        <motion.div
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="bg-[#B4D700]/20 border border-[#B4D700]/30 rounded-2xl px-5 py-3 mb-4 text-center w-full max-w-md"
+        >
+          <span className="text-[#B4D700] text-sm font-medium">
+            📍 {getArrivedText(arrivalMessage)}
+          </span>
+        </motion.div>
+      )}
+
       {/* Header */}
       <motion.div
         initial={{ y: -20, opacity: 0 }}

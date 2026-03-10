@@ -9,6 +9,8 @@ export interface KdramaQuizItem {
   cast?: string;
   options: string[]; // 초급용 4지선다 보기
   syllables: string[]; // 중급용 조합할 음절들
+  pronunciation?: string; // 발음 (로마자)
+  meaning?: string; // 뜻 (영어)
 }
 
 export const kdramaQuizData: KdramaQuizItem[] = [

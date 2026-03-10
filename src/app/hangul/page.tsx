@@ -133,7 +133,7 @@ export default function HangulPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 pt-6 pb-0 -mt-[60px]"
+            className="flex items-center gap-4 pt-6 pb-0 -mt-[40px]"
           >
             {/* Character Image */}
             <div className="relative w-[140px] h-[140px] xs:w-[187px] xs:h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">

@@ -60,9 +60,11 @@ export type TravelGamePhase =
   // Start phases
   | 'airport'                  // Start at airport
   | 'selecting'                // Choose destination
+  | 'quiz-intro'               // "깜짝 단어 퀴즈!!" intro before korean-quiz
   | 'korean-quiz'              // Find Korean name
 
   // Transportation phases
+  | 'phrase-learning'           // Learn useful phrases before situation quiz
   | 'transport-selecting'      // Choose transport (subway/bus/taxi)
   | 'transport-station-quiz'   // Find station name
   | 'transport-dialogue'       // "어디로 가세요?" conversation

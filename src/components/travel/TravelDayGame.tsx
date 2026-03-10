@@ -24,6 +24,7 @@ import { getTransportOptionsByArea, getStationQuiz, getDynamicDialogueQuiz } fro
 import { getSignQuizzes, getSignQuizzesByCategory, SignCategory } from '@/data/travel/signs';
 import { dayActivities, getRandomActivitySituation } from '@/data/travel/activities';
 import { touristAttractions, getSituationsByAttraction } from '@/data/travel/attractions';
+import { getPhrasesByCategory, getTransportPhraseCategory, getActivityPhraseCategory, PhraseCategory, PhraseCategoryData } from '@/data/travel/usefulPhrases';
 
 // Components
 import AirportStart from './AirportStart';
@@ -37,6 +38,8 @@ import ActivitySelector from './ActivitySelector';
 import DayProgress from './DayProgress';
 import DayComplete from './DayComplete';
 import LearningReview from './LearningReview';
+import QuizIntro from './QuizIntro';
+import PhraseLearning from './PhraseLearning';
 
 interface TravelDayGameProps {
   initialArea?: TravelArea;
@@ -91,6 +94,9 @@ export default function TravelDayGame({
     meaning: string;
     category: 'transport' | 'activity' | 'attraction' | 'restaurant' | 'phrase';
   }>>([]);
+  const [currentPhraseData, setCurrentPhraseData] = useState<PhraseCategoryData | null>(null);
+  const [phraseLearningNextPhase, setPhraseLearningNextPhase] = useState<TravelGamePhase | null>(null);
+  const [quizIntroNextPhase, setQuizIntroNextPhase] = useState<TravelGamePhase | null>(null);
 
   // Get available locations for current area
   const areaLocations = getLocationsByArea(currentArea);
@@ -102,14 +108,10 @@ export default function TravelDayGame({
 
   // Start the game
   const handleStartGame = useCallback(() => {
-    let options = getDestinationOptions(currentArea, visitedLocations);
-    // Filter by allowed locations if specified
-    if (allowedLocations && allowedLocations.length > 0) {
-      options = options.filter(loc => allowedLocations.includes(loc.id));
-    }
+    const options = getDestinationOptions(currentArea, visitedLocations);
     setDestinationOptions(options);
     setPhase('selecting');
-  }, [currentArea, visitedLocations, allowedLocations]);
+  }, [currentArea, visitedLocations]);
 
   // Select destination
   const handleSelectDestination = useCallback((location: TravelLocation) => {
@@ -118,6 +120,16 @@ export default function TravelDayGame({
     setKoreanQuizOptions(options);
     setPhase('korean-quiz');
   }, [currentArea]);
+
+  // Quiz intro auto-transition
+  const handleQuizIntroComplete = useCallback(() => {
+    if (quizIntroNextPhase) {
+      setPhase(quizIntroNextPhase);
+      setQuizIntroNextPhase(null);
+    } else {
+      setPhase('signs-transport');
+    }
+  }, [quizIntroNextPhase]);
 
   // Korean quiz result
   const handleKoreanQuizComplete = useCallback((correct: boolean) => {
@@ -132,33 +144,51 @@ export default function TravelDayGame({
     }
   }, []);
 
+  // Helper to start phrase learning before a quiz
+  const startPhraseLearning = useCallback((category: PhraseCategory, nextPhase: TravelGamePhase) => {
+    const data = getPhrasesByCategory(category);
+    if (data) {
+      setCurrentPhraseData(data);
+      setPhraseLearningNextPhase(nextPhase);
+      setPhase('phrase-learning');
+    } else {
+      setPhase(nextPhase);
+    }
+  }, []);
+
+  // Phrase learning complete - move to the queued next phase
+  const handlePhraseLearningComplete = useCallback(() => {
+    if (phraseLearningNextPhase) {
+      setPhase(phraseLearningNextPhase);
+      setPhraseLearningNextPhase(null);
+    }
+  }, [phraseLearningNextPhase]);
+
   // Transport selection
   const handleTransportSelect = useCallback((type: TransportType, id: string) => {
     setSelectedTransport(type);
     setSelectedTransportId(id);
     setTotalXp(prev => prev + 10);
 
+    // Prepare transport quiz data first, then show phrase learning
     if (type === 'subway' && selectedDestination) {
-      // Get station quiz for this destination
       const stationQuiz = getStationQuiz(selectedDestination.id);
       if (stationQuiz) {
         setCurrentTransportQuiz(stationQuiz);
-        setPhase('transport-station-quiz');
+        startPhraseLearning(getTransportPhraseCategory(id), 'transport-station-quiz');
       } else {
-        // No station quiz, skip to dialogue with dynamic destination
         const dialogueQuiz = getDynamicDialogueQuiz('subway', selectedDestination);
         setCurrentTransportQuiz(dialogueQuiz);
-        setPhase('transport-dialogue');
+        startPhraseLearning(getTransportPhraseCategory(id), 'transport-dialogue');
       }
     } else if (selectedDestination) {
-      // Use transport ID for specific dialogue (rentcar, tourbus, electric, bus, taxi)
       const dialogueQuiz = getDynamicDialogueQuiz(id, selectedDestination);
       setCurrentTransportQuiz(dialogueQuiz);
-      setPhase('transport-dialogue');
+      startPhraseLearning(getTransportPhraseCategory(id), 'transport-dialogue');
     } else {
       setPhase('arriving');
     }
-  }, [selectedDestination]);
+  }, [selectedDestination, startPhraseLearning]);
 
   // Transport quiz complete
   const handleTransportQuizComplete = useCallback((correct: boolean, xpEarned: number) => {
@@ -195,9 +225,10 @@ export default function TravelDayGame({
     if (selectedDestination) {
       setVisitedLocations(prev => [...prev, selectedDestination.id]);
       setCompletedPhases(prev => [...prev, 'arriving']);
-      // Move to transport signs (exit, platform, etc.)
+      // Load transport signs, then show quiz-intro before starting
       loadSignQuizzesByCategory('transport');
-      setPhase('signs-transport');
+      setQuizIntroNextPhase('signs-transport');
+      setPhase('quiz-intro');
     }
   }, [selectedDestination, loadSignQuizzesByCategory]);
 
@@ -210,12 +241,12 @@ export default function TravelDayGame({
     const situation = getRandomActivitySituation(type, completedSituations);
     if (situation) {
       setCurrentActivitySituation(situation);
-      setPhase('activity-quiz');
+      startPhraseLearning(getActivityPhraseCategory(type), 'activity-quiz');
     } else {
       // No activity situation, move to attraction
       setPhase('attraction-selecting');
     }
-  }, [completedSituations]);
+  }, [completedSituations, startPhraseLearning]);
 
   // Activity quiz complete
   const handleActivityQuizComplete = useCallback((correct: boolean, xpEarned: number) => {
@@ -275,20 +306,20 @@ export default function TravelDayGame({
 
       // Handle special cases
       if (currentSignCategory === 'restaurant') {
-        // After restaurant signs, go to hotel
+        // After restaurant signs, go to hotel via phrase learning
         const hotelSituation = getRandomActivitySituation('hotel', completedSituations);
         if (hotelSituation) {
           setCurrentActivitySituation(hotelSituation);
-          setPhase('hotel-checkin');
+          startPhraseLearning('hotel-checkin', 'hotel-checkin');
         } else {
           setPhase('learning-review');
         }
       } else if (currentSignCategory === 'attraction') {
-        // After attraction signs, go to dinner
+        // After attraction signs, go to dinner via phrase learning
         const dinnerSituation = getRandomActivitySituation('restaurant', completedSituations);
         if (dinnerSituation) {
           setCurrentActivitySituation(dinnerSituation);
-          setPhase('dinner-order');
+          startPhraseLearning('restaurant-dinner', 'dinner-order');
         } else {
           // Skip dinner, go to restaurant signs then hotel
           loadSignQuizzesByCategory('restaurant');
@@ -310,19 +341,19 @@ export default function TravelDayGame({
     const ticketSituation = situations.find(s => s.type === 'ticket');
     if (ticketSituation) {
       setCurrentAttractionSituation(ticketSituation);
-      setPhase('attraction-ticket');
+      startPhraseLearning('attraction-ticket', 'attraction-ticket');
     } else {
       // No ticket situation, check for hours
       const hoursSituation = situations.find(s => s.type === 'hours');
       if (hoursSituation) {
         setCurrentAttractionSituation(hoursSituation);
-        setPhase('attraction-hours');
+        startPhraseLearning('attraction-sightseeing', 'attraction-hours');
       } else {
         // No situations, move to dinner
         setPhase('dinner-order');
       }
     }
-  }, []);
+  }, [startPhraseLearning]);
 
   // Move to hotel check-in phase
   const moveToHotel = useCallback(() => {
@@ -440,6 +471,30 @@ export default function TravelDayGame({
     onBack?.();
   }, [totalXp, visitedLocations.length, onComplete, onBack]);
 
+  // Handle clicking a completed step in DayProgress to navigate back
+  const handleProgressStepClick = useCallback((stepId: string) => {
+    const stepPhaseMap: Record<string, () => void> = {
+      'transport': () => setPhase('transport-selecting'),
+      'activity': () => setPhase('activity-selecting'),
+      'attraction': () => setPhase('attraction-selecting'),
+      'dinner': () => {
+        const dinnerSituation = getRandomActivitySituation('restaurant', []);
+        if (dinnerSituation) {
+          setCurrentActivitySituation(dinnerSituation);
+        }
+        setPhase('dinner-order');
+      },
+      'hotel': () => {
+        const hotelSituation = getRandomActivitySituation('hotel', []);
+        if (hotelSituation) {
+          setCurrentActivitySituation(hotelSituation);
+        }
+        setPhase('hotel-checkin');
+      },
+    };
+    stepPhaseMap[stepId]?.();
+  }, []);
+
   // Handle back button
   const handleBack = useCallback(() => {
     if (phase === 'korean-quiz' || phase === 'selecting') {
@@ -480,19 +535,20 @@ export default function TravelDayGame({
         </div>
 
         {/* Day Progress Bar (shown during day) */}
-        {phase !== 'airport' && phase !== 'selecting' && phase !== 'korean-quiz' && phase !== 'day-complete' && (
+        {phase !== 'airport' && phase !== 'selecting' && phase !== 'quiz-intro' && phase !== 'korean-quiz' && phase !== 'day-complete' && (
           <div className="px-4 pb-2">
             <DayProgress
               currentPhase={phase}
               completedPhases={completedPhases}
               xpEarned={totalXp}
+              onStepClick={handleProgressStepClick}
             />
           </div>
         )}
       </div>
 
       {/* Main Content */}
-      <div className={`${phase !== 'airport' && phase !== 'selecting' && phase !== 'korean-quiz' && phase !== 'day-complete' ? 'pt-56' : 'pt-16'} pb-8`}>
+      <div className={`${phase !== 'airport' && phase !== 'selecting' && phase !== 'quiz-intro' && phase !== 'korean-quiz' && phase !== 'day-complete' ? 'pt-56' : 'pt-16'} pb-8`}>
         <AnimatePresence mode="wait">
           {phase === 'airport' && (
             <AirportStart key="airport" onStart={handleStartGame} />
@@ -505,6 +561,15 @@ export default function TravelDayGame({
               visitedIds={visitedLocations}
               onSelect={handleSelectDestination}
               userIsPremium={userIsPremium}
+              allowedLocations={allowedLocations}
+            />
+          )}
+
+          {phase === 'quiz-intro' && (
+            <QuizIntro
+              key={`quiz-intro-${quizIntroNextPhase}`}
+              destinationName={selectedDestination?.romanization || ''}
+              onComplete={handleQuizIntroComplete}
             />
           )}
 
@@ -522,6 +587,14 @@ export default function TravelDayGame({
               key="transport-selecting"
               options={getTransportOptionsByArea(currentArea)}
               onSelect={handleTransportSelect}
+            />
+          )}
+
+          {phase === 'phrase-learning' && currentPhraseData && (
+            <PhraseLearning
+              key={`phrase-learning-${currentPhraseData.id}`}
+              categoryData={currentPhraseData}
+              onComplete={handlePhraseLearningComplete}
             />
           )}
 
@@ -557,6 +630,7 @@ export default function TravelDayGame({
               key="activity-selecting"
               activities={dayActivities}
               onSelect={handleActivitySelect}
+              arrivalMessage={selectedDestination ? selectedDestination.romanization : undefined}
             />
           )}
 
@@ -590,6 +664,19 @@ export default function TravelDayGame({
 
           {phase === 'attraction-selecting' && (
             <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center px-4 py-8">
+              {/* Context announcement */}
+              {selectedDestination && (
+                <motion.div
+                  initial={{ y: -10, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  className="bg-[#B4D700]/20 border border-[#B4D700]/30 rounded-2xl px-5 py-3 mb-4 text-center w-full max-w-md"
+                >
+                  <span className="text-[#B4D700] text-sm font-medium">
+                    🏛️ {selectedDestination.romanization}
+                  </span>
+                </motion.div>
+              )}
+
               <motion.div
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
