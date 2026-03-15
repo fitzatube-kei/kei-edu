@@ -29,7 +29,10 @@ interface LevelCompleteProps {
   onReplay: () => void;
   onNext?: () => void;
   onRetryWrong?: () => void;
+  onBackToLevel?: () => void;
+  onGoToMatching?: () => void;
   hasNextLevel: boolean;
+  showNextLevel?: boolean;
   reviewItems?: string[];
 }
 
@@ -46,7 +49,10 @@ export default function LevelComplete({
   onReplay,
   onNext,
   onRetryWrong,
+  onBackToLevel,
+  onGoToMatching,
   hasNextLevel,
+  showNextLevel = false,
   reviewItems,
 }: LevelCompleteProps) {
   const router = useRouter();
@@ -611,16 +617,6 @@ export default function LevelComplete({
           transition={{ delay: 0.7 }}
           className="flex-shrink-0 pt-3 pb-2 flex flex-col gap-2"
         >
-          {hasNextLevel && stars >= 1 && (
-            <button
-              onClick={onNext}
-              className="w-full bg-[#77B602] text-white px-6 py-3 rounded-xl text-[17px] shadow-lg hover:bg-[#669a02] transition-colors"
-              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-            >
-              {t('game.nextLevel')} →
-            </button>
-          )}
-
           <div className="flex gap-2">
             <button
               onClick={onReplay}
@@ -639,8 +635,8 @@ export default function LevelComplete({
             </button>
 
             <button
-              onClick={() => router.push(`/${category}`)}
-              className="flex-1 bg-white text-[#440687] px-4 py-2.5 rounded-xl text-[15px] shadow-lg hover:bg-gray-50 transition-colors"
+              onClick={() => onBackToLevel ? onBackToLevel() : router.push(`/${category}/${level}`)}
+              className="flex-1 bg-[#B4D700] text-[#440687] px-4 py-2.5 rounded-xl text-[15px] shadow-lg hover:bg-[#a3c200] transition-colors"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               ← {t('game.backToLevels')}
@@ -666,6 +662,31 @@ export default function LevelComplete({
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               Retry Wrong Ones ({wrongAnswers.length})
+            </button>
+          )}
+
+          {/* Go to Matching Game */}
+          {onGoToMatching && (
+            <button
+              onClick={onGoToMatching}
+              className="w-full bg-[#B4D700] text-[#440687] px-6 py-2.5 rounded-xl text-[15px] shadow-lg hover:bg-[#a3c200] transition-colors flex items-center justify-center gap-2"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
+            >
+              Matching Game
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          )}
+
+          {/* Next Level */}
+          {showNextLevel && hasNextLevel && onNext && (
+            <button
+              onClick={onNext}
+              className="w-full bg-[#440687] text-white px-6 py-2.5 rounded-xl text-[15px] shadow-lg hover:bg-[#350568] transition-colors flex items-center justify-center gap-2"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
+            >
+              {t('game.nextLevel')} →
             </button>
           )}
         </motion.div>

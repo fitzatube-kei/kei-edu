@@ -198,16 +198,16 @@ export default function StoryPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-[16px] p-5 mb-6 mt-4 shadow-lg border-l-4 border-l-[#B4D700]"
+            className="bg-white rounded-[16px] p-3 sm:p-5 mb-4 sm:mb-6 mt-4 shadow-lg border-l-4 border-l-[#B4D700]"
           >
             <p
-              className="text-[#B4D700] text-[11px] uppercase tracking-wider mb-1"
+              className="text-[#B4D700] text-[11px] uppercase tracking-wider mb-0.5 sm:mb-1"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
             >
               YOUR JOURNEY
             </p>
             <h2
-              className="text-[24px] text-[#1F2937] mb-4"
+              className="text-[20px] sm:text-[24px] text-[#1F2937] mb-2 sm:mb-4"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {language === 'ja' ? '旅の記録' :
@@ -220,19 +220,19 @@ export default function StoryPage() {
 
             <div className="flex items-center justify-around">
               {/* Locations */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <span className="text-xl">📍</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <span className="text-base sm:text-xl">📍</span>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalVisited}
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500 whitespace-nowrap"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     / {totalLocations} {language === 'ja' ? '場所' : language.startsWith('zh') ? '地点' : 'Locations'}
@@ -241,22 +241,22 @@ export default function StoryPage() {
               </div>
 
               {/* Divider */}
-              <div className="w-px h-14 bg-[#B4D700]/30" />
+              <div className="w-px h-10 sm:h-14 bg-[#B4D700]/30" />
 
               {/* XP */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <span className="text-xl">⭐</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <span className="text-base sm:text-xl">⭐</span>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     0
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     XP Earned

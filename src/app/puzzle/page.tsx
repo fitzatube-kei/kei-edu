@@ -159,29 +159,13 @@ export default function PuzzlePage() {
       {/* Header */}
       <Header />
 
-      {/* Tutorial Button - below header on white background */}
-      <div className="px-4 sm:px-6 pt-3 relative z-20">
-        <div className="max-w-4xl mx-auto flex justify-end">
-          <button
-            onClick={() => setShowTutorial(true)}
-            className="bg-[#9038EF] text-white px-5 py-[6px] rounded-full text-[14px] flex items-center gap-1"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-          >
-            Tutorial
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
       <main className="px-4 md:px-8 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 pt-6 pb-0 -mt-[60px]"
+            className="flex items-center gap-4 pt-6 pb-0 -mt-[40px]"
           >
             {/* Character Image */}
             <div className="relative w-[140px] h-[140px] xs:w-[187px] xs:h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
@@ -227,16 +211,28 @@ export default function PuzzlePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-[16px] p-5 mb-6 -mt-[18px] shadow-lg border-l-4 border-l-[#38B6FF]"
+            className="bg-white rounded-[16px] p-3 sm:p-5 mb-4 sm:mb-6 -mt-[18px] shadow-lg border-l-4 border-l-[#38B6FF] relative"
           >
+            {/* Tutorial Button - top right */}
+            <button
+              onClick={() => setShowTutorial(true)}
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 bg-[#9038EF] text-white px-3 sm:px-4 py-1 rounded-full text-[11px] sm:text-[12px] flex items-center gap-1"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+            >
+              Tutorial
+              <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
             <p
-              className="text-[#38B6FF] text-[11px] uppercase tracking-wider mb-1"
+              className="text-[#38B6FF] text-[11px] uppercase tracking-wider mb-0.5 sm:mb-1"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
             >
               YOUR PROGRESS
             </p>
             <h2
-              className="text-[24px] text-[#1F2937] mb-4"
+              className="text-[20px] sm:text-[24px] text-[#1F2937] mb-2 sm:mb-4"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               Overall Stats
@@ -244,21 +240,21 @@ export default function PuzzlePage() {
 
             <div className="flex items-center justify-around">
               {/* Levels */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalCompleted}
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     / {totalLevels} Levels
@@ -267,24 +263,24 @@ export default function PuzzlePage() {
               </div>
 
               {/* Divider */}
-              <div className="w-px h-14 bg-[#38B6FF]/30" />
+              <div className="w-px h-10 sm:h-14 bg-[#38B6FF]/30" />
 
               {/* Stars */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#38B6FF] rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalStars}
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     / {totalLevels * 3} Stars
@@ -329,7 +325,7 @@ export default function PuzzlePage() {
                   key={tierTab}
                   onClick={() => handleTierClick(tierTab)}
                   disabled={!unlocked && !accessLocked}
-                  className={`flex-1 py-3 px-2 rounded-full text-center transition-all ${
+                  className={`flex-1 py-3 px-2 rounded-xl text-center transition-all ${
                     isActive
                       ? 'bg-[#440687] text-white'
                       : unlocked

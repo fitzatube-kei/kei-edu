@@ -113,7 +113,7 @@ export default function Header() {
           {/* Single Row: Logo + Language + Avatar + Settings */}
           <div className="flex items-center justify-between gap-1">
             {/* Left: Logo + Language — shrinks on narrow screens */}
-            <div className="flex items-center gap-1 sm:gap-2 min-w-0 shrink">
+            <div className="flex items-center gap-1 sm:gap-2 min-w-0 shrink ml-2">
               <Link href="/main" className="flex items-center gap-1 sm:gap-1.5 relative z-10 shrink min-w-0">
                 <Image
                   src="/images/main/kbi01.png"

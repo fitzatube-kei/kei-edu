@@ -1,10 +1,10 @@
 /**
  * Word Builder Puzzle Data Index
  *
- * New Structure:
- * - Beginner: 1-2 syllable words (15 levels, 150 words)
- * - Intermediate: 3-4 syllable words (10 levels, 100 words)
- * - Advanced: 5+ syllable words (5 levels, 50 words)
+ * Structure:
+ * - Beginner: 1-2 syllable words (100 levels, 1000 words)
+ * - Intermediate: 3-4 syllable words (100 levels, 1000 words)
+ * - Advanced: 4+ syllable/compound words (100 levels, 1000 words)
  */
 
 export * from './types';

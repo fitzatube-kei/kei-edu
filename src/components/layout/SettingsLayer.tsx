@@ -70,7 +70,7 @@ export default function SettingsLayer({ isOpen, onClose }: SettingsLayerProps) {
             className="fixed right-0 top-0 h-full w-full max-w-sm bg-white z-50 overflow-y-auto"
           >
             {/* Header */}
-            <div className="sticky top-0 bg-[#440687] text-white px-4 py-4 flex items-center gap-3">
+            <div className="sticky top-0 bg-[#440687] text-white px-4 py-4 flex items-center gap-3 z-10">
               <button
                 onClick={onClose}
                 className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors"

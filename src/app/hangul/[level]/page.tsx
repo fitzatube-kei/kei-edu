@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import QuizGame, { QuestionResult } from '@/components/game/QuizGame';
 import MatchingGame from '@/components/game/MatchingGame';
 import FillInBlankGame from '@/components/game/FillInBlankGame';
@@ -45,6 +45,15 @@ export default function HangulLevelPage() {
   const [wrongQuestions, setWrongQuestions] = useState<MultilingualQuizQuestion[]>([]);
 
   const { unlockPro, unlockAllLevels } = useDevMode();
+  const [prerequisiteToast, setPrerequisiteToast] = useState<string | null>(null);
+
+  // Auto-hide toast
+  useEffect(() => {
+    if (prerequisiteToast) {
+      const timer = setTimeout(() => setPrerequisiteToast(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [prerequisiteToast]);
 
   const level = hangulLevels.find((l) => l.level === levelNumber);
   const hasNextLevel = levelNumber < hangulLevels.length;
@@ -115,8 +124,8 @@ export default function HangulLevelPage() {
   }, [hasNextLevel, levelNumber, router]);
 
   const handleExit = useCallback(() => {
-    router.push('/hangul');
-  }, [router]);
+    router.push(`/hangul?tier=${tier}`);
+  }, [router, tier]);
 
   // Get tier name in current language
   const getTierName = (): string => {
@@ -320,7 +329,16 @@ export default function HangulLevelPage() {
         onReplay={handleReplay}
         onNext={handleNextLevel}
         onRetryWrong={wrongQuestions.length > 0 ? handleRetryWrong : undefined}
+        onBackToLevel={() => { setShowComplete(false); setGameMode('select'); }}
+        onGoToMatching={currentGameForComplete === 'quiz' && ((level.matchingPairs && level.matchingPairs.length >= 4) || (level.multilingualMatchingPairs && level.multilingualMatchingPairs.length >= 4)) ? () => {
+          setShowComplete(false);
+          setQuestionResults([]);
+          setWrongQuestions([]);
+          setCurrentGameForComplete('matching');
+          setGameMode('matching');
+        } : undefined}
         hasNextLevel={hasNextLevel}
+        showNextLevel={currentGameForComplete === 'matching'}
         reviewItems={level.reviewItems}
       />
     );
@@ -598,6 +616,7 @@ export default function HangulLevelPage() {
 
               {hasQuiz && (() => {
                 const levelProg = getLevelProgress('hangul', levelNumber) as LevelProgress | undefined;
+                const learnDone = levelProg?.completedGames?.includes('learn');
                 const quizDone = levelProg?.completedGames?.includes('quiz');
                 return (
                   <motion.button
@@ -606,7 +625,20 @@ export default function HangulLevelPage() {
                     transition={{ delay: 0.2 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => { setCurrentGameForComplete('quiz'); setGameMode('quiz'); }}
+                    onClick={() => {
+                      if (!learnDone) {
+                        setPrerequisiteToast(
+                          language === 'ja' ? 'まず「Learn First」を完了してください' :
+                          language.startsWith('zh') ? '请先完成「Learn First」' :
+                          language === 'th' ? 'กรุณาทำ Learn First ให้เสร็จก่อน' :
+                          language === 'vi' ? 'Vui lòng hoàn thành Learn First trước' :
+                          language === 'es' ? 'Por favor completa Learn First primero' :
+                          'Please complete Learn First before starting the quiz.'
+                        );
+                        return;
+                      }
+                      setCurrentGameForComplete('quiz'); setGameMode('quiz');
+                    }}
                     className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left ${quizDone ? 'border-2 border-[#B4D700]' : ''}`}
                   >
                     <div className="flex items-center gap-4 md:gap-5">
@@ -648,6 +680,7 @@ export default function HangulLevelPage() {
 
               {hasMatching && (() => {
                 const levelProg = getLevelProgress('hangul', levelNumber) as LevelProgress | undefined;
+                const quizDone = levelProg?.completedGames?.includes('quiz');
                 const matchingDone = levelProg?.completedGames?.includes('matching');
                 return (
                   <motion.button
@@ -656,7 +689,20 @@ export default function HangulLevelPage() {
                     transition={{ delay: 0.25 }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => { setCurrentGameForComplete('matching'); setGameMode('matching'); }}
+                    onClick={() => {
+                      if (!quizDone) {
+                        setPrerequisiteToast(
+                          language === 'ja' ? 'まず「Quiz Game」を完了してください' :
+                          language.startsWith('zh') ? '请先完成「Quiz Game」' :
+                          language === 'th' ? 'กรุณาทำ Quiz Game ให้เสร็จก่อน' :
+                          language === 'vi' ? 'Vui lòng hoàn thành Quiz Game trước' :
+                          language === 'es' ? 'Por favor completa Quiz Game primero' :
+                          'Please complete Quiz Game before starting matching.'
+                        );
+                        return;
+                      }
+                      setCurrentGameForComplete('matching'); setGameMode('matching');
+                    }}
                     className={`w-full bg-white rounded-[16px] md:rounded-[20px] shadow-md p-5 md:p-6 lg:p-7 text-left ${matchingDone ? 'border-2 border-[#B4D700]' : ''}`}
                   >
                     <div className="flex items-center gap-4 md:gap-5">
@@ -756,6 +802,25 @@ export default function HangulLevelPage() {
       )}
 
       {gameMode === 'select' && <Navigation />}
+
+      {/* Prerequisite Toast */}
+      <AnimatePresence>
+        {prerequisiteToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-24 left-4 right-4 z-50 flex justify-center"
+          >
+            <div
+              className="bg-[#1F2937] text-white px-5 py-3 rounded-xl shadow-lg text-sm max-w-sm text-center"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+            >
+              {prerequisiteToast}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

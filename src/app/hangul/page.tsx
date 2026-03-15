@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,11 +21,16 @@ type TierTab = LearningTier;
 
 export default function HangulPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t, language } = useLanguage();
   const { progress, isLevelUnlocked, getLevelProgress } = useProgress();
   const { unlockPro, unlockAllLevels } = useDevMode();
   const { tier, limits } = useAccessControl();
-  const [activeTier, setActiveTier] = useState<TierTab>('beginner');
+  const [activeTier, setActiveTier] = useState<TierTab>(() => {
+    const tierParam = searchParams.get('tier');
+    if (tierParam === 'intermediate' || tierParam === 'advanced') return tierParam;
+    return 'beginner';
+  });
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [paywallContentId, setPaywallContentId] = useState<ContentId | null>(null);
 
@@ -136,7 +141,7 @@ export default function HangulPage() {
             className="flex items-center gap-4 pt-6 pb-0 -mt-[40px]"
           >
             {/* Character Image */}
-            <div className="relative w-[140px] h-[140px] xs:w-[187px] xs:h-[187px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
+            <div className="relative w-[110px] h-[110px] xs:w-[150px] xs:h-[150px] sm:w-[234px] sm:h-[234px] shrink-0 ml-[5px]">
               <Image
                 src="/images/hangul/crt001.png"
                 alt="Hangul Character"
@@ -155,7 +160,7 @@ export default function HangulPage() {
                 LEARN THE BASICS
               </p>
               <h1
-                className="text-[22px] sm:text-[28px] text-[#1F2937] mb-1"
+                className="text-[18px] xs:text-[22px] sm:text-[28px] text-[#1F2937] mb-1 whitespace-nowrap"
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
               >
                 Hangul Learning
@@ -174,16 +179,16 @@ export default function HangulPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-[16px] p-5 mb-6 -mt-[18px] shadow-lg border-l-4 border-l-[#B4D700]"
+            className="bg-white rounded-[16px] p-3 sm:p-5 mb-4 sm:mb-6 -mt-[18px] shadow-lg border-l-4 border-l-[#B4D700]"
           >
             <p
-              className="text-[#B4D700] text-[11px] uppercase tracking-wider mb-1"
+              className="text-[#B4D700] text-[11px] uppercase tracking-wider mb-0.5 sm:mb-1"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
             >
               YOUR PROGRESS
             </p>
             <h2
-              className="text-[24px] text-[#1F2937] mb-4"
+              className="text-[20px] sm:text-[24px] text-[#1F2937] mb-2 sm:mb-4"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               Overall Stats
@@ -191,21 +196,21 @@ export default function HangulPage() {
 
             <div className="flex items-center justify-around">
               {/* Levels */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalCompleted}
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     / {TOTAL_LEVELS} Levels
@@ -214,24 +219,24 @@ export default function HangulPage() {
               </div>
 
               {/* Divider */}
-              <div className="w-px h-14 bg-[#D8B4FE]" />
+              <div className="w-px h-10 sm:h-14 bg-[#D8B4FE]" />
 
               {/* Stars */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#B4D700] rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 sm:w-6 sm:h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     {totalStars}
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     / {TOTAL_LEVELS * 3} Stars
@@ -276,7 +281,7 @@ export default function HangulPage() {
                   key={tierTab}
                   onClick={() => handleTierClick(tierTab)}
                   disabled={!unlocked && !accessLocked}
-                  className={`flex-1 py-3 px-2 rounded-full text-center transition-all ${
+                  className={`flex-1 py-3 px-2 rounded-xl text-center transition-all ${
                     isActive
                       ? 'bg-[#440687] text-white'
                       : unlocked
@@ -327,8 +332,11 @@ export default function HangulPage() {
                   transition={{ delay: index * 0.015 }}
                   whileHover={unlocked && !isLocked ? { scale: 1.05 } : {}}
                   whileTap={unlocked && !isLocked ? { scale: 0.95 } : {}}
-                  onClick={() => handleLevelClick(level.level, level.isPremium ?? false, index)}
-                  disabled={!unlocked && !isTierLimited}
+                  onClick={() => {
+                    if (!unlocked || isLocked) return;
+                    handleLevelClick(level.level, level.isPremium ?? false, index);
+                  }}
+                  disabled={!unlocked || isLocked}
                   className={`aspect-square rounded-[12px] xs:rounded-[16px] flex flex-col items-center justify-center relative transition-all shadow-md ${
                     isFirstUnlocked
                       ? 'bg-white border-l-4 border-l-[#B4D700]'

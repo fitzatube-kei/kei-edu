@@ -4,6 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import WordBuilder, { WordResult } from '@/components/game/WordBuilder';
+import WordPreview from '@/components/game/WordPreview';
 import LevelComplete from '@/components/game/LevelComplete';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/context/LanguageContext';
@@ -26,7 +27,7 @@ export default function PuzzleLevelPage() {
   const category = getCategoryById(categoryId);
   const level = getLevelById(levelId);
 
-  const [showComplete, setShowComplete] = useState(false);
+  const [phase, setPhase] = useState<'preview' | 'game' | 'complete'>('preview');
   const [result, setResult] = useState({ score: 0, correct: 0, total: 0 });
   const [wordResults, setWordResults] = useState<WordResult[]>([]);
 
@@ -89,7 +90,7 @@ export default function PuzzleLevelPage() {
   const handleGameComplete = useCallback((score: number, correct: number, total: number, hintsUsed: number, results: WordResult[]) => {
     setResult({ score, correct, total });
     setWordResults(results);
-    setShowComplete(true);
+    setPhase('complete');
 
     // Calculate stars and save progress
     const stars = calculateStars(correct, total);
@@ -97,7 +98,11 @@ export default function PuzzleLevelPage() {
   }, [levelId, updatePuzzleProgress]);
 
   const handleReplay = useCallback(() => {
-    setShowComplete(false);
+    setPhase('preview');
+  }, []);
+
+  const handleStartGame = useCallback(() => {
+    setPhase('game');
   }, []);
 
   const handleNextLevel = useCallback(() => {
@@ -115,7 +120,7 @@ export default function PuzzleLevelPage() {
   }, [router]);
 
   // Show complete screen
-  if (showComplete) {
+  if (phase === 'complete') {
     const hasNextLevel = levelIndex < category.levels.length - 1;
 
     return (
@@ -128,9 +133,27 @@ export default function PuzzleLevelPage() {
         categoryName={`${category.icon} ${category.name}`}
         onReplay={handleReplay}
         onNext={handleNextLevel}
+        onBackToLevel={() => { setPhase('preview'); }}
         hasNextLevel={hasNextLevel}
         wordResults={wordResults}
       />
+    );
+  }
+
+  // Show word preview (study) screen
+  if (phase === 'preview') {
+    return (
+      <div style={{ height: '100dvh', background: '#421785', padding: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ maxWidth: '40rem', margin: '0 auto', width: '100%', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <WordPreview
+            words={level.words}
+            levelNumber={level.levelNumber}
+            onStartGame={handleStartGame}
+            onSkip={handleStartGame}
+            onExit={handleExit}
+          />
+        </div>
+      </div>
     );
   }
 

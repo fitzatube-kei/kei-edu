@@ -20,9 +20,10 @@ const defaultProgress: UserProgress = {
   isPremium: false,
 };
 
-// Premium users list (for testing) - all lowercase for comparison
-// Premium status is determined solely by Firestore data.isPremium field.
-// Previously used a hardcoded PREMIUM_EMAILS list, now removed in favor of IAP system.
+// Premium users list - emails that are always treated as premium
+const PREMIUM_EMAILS = [
+  'han0726k@gmail.com',
+];
 
 export function useProgress() {
   const { user } = useAuth();
@@ -50,7 +51,7 @@ export function useProgress() {
             ...data,
             cultureProgress: data.cultureProgress || [],
             puzzleProgress: data.puzzleProgress || [],
-            isPremium: data.isPremium || false,
+            isPremium: data.isPremium || PREMIUM_EMAILS.includes(user.email?.toLowerCase() || ''),
             lastPlayedAt: data.lastPlayedAt instanceof Date
               ? data.lastPlayedAt
               : new Date((data.lastPlayedAt as { seconds: number }).seconds * 1000),
@@ -58,7 +59,8 @@ export function useProgress() {
         } else {
           // Initialize progress for new user (not premium by default)
           console.log('[useProgress] New user:', user.email);
-          const newProgress = { ...defaultProgress, userId: user.uid, isPremium: false };
+          const isPremiumEmail = PREMIUM_EMAILS.includes(user.email?.toLowerCase() || '');
+          const newProgress = { ...defaultProgress, userId: user.uid, isPremium: isPremiumEmail };
           await setDoc(progressRef, newProgress);
           setProgress(newProgress);
         }

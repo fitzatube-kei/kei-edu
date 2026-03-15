@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTTS } from '@/hooks/useTTS';
 import { useLanguage } from '@/context/LanguageContext';
+import { useProgress } from '@/hooks/useProgress';
 import { hangulLevels, getTierForLevel, TIER_COLORS } from '@/data/hangul';
 import { HangulCharacter, MultilingualQuizQuestion } from '@/types';
 
@@ -978,8 +979,14 @@ export default function HangulLearnPage() {
   const { t, language } = useLanguage();
   const levelNumber = parseInt(params.level as string, 10);
   const { speak, isSpeaking, speakingId, stop } = useTTS();
+  const { updateLevelProgress } = useProgress();
 
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
+
+  // Mark learn as completed when page is visited
+  useEffect(() => {
+    updateLevelProgress('hangul', levelNumber, 0, 0, 'learn', []);
+  }, [levelNumber]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const level = hangulLevels.find((l) => l.level === levelNumber);
   const tier = getTierForLevel(levelNumber);
@@ -1135,12 +1142,12 @@ export default function HangulLearnPage() {
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-b from-[#440687] via-[#5B1A9A] to-[#6B21A8] pb-32">
-      {/* Back Navigation */}
-      <div className="px-4 pt-4">
+      {/* Back / Tier Badge / Close */}
+      <div className="grid grid-cols-[auto_1fr_auto] items-center px-4 pt-4">
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
+          onClick={() => router.push(`/hangul/${levelNumber}`)}
           className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
         >
@@ -1154,27 +1161,41 @@ export default function HangulLearnPage() {
            language === 'es' ? 'Volver' :
            'Back'}
         </motion.button>
+
+        {/* Tier badge - centered in full row, aligned with content below */}
+        <div className="flex justify-center">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="px-3 sm:px-4 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-[12px] text-[#440687] -translate-x-3"
+            style={{ backgroundColor: '#B4D700', fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+          >
+            {getTierName()}
+          </motion.div>
+        </div>
+
+        {/* Close button */}
+        <motion.button
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          onClick={() => router.push('/hangul')}
+          className="text-white/80 hover:text-white transition-colors"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </motion.button>
       </div>
 
       {/* Level Title Section */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-4 py-6 text-center"
+        className="px-4 pt-2 pb-3 sm:py-6 text-center"
       >
-        {/* Tier badge */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring' }}
-          className="inline-block px-4 py-1 rounded-full text-[12px] text-[#440687] mb-3"
-          style={{ backgroundColor: '#B4D700', fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-        >
-          {getTierName()}
-        </motion.div>
-
         <h1
-          className="text-[28px] text-white mb-2"
+          className="text-[22px] sm:text-[28px] text-white mb-1 sm:mb-2"
           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
         >
           {language === 'ja' ? `レベル ${levelNumber} - 学習` :
@@ -1185,7 +1206,7 @@ export default function HangulLearnPage() {
            `Level ${levelNumber} - Learn`}
         </h1>
         <p
-          className="text-white/80 text-[14px]"
+          className="text-white/80 text-[12px] sm:text-[14px]"
           style={{ fontFamily: 'Poppins, sans-serif' }}
         >
           {level.descriptionKey ? t(level.descriptionKey) : level.description}
@@ -1196,13 +1217,13 @@ export default function HangulLearnPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full"
+          className="mt-2 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-2 bg-white/10 rounded-full"
         >
-          <svg className="w-5 h-5 text-[#B4D700]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#B4D700]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
           <span
-            className="text-white text-[14px]"
+            className="text-white text-[12px] sm:text-[14px]"
             style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
           >
             {itemCount} {hasCharacterObjects
@@ -1260,16 +1281,16 @@ export default function HangulLearnPage() {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[#440687] via-[#440687] to-transparent pt-12 pb-6"
+        className="fixed bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-[#440687] via-[#440687] to-transparent pt-8 sm:pt-12 pb-4 sm:pb-6"
       >
         {/* Scroll indicator arrow */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1, y: [0, 5, 0] }}
           transition={{ delay: 0.8, y: { repeat: Infinity, duration: 1.5 } }}
-          className="flex justify-center mb-3"
+          className="flex justify-center mb-2 sm:mb-3"
         >
-          <svg className="w-8 h-8 text-[#440687]" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#440687]" fill="currentColor" viewBox="0 0 24 24">
             <path d="M7 10l5 5 5-5H7z" />
           </svg>
         </motion.div>
@@ -1278,10 +1299,10 @@ export default function HangulLearnPage() {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
-            className="w-full py-4 bg-[#B4D700] text-[#440687] rounded-[16px] shadow-lg flex items-center justify-center gap-3"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: '18px' }}
+            className="w-full py-3 sm:py-4 bg-[#B4D700] text-[#440687] rounded-[14px] sm:rounded-[16px] shadow-lg flex items-center justify-center gap-2 sm:gap-3"
+            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: '16px' }}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>

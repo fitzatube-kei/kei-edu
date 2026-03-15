@@ -32,7 +32,11 @@
       "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | grep -E \"\\(Compiled|✓|✗|Type error|Failed\\)\" | head -5)",
       "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build 2>&1 | tail -5)",
       "Bash(git checkout src/data/kpopQuizData.ts src/data/kdramaQuizData.ts)",
-      "Bash(cd /Volumes/Expansion/1-A.kei/개발클로/korean-learning-game/public/images/icon && mv 'sound001\\(1\\).png' 'sound001_w.png' && mv 'sound001\\(2\\).png' 'sound001_g.png' && mv 'sound001\\(3\\).png' 'sound001_p.png' && ls -la)"
+      "Bash(cd /Volumes/Expansion/1-A.kei/개발클로/korean-learning-game/public/images/icon && mv 'sound001\\(1\\).png' 'sound001_w.png' && mv 'sound001\\(2\\).png' 'sound001_g.png' && mv 'sound001\\(3\\).png' 'sound001_p.png' && ls -la)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game/public/images/icon\" && mv \"ft_hangul001\\(2\\).png\" \"ft_hangul001_active.png\" && mv \"ft_puzzle001\\(2\\).png\" \"ft_puzzle001_active.png\" && mv \"ft_emoji001\\(2\\).png\" \"ft_emoji001_active.png\" && mv \"ft_story001\\(2\\).png\" \"ft_story001_active.png\" && ls ft_*)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | tail -30)",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && cat .next/server/app/puzzle/\\\\[category\\\\]/\\\\[level\\\\]/page.js 2>/dev/null | grep -c \"WordPreview\" || echo \"not found in server bundle\")",
+      "Bash(cd \"/Volumes/Expansion/1-A.kei/개발클로/korean-learning-game\" && npx next build --no-lint 2>&1 | grep -E \"error|Error|✓\" | head -5)"
     ]
   }
 }

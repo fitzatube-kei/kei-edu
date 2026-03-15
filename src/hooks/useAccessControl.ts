@@ -31,14 +31,14 @@ export interface AccessLimits {
 
 const GUEST_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: 5, intermediateAllowed: false, advancedAllowed: false },
-  puzzle: { beginnerMaxLevel: 5, intermediateAllowed: false, advancedAllowed: false },
+  puzzle: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
   culture: { beginnerMaxSet: 5, intermediateAllowed: false, advancedAllowed: false },
   story: { allowed: false, allowedLocations: [] },
 };
 
 const FREE_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
-  puzzle: { beginnerMaxLevel: 3, intermediateAllowed: false, advancedAllowed: false },
+  puzzle: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
   culture: { beginnerMaxSet: 10, intermediateAllowed: false, advancedAllowed: false },
   story: { allowed: true, allowedLocations: ['myeongdong'] },
 };

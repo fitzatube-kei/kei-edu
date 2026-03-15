@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Navigation from '@/components/layout/Navigation';
 import { useLanguage } from '@/context/LanguageContext';
-import CultureTutorial from '@/components/tutorial/CultureTutorial';
+
 
 const translations: Record<string, {
   pageTitle: string;
@@ -165,7 +165,6 @@ const cultureFeatures = [
 
 export default function CulturePage() {
   const { language } = useLanguage();
-  const [showTutorial, setShowTutorial] = useState(false);
   const t = translations[language] || translations.en;
 
   const getFeatureContent = (id: string) => {
@@ -183,29 +182,13 @@ export default function CulturePage() {
     <div className="min-h-screen bg-white pb-24 md:pb-8">
       <Header />
 
-      {/* Tutorial Button - below header on white background */}
-      <div className="px-4 sm:px-6 pt-3 relative z-20">
-        <div className="max-w-4xl mx-auto flex justify-end">
-          <button
-            onClick={() => setShowTutorial(true)}
-            className="bg-[#9038EF] text-white px-5 py-[6px] rounded-full text-[14px] flex items-center gap-1"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-          >
-            {t.tutorial}
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
       <main className="px-4 md:px-8 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Hero Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 pt-6 pb-0 -mt-[40px]"
+            className="flex items-center gap-4 pt-6 pb-0"
           >
             {/* Character Image */}
             <div className="relative w-[120px] h-[120px] xs:w-[150px] xs:h-[150px] sm:w-[187px] sm:h-[187px] md:w-[220px] md:h-[220px] shrink-0 ml-[5px]">
@@ -246,16 +229,16 @@ export default function CulturePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white rounded-[16px] p-5 mb-6 mt-0 shadow-lg border-l-4 border-l-[#FF7E00]"
+            className="bg-white rounded-[16px] p-3 sm:p-5 mb-4 sm:mb-6 mt-0 shadow-lg border-l-4 border-l-[#FF7E00]"
           >
             <p
-              className="text-[#FF7E00] text-[11px] uppercase tracking-wider mb-1"
+              className="text-[#FF7E00] text-[11px] uppercase tracking-wider mb-0.5 sm:mb-1"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
             >
               {t.yourProgress}
             </p>
             <h2
-              className="text-[24px] text-[#1F2937] mb-4"
+              className="text-[20px] sm:text-[24px] text-[#1F2937] mb-2 sm:mb-4"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {t.overallStats}
@@ -263,19 +246,19 @@ export default function CulturePage() {
 
             <div className="flex items-center justify-around">
               {/* Quiz Played */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
-                  <span className="text-xl">🎯</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
+                  <span className="text-base sm:text-xl">🎯</span>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     0
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     {t.quizPlayed}
@@ -284,22 +267,22 @@ export default function CulturePage() {
               </div>
 
               {/* Divider */}
-              <div className="w-px h-14 bg-[#FF7E00]/30" />
+              <div className="w-px h-10 sm:h-14 bg-[#FF7E00]/30" />
 
               {/* Best Score */}
-              <div className="flex items-center gap-3">
-                <div className="w-[36px] h-[36px] xs:w-[40px] xs:h-[40px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
-                  <span className="text-xl">🏆</span>
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-[30px] h-[30px] xs:w-[36px] xs:h-[36px] sm:w-[48px] sm:h-[48px] bg-[#FF7E00] rounded-lg flex items-center justify-center">
+                  <span className="text-base sm:text-xl">🏆</span>
                 </div>
                 <div>
                   <p
-                    className="text-[24px] xs:text-[28px] sm:text-[32px] text-[#1F2937]"
+                    className="text-[20px] xs:text-[24px] sm:text-[32px] text-[#1F2937]"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                   >
                     -
                   </p>
                   <p
-                    className="text-[12px] text-gray-500"
+                    className="text-[11px] sm:text-[12px] text-gray-500"
                     style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
                   >
                     {t.bestScore}
@@ -356,16 +339,16 @@ export default function CulturePage() {
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
+                          <div className="flex items-center gap-2 mb-1 whitespace-nowrap">
                             <p
-                              className="text-xs uppercase tracking-wider"
+                              className="text-[10px] xs:text-xs uppercase tracking-wider"
                               style={{ color: feature.color, fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                             >
                               {feature.label}
                             </p>
                             {content.badge && (
                               <span
-                                className="text-[10px] px-2 py-0.5 rounded-full text-white"
+                                className="text-[9px] xs:text-[10px] px-1.5 xs:px-2 py-0.5 rounded-full text-white"
                                 style={{ backgroundColor: feature.color, fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
                               >
                                 {content.badge}
@@ -440,13 +423,6 @@ export default function CulturePage() {
       </main>
 
       <Navigation />
-
-      {/* Tutorial Modal */}
-      <AnimatePresence>
-        {showTutorial && (
-          <CultureTutorial isOpen={showTutorial} onClose={() => setShowTutorial(false)} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }
