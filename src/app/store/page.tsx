@@ -241,6 +241,7 @@ const storeTranslations: Record<string, {
 const CONTENT_IDS: ContentId[] = [
   'hangul_intermediate', 'hangul_advanced',
   'puzzle_intermediate', 'puzzle_advanced',
+  'sentences_intermediate', 'sentences_advanced',
   'culture_kpop_hard', 'culture_kdrama_hard',
   'story_busan', 'story_jeju',
 ];
@@ -250,6 +251,8 @@ const CONTENT_ICONS: Record<ContentId, string> = {
   hangul_advanced: '📝',
   puzzle_intermediate: '🧩',
   puzzle_advanced: '🎯',
+  sentences_intermediate: '📖',
+  sentences_advanced: '💬',
   culture_kpop_hard: '🎵',
   culture_kdrama_hard: '🎬',
   story_busan: '🏖️',

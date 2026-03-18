@@ -188,7 +188,7 @@ export default function CulturePage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-4 pt-6 pb-0"
+            className="flex items-center gap-4 pt-6 pb-0 -mt-[10px]"
           >
             {/* Character Image */}
             <div className="relative w-[120px] h-[120px] xs:w-[150px] xs:h-[150px] sm:w-[187px] sm:h-[187px] md:w-[220px] md:h-[220px] shrink-0 ml-[5px]">

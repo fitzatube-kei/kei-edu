@@ -18,6 +18,11 @@ export interface AccessLimits {
     intermediateAllowed: boolean;
     advancedAllowed: boolean;
   };
+  sentences: {
+    beginnerMaxLevel: number;
+    intermediateAllowed: boolean;
+    advancedAllowed: boolean;
+  };
   culture: {
     beginnerMaxSet: number;
     intermediateAllowed: boolean;
@@ -32,6 +37,7 @@ export interface AccessLimits {
 const GUEST_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: 5, intermediateAllowed: false, advancedAllowed: false },
   puzzle: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
+  sentences: { beginnerMaxLevel: 5, intermediateAllowed: false, advancedAllowed: false },
   culture: { beginnerMaxSet: 5, intermediateAllowed: false, advancedAllowed: false },
   story: { allowed: false, allowedLocations: [] },
 };
@@ -39,6 +45,7 @@ const GUEST_LIMITS: AccessLimits = {
 const FREE_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
   puzzle: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
+  sentences: { beginnerMaxLevel: 10, intermediateAllowed: false, advancedAllowed: false },
   culture: { beginnerMaxSet: 10, intermediateAllowed: false, advancedAllowed: false },
   story: { allowed: true, allowedLocations: ['myeongdong'] },
 };
@@ -46,6 +53,7 @@ const FREE_LIMITS: AccessLimits = {
 const PREMIUM_LIMITS: AccessLimits = {
   hangul: { beginnerMaxLevel: Infinity, intermediateAllowed: true, advancedAllowed: true },
   puzzle: { beginnerMaxLevel: Infinity, intermediateAllowed: true, advancedAllowed: true },
+  sentences: { beginnerMaxLevel: Infinity, intermediateAllowed: true, advancedAllowed: true },
   culture: { beginnerMaxSet: Infinity, intermediateAllowed: true, advancedAllowed: true },
   story: { allowed: true, allowedLocations: [] }, // empty = all
 };
@@ -84,6 +92,11 @@ export function useAccessControl() {
       ...baseLimits.puzzle,
       intermediateAllowed: baseLimits.puzzle.intermediateAllowed || isContentUnlocked('puzzle_intermediate'),
       advancedAllowed: baseLimits.puzzle.advancedAllowed || isContentUnlocked('puzzle_advanced'),
+    },
+    sentences: {
+      ...baseLimits.sentences,
+      intermediateAllowed: baseLimits.sentences.intermediateAllowed || isContentUnlocked('sentences_intermediate'),
+      advancedAllowed: baseLimits.sentences.advancedAllowed || isContentUnlocked('sentences_advanced'),
     },
     culture: {
       ...baseLimits.culture,

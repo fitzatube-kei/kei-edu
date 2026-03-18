@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
-import { UserProgress, LevelProgress, GameCategory, StoryEpisodeProgress, CategoryProgress, HistoryCategory, PuzzleLevelProgress } from '@/types';
+import { UserProgress, LevelProgress, GameCategory, StoryEpisodeProgress, CategoryProgress, HistoryCategory, PuzzleLevelProgress, GrammarLevelProgress } from '@/types';
 import { getFromStorage, setToStorage } from '@/lib/utils';
 
 const defaultProgress: UserProgress = {
@@ -14,6 +14,7 @@ const defaultProgress: UserProgress = {
   cultureProgress: [],
   storyProgress: [],
   puzzleProgress: [],
+  grammarProgress: [],
   totalScore: 0,
   streakDays: 0,
   lastPlayedAt: new Date(),
@@ -51,6 +52,7 @@ export function useProgress() {
             ...data,
             cultureProgress: data.cultureProgress || [],
             puzzleProgress: data.puzzleProgress || [],
+            grammarProgress: data.grammarProgress || [],
             isPremium: data.isPremium || PREMIUM_EMAILS.includes(user.email?.toLowerCase() || ''),
             lastPlayedAt: data.lastPlayedAt instanceof Date
               ? data.lastPlayedAt
@@ -71,6 +73,7 @@ export function useProgress() {
           ...localProgress,
           cultureProgress: localProgress.cultureProgress || [],
           puzzleProgress: localProgress.puzzleProgress || [],
+          grammarProgress: localProgress.grammarProgress || [],
         });
       }
     } catch (err) {
@@ -284,11 +287,18 @@ export function useProgress() {
     levelId: string,
     stars: number,
     score: number,
-    hintsUsed: number = 0
+    hintsUsed: number = 0,
+    completedGame?: string
   ) => {
     const currentProgress = progress.puzzleProgress || [];
     const existingIndex = currentProgress.findIndex(p => p.levelId === levelId);
     const existingLevel = currentProgress[existingIndex];
+
+    // Merge completedGames
+    const existingGames = existingLevel?.completedGames || [];
+    const mergedGames = completedGame
+      ? Array.from(new Set([...existingGames, completedGame]))
+      : existingGames;
 
     const newPuzzleProgress: PuzzleLevelProgress = {
       levelId,
@@ -299,6 +309,7 @@ export function useProgress() {
         ? Math.min(existingLevel.hintsUsed || 0, hintsUsed)
         : hintsUsed,
       completedAt: new Date(),
+      completedGames: mergedGames,
     };
 
     let updatedPuzzleProgress: PuzzleLevelProgress[];
@@ -340,6 +351,65 @@ export function useProgress() {
   // Get puzzle level progress
   const getPuzzleLevelProgress = (levelId: string): PuzzleLevelProgress | undefined => {
     return (progress.puzzleProgress || []).find(p => p.levelId === levelId);
+  };
+
+  // Update grammar level progress
+  const updateGrammarProgress = async (
+    levelId: string,
+    stars: number,
+    score: number
+  ) => {
+    const currentProgress = progress.grammarProgress || [];
+    const existingIndex = currentProgress.findIndex(p => p.levelId === levelId);
+    const existingLevel = currentProgress[existingIndex];
+
+    const newGrammarProgress: GrammarLevelProgress = {
+      levelId,
+      stars: existingLevel ? Math.max(existingLevel.stars, stars) : stars,
+      score: existingLevel ? Math.max(existingLevel.score, score) : score,
+      completed: stars >= 1,
+      completedAt: new Date(),
+    };
+
+    let updatedGrammarProgress: GrammarLevelProgress[];
+    if (existingIndex !== -1) {
+      updatedGrammarProgress = [...currentProgress];
+      updatedGrammarProgress[existingIndex] = newGrammarProgress;
+    } else {
+      updatedGrammarProgress = [...currentProgress, newGrammarProgress];
+    }
+
+    const newTotalScore = progress.totalScore + score - (existingLevel?.score || 0);
+
+    const updatedUserProgress: UserProgress = {
+      ...progress,
+      grammarProgress: updatedGrammarProgress,
+      totalScore: newTotalScore,
+      lastPlayedAt: new Date(),
+    };
+
+    setProgress(updatedUserProgress);
+
+    try {
+      if (user) {
+        const progressRef = doc(db, 'userProgress', user.uid);
+        await updateDoc(progressRef, {
+          grammarProgress: updatedGrammarProgress,
+          totalScore: newTotalScore,
+          lastPlayedAt: new Date(),
+        });
+      } else {
+        setToStorage('guestProgress', updatedUserProgress);
+      }
+    } catch (err) {
+      console.error('Error updating grammar progress:', err);
+      setError('문법 진행 상황 저장에 실패했습니다.');
+    }
+  };
+
+  // Get grammar level progress
+  const getGrammarLevelProgress = (levelId: string): GrammarLevelProgress | undefined => {
+    return (progress.grammarProgress || []).find(p => p.levelId === levelId);
   };
 
   // Get level progress (supports both old and new systems)
@@ -454,9 +524,11 @@ export function useProgress() {
     updateLevelProgress,
     updateCultureProgress,
     updatePuzzleProgress,
+    updateGrammarProgress,
     getLevelProgress,
     getCultureLevelProgress,
     getPuzzleLevelProgress,
+    getGrammarLevelProgress,
     isLevelUnlocked,
     isCultureLevelUnlocked,
     updateStreak,

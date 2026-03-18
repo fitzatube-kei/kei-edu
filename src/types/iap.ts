@@ -13,6 +13,8 @@ export type ContentId =
   | 'puzzle_advanced'
   | 'culture_kpop_hard'
   | 'culture_kdrama_hard'
+  | 'sentences_intermediate'
+  | 'sentences_advanced'
   | 'story_busan'
   | 'story_jeju';
 

@@ -37,6 +37,16 @@ export interface PuzzleLevelProgress {
   completed: boolean;
   hintsUsed?: number;
   completedAt?: Date;
+  completedGames?: string[]; // ['write', 'puzzle']
+}
+
+// Grammar level progress
+export interface GrammarLevelProgress {
+  levelId: string; // e.g., 'basic-01', 'inter-05'
+  stars: number; // 0-3
+  score: number;
+  completed: boolean;
+  completedAt?: Date;
 }
 
 export interface UserProgress {
@@ -46,6 +56,7 @@ export interface UserProgress {
   cultureProgress: CategoryProgress[]; // New: category-based progress
   storyProgress: StoryEpisodeProgress[];
   puzzleProgress: PuzzleLevelProgress[]; // Puzzle game progress
+  grammarProgress: GrammarLevelProgress[]; // Grammar/Sentences progress
   totalScore: number;
   streakDays: number;
   lastPlayedAt: Date;

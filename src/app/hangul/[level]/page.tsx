@@ -329,7 +329,7 @@ export default function HangulLevelPage() {
         onReplay={handleReplay}
         onNext={handleNextLevel}
         onRetryWrong={wrongQuestions.length > 0 ? handleRetryWrong : undefined}
-        onBackToLevel={() => { setShowComplete(false); setGameMode('select'); }}
+        onBackToLevel={handleExit}
         onGoToMatching={currentGameForComplete === 'quiz' && ((level.matchingPairs && level.matchingPairs.length >= 4) || (level.multilingualMatchingPairs && level.multilingualMatchingPairs.length >= 4)) ? () => {
           setShowComplete(false);
           setQuestionResults([]);

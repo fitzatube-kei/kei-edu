@@ -17,14 +17,6 @@ interface NavItem {
 
 const navItemsConfig: NavItem[] = [
   {
-    href: '/main',
-    labelKey: 'home',
-    icon: '/images/icon/ft_home001.png',
-    activeIcon: '/images/icon/ft_home001_active.png',
-    activeColor: '#5B7A04',
-    iconScale: 1.331,
-  },
-  {
     href: '/hangul',
     labelKey: 'hangul',
     icon: '/images/icon/ft_hangul001.png',
@@ -34,10 +26,17 @@ const navItemsConfig: NavItem[] = [
   },
   {
     href: '/puzzle',
-    labelKey: 'puzzle',
+    labelKey: 'words',
     icon: '/images/icon/ft_puzzle001.png',
     activeIcon: '/images/icon/ft_puzzle001_active.png',
     activeColor: '#E65100',
+  },
+  {
+    href: '/sentences',
+    labelKey: 'sentences',
+    icon: '/images/icon/ft_sentences001.png',
+    activeIcon: '/images/icon/ft_sentences001_active.png',
+    activeColor: '#627800',
   },
   {
     href: '/culture',
@@ -57,13 +56,13 @@ const navItemsConfig: NavItem[] = [
 ];
 
 const navLabels: Record<string, Record<string, string>> = {
-  en: { home: 'HOME', hangul: 'HANGUL', puzzle: 'PUZZLE', emoji: 'EMOJI', story: 'STORY' },
-  es: { home: 'INICIO', hangul: 'HANGUL', puzzle: 'PUZZLE', emoji: 'EMOJI', story: 'HISTORIA' },
-  th: { home: 'หน้าหลัก', hangul: 'ฮันกึล', puzzle: 'ปริศนา', emoji: 'EMOJI', story: 'เรื่องราว' },
-  ja: { home: 'ホーム', hangul: 'ハングル', puzzle: 'パズル', emoji: 'EMOJI', story: 'ストーリー' },
-  vi: { home: 'HOME', hangul: 'HANGUL', puzzle: 'PUZZLE', emoji: 'EMOJI', story: 'STORY' },
-  zh: { home: '首页', hangul: '韩文', puzzle: '拼图', emoji: 'EMOJI', story: '故事' },
-  'zh-TW': { home: '首頁', hangul: '韓文', puzzle: '拼圖', emoji: 'EMOJI', story: '故事' },
+  en: { hangul: 'HANGUL', words: 'WORDS', sentences: 'SENTENCES', emoji: 'QUIZ', story: 'STORY' },
+  es: { hangul: 'HANGUL', words: 'PALABRAS', sentences: 'FRASES', emoji: 'QUIZ', story: 'HISTORIA' },
+  th: { hangul: 'ฮันกึล', words: 'คำศัพท์', sentences: 'ประโยค', emoji: 'QUIZ', story: 'เรื่องราว' },
+  ja: { hangul: 'ハングル', words: 'ワード', sentences: '文法', emoji: 'QUIZ', story: 'ストーリー' },
+  vi: { hangul: 'HANGUL', words: 'TỪ VỰNG', sentences: 'CÂU', emoji: 'QUIZ', story: 'STORY' },
+  zh: { hangul: '韩文', words: '单词', sentences: '句子', emoji: 'QUIZ', story: '故事' },
+  'zh-TW': { hangul: '韓文', words: '單詞', sentences: '句子', emoji: 'QUIZ', story: '故事' },
 };
 
 const ICON_SIZE = 36;
@@ -75,7 +74,6 @@ export default function Navigation() {
   const getLabel = (key: string) => navLabels[language]?.[key] || navLabels.en[key];
 
   const isActiveTab = (href: string) => {
-    if (href === '/main') return pathname === '/main';
     return pathname === href || pathname.startsWith(href + '/');
   };
 

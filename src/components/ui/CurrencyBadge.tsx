@@ -16,11 +16,11 @@ export default function CurrencyBadge() {
   return (
     <motion.button
       onClick={() => router.push('/store')}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold"
+      className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] text-sm font-semibold mr-1"
       style={{
-        background: 'linear-gradient(135deg, #FF7E00, #FFB800)',
+        background: 'linear-gradient(135deg, #6BBF00, #B4D700)',
         color: '#fff',
-        boxShadow: '0 2px 8px rgba(255, 126, 0, 0.3)',
+        boxShadow: '0 2px 8px rgba(139, 195, 0, 0.3)',
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
@@ -37,6 +37,15 @@ export default function CurrencyBadge() {
           {loading ? '...' : balance.toLocaleString()}
         </motion.span>
       </AnimatePresence>
+      {/* Speech bubble tail pointing right toward avatar */}
+      <div
+        className="absolute -right-[6px] top-1/2 -translate-y-1/2 w-0 h-0"
+        style={{
+          borderTop: '6px solid transparent',
+          borderBottom: '6px solid transparent',
+          borderLeft: '7px solid #B4D700',
+        }}
+      />
     </motion.button>
   );
 }

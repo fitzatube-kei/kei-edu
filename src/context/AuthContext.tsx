@@ -43,6 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         cultureProgress: [],
         storyProgress: [],
         puzzleProgress: [],
+        grammarProgress: [],
         totalScore: 0,
         streakDays: 0,
         lastPlayedAt: new Date(),

@@ -102,7 +102,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
   const [showResult, setShowResult] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
   const [selectedTileId, setSelectedTileId] = useState<number | null>(null);
 
   const currentWord = words[currentIndex];
@@ -153,7 +153,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
 
   const handleDragEnd = useCallback(
     (tileId: number, info: PanInfo) => {
-      setIsDragging(false);
+      isDraggingRef.current = false;
       if (showResult) return;
 
       const tile = availableTiles.find((t) => t.id === tileId);
@@ -567,7 +567,7 @@ export default function WordBuilder({ words, onComplete, onExit }: WordBuilderPr
               drag={!showResult}
               dragConstraints={{ left: 0, right: 0, top: -400, bottom: 0 }}
               dragElastic={0.9}
-              onDragStart={() => setIsDragging(true)}
+              onDragStart={() => { isDraggingRef.current = true; }}
               onDragEnd={(_, info) => handleDragEnd(tile.id, info)}
               onTap={() => handleTileTap(tile.id)}
               whileTap={{ scale: 0.95 }}
