@@ -59,7 +59,15 @@
       "WebFetch(domain:learnkorean.in)",
       "Bash(npx next build 2>&1 | tail -15)",
       "Bash(npx next build 2>&1 | grep -E \"error|Error|✓ Compiled|Failed\" | head -10)",
-      "Bash(npx next build 2>&1 | grep -E \"✓ Compiled|Failed\" | head -3)"
+      "Bash(npx next build 2>&1 | grep -E \"✓ Compiled|Failed\" | head -3)",
+      "Bash(git push)",
+      "Bash(npx next build 2>&1 | grep -i \"error\\\\|fail\" | head -10)",
+      "Bash(npx next build 2>&1 | grep -E \"✓|✗|Error|error\" | head -5)",
+      "Bash(npx next build 2>&1 | grep -E \"✓|✗|Error\" | head -5)",
+      "Bash(git checkout src/app/main/page.tsx src/components/layout/Header.tsx)",
+      "Bash(git reflog --diff-filter=M -- src/app/main/page.tsx | head -5)",
+      "Bash(find /Volumes/Expansion/1-A.kei/개발클로/korean-learning-game/.vscode 2>/dev/null -name \"*.json\" | head -5; ls /Volumes/Expansion/1-A.kei/개발클로/korean-learning-game/.history/ 2>/dev/null | head -5)",
+      "Bash(npx next build 2>&1 | grep \"✓ Compiled\")"
     ]
   }
 }

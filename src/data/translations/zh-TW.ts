@@ -304,7 +304,7 @@ export const zhTW = {
     language: '語言',
     changeLanguage: '更改語言',
     selectLanguage: '選擇語言',
-    title: '設定',
+    title: 'My Page',
     myInfo: '我的資訊',
     appInfo: '應用程式資訊',
     appPurchase: '進階版',

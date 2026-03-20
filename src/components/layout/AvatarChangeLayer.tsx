@@ -109,23 +109,25 @@ export default function AvatarChangeLayer({
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setAvatarGender('female')}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
                   avatarGender === 'female'
-                    ? 'bg-pink-500 text-white'
+                    ? 'bg-[#440687] text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
+                style={{ fontFamily: 'Poppins, sans-serif' }}
               >
-                👩 {language === 'en' ? 'Female' : language === 'ja' ? '女性' : language.startsWith('zh') ? '女性' : language === 'es' ? 'Femenino' : language === 'vi' ? 'Nữ' : 'หญิง'}
+                {language === 'en' ? 'Female' : language === 'ja' ? '女性' : language.startsWith('zh') ? '女性' : language === 'es' ? 'Femenino' : language === 'vi' ? 'Nữ' : 'หญิง'}
               </button>
               <button
                 onClick={() => setAvatarGender('male')}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
+                className={`flex-1 py-2 rounded-lg text-sm font-bold transition-all ${
                   avatarGender === 'male'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-[#B4D700] text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
+                style={{ fontFamily: 'Poppins, sans-serif' }}
               >
-                👨 {language === 'en' ? 'Male' : language === 'ja' ? '男性' : language.startsWith('zh') ? '男性' : language === 'es' ? 'Masculino' : language === 'vi' ? 'Nam' : 'ชาย'}
+                {language === 'en' ? 'Male' : language === 'ja' ? '男性' : language.startsWith('zh') ? '男性' : language === 'es' ? 'Masculino' : language === 'vi' ? 'Nam' : 'ชาย'}
               </button>
             </div>
 
@@ -135,17 +137,17 @@ export default function AvatarChangeLayer({
                 <button
                   key={index}
                   onClick={() => setSelectedAvatar(avatar)}
-                  className={`relative w-14 h-14 rounded-full transition-all ${
+                  className={`relative w-14 h-14 rounded-full transition-all overflow-hidden ${
                     selectedAvatar === avatar
                       ? 'ring-2 ring-[#440687] ring-offset-2'
-                      : 'border-2 border-gray-200 hover:border-gray-400'
+                      : ''
                   }`}
                 >
                   <Image
                     src={avatar}
                     alt={`Avatar ${index + 1}`}
                     fill
-                    className="object-contain p-1"
+                    className="object-contain scale-[1.12]"
                     unoptimized
                   />
                 </button>

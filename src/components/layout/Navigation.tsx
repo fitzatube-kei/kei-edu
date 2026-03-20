@@ -19,39 +19,37 @@ const navItemsConfig: NavItem[] = [
   {
     href: '/hangul',
     labelKey: 'hangul',
-    icon: '/images/icon/ft_hangul001.png',
-    activeIcon: '/images/icon/ft_hangul001_active.png',
-    activeColor: '#7B2CBF',
-    iconScale: 0.946,
+    icon: '/images/footer/icon_hangul_1.png',
+    activeIcon: '/images/footer/icon_hangul_2.png',
+    activeColor: '#FFFFFF',
   },
   {
     href: '/puzzle',
     labelKey: 'words',
-    icon: '/images/icon/ft_puzzle001.png',
-    activeIcon: '/images/icon/ft_puzzle001_active.png',
-    activeColor: '#E65100',
+    icon: '/images/footer/icon_words_1.png',
+    activeIcon: '/images/footer/icon_words_2.png',
+    activeColor: '#FFFFFF',
   },
   {
     href: '/sentences',
     labelKey: 'sentences',
-    icon: '/images/icon/ft_sentences001.png',
-    activeIcon: '/images/icon/ft_sentences001_active.png',
-    activeColor: '#627800',
+    icon: '/images/footer/icon_sen_1.png',
+    activeIcon: '/images/footer/icon_sen_2.png',
+    activeColor: '#FFFFFF',
   },
   {
     href: '/culture',
     labelKey: 'emoji',
-    icon: '/images/icon/ft_emoji001.png',
-    activeIcon: '/images/icon/ft_emoji001_active.png',
-    activeColor: '#1B7D3A',
+    icon: '/images/footer/icon_quiz_1.png',
+    activeIcon: '/images/footer/icon_quiz_2.png',
+    activeColor: '#FFFFFF',
   },
   {
     href: '/story',
     labelKey: 'story',
-    icon: '/images/icon/ft_story001.png',
-    activeIcon: '/images/icon/ft_story001_active.png',
-    activeColor: '#1565C0',
-    iconScale: 0.86,
+    icon: '/images/footer/icon_story_1.png',
+    activeIcon: '/images/footer/icon_story_2.png',
+    activeColor: '#FFFFFF',
   },
 ];
 
@@ -65,7 +63,8 @@ const navLabels: Record<string, Record<string, string>> = {
   'zh-TW': { hangul: '韓文', words: '單詞', sentences: '句子', emoji: 'QUIZ', story: '故事' },
 };
 
-const ICON_SIZE = 36;
+const ICON_SIZE_MOBILE = 30;
+const ICON_SIZE_TABLET = 36;
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -78,11 +77,10 @@ export default function Navigation() {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: '#B4D700' }}>
-      <div className="flex items-center justify-around max-w-4xl mx-auto py-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 rounded-t-2xl" style={{ backgroundColor: '#B4D700' }}>
+      <div className="flex items-center justify-around max-w-4xl mx-auto py-3 md:py-4">
         {navItemsConfig.map((item) => {
           const isActive = isActiveTab(item.href);
-          const itemIconSize = Math.round(ICON_SIZE * (item.iconScale || 1));
 
           return (
             <Link
@@ -90,15 +88,15 @@ export default function Navigation() {
               href={item.href}
               className="flex flex-col items-center justify-center flex-1 gap-0.5"
             >
-              {/* Icon */}
-              <div className="flex items-center justify-center" style={{ width: `${ICON_SIZE}px`, height: `${ICON_SIZE}px` }}>
+              {/* Icon - 30px mobile, 36px tablet */}
+              <div className="flex items-center justify-center w-[30px] h-[30px] md:w-[36px] md:h-[36px]">
                 <Image
                   src={isActive ? item.activeIcon : item.icon}
                   alt={getLabel(item.labelKey)}
-                  width={itemIconSize}
-                  height={itemIconSize}
+                  width={ICON_SIZE_TABLET}
+                  height={ICON_SIZE_TABLET}
                   unoptimized
-                  className="object-contain"
+                  className="object-contain w-[30px] h-[30px] md:w-[36px] md:h-[36px]"
                 />
               </div>
 

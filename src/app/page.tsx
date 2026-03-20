@@ -149,16 +149,16 @@ export default function IntroPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-[100dvh] bg-white flex flex-col overflow-hidden">
       {/* Purple header */}
-      <div className="bg-[#440687] pt-12 pb-4 px-6 flex flex-col items-center">
+      <div className="bg-[#440687] pt-[max(env(safe-area-inset-top),24px)] pb-2 px-6 flex flex-col items-center shrink-0">
         <div className="flex items-center gap-3">
           <Image
             src="/images/main/kbi01.png"
             alt="KBI Logo"
             width={40}
             height={40}
-            className="object-contain"
+            className="object-contain w-[30px] h-[30px] sm:w-[40px] sm:h-[40px]"
             unoptimized
           />
           <Image
@@ -166,12 +166,12 @@ export default function IntroPage() {
             alt="KEI-EDU"
             width={140}
             height={36}
-            className="object-contain"
+            className="object-contain w-[100px] sm:w-[140px]"
             unoptimized
           />
         </div>
         <p
-          className="text-white/80 text-[22px] mt-1 text-center"
+          className="text-white/80 text-[13px] sm:text-[18px] lg:text-[22px] mt-0.5 text-center"
           style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
         >
           {t.subtitle}
@@ -179,101 +179,119 @@ export default function IntroPage() {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-6">
-        {/* Title */}
-        <h1
-          className="text-[#1F2937] text-[36px] sm:text-[42px] text-center leading-tight mb-[3vh]"
-          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-        >
-          {t.title1}<br />{t.title2}
-        </h1>
+      <div className="flex-1 flex items-center justify-center px-6 py-2 sm:py-4 overflow-hidden">
+        <div className="flex flex-col landscape:flex-row items-center justify-center gap-[1.5vh] landscape:gap-[6vw] w-full max-w-5xl">
 
-        {/* Character illustration */}
-        <div className="relative w-[40vw] max-w-[312px] aspect-square sm:w-[360px] mb-[2vh] flex items-center justify-center">
-          <div className="absolute w-[88%] h-[88%] bg-[#CEECFE] rounded-full" />
-          <Image
-            src="/images/main/king.png?v=2"
-            alt="Korean King Character"
-            fill
-            className="object-contain z-10"
-            unoptimized
-            priority
-          />
-        </div>
+          {/* Left: Character (landscape only, hidden in portrait) */}
+          <div className="hidden landscape:flex items-center justify-center shrink-0">
+            <div className="relative aspect-square flex items-center justify-center" style={{ width: 'clamp(180px, 40vh, 340px)' }}>
+              <div className="absolute w-[88%] h-[88%] bg-[#CEECFE] rounded-full" />
+              <Image
+                src="/images/main/king.png?v=2"
+                alt="Korean King Character"
+                fill
+                className="object-contain z-10"
+                unoptimized
+                priority
+              />
+            </div>
+          </div>
 
-        {/* Action buttons */}
-        <div className="flex gap-3 mb-[3vh]">
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handleStartFree}
-            className="bg-[#440687] text-white px-6 py-[9px] rounded-xl text-[21px] shadow-sm hover:bg-[#350568] transition-colors"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-          >
-            {t.startFree}
-          </motion.button>
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={handleSignUp}
-            className="bg-[#77B602] text-white px-6 py-[9px] rounded-xl text-[21px] shadow-sm hover:bg-[#669a02] transition-colors"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-          >
-            {t.signUp}
-          </motion.button>
-        </div>
+          {/* Center/Right: Title + Character(portrait) + Buttons + Language */}
+          <div className="flex flex-col items-center landscape:items-start">
+            {/* Title */}
+            <h1
+              className="text-[#1F2937] text-center landscape:text-left leading-tight mb-[1vh] sm:mb-[1.5vh]"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(24px, 5vh, 48px)' }}
+            >
+              {t.title1}<br />{t.title2}
+            </h1>
 
-        {/* Language selection */}
-        <div className="w-full max-w-sm">
-          <h2
-            className="text-[#1F2937] text-[22px] mb-4 text-center"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-          >
-            {t.chooseLanguage}
-          </h2>
+            {/* Character illustration — portrait only */}
+            <div className="landscape:hidden relative aspect-square mb-[1vh] sm:mb-[1.5vh] flex items-center justify-center" style={{ width: 'clamp(100px, 25vh, 280px)' }}>
+              <div className="absolute w-[88%] h-[88%] bg-[#CEECFE] rounded-full" />
+              <Image
+                src="/images/main/king.png?v=2"
+                alt="Korean King Character"
+                fill
+                className="object-contain z-10"
+                unoptimized
+                priority
+              />
+            </div>
 
-          {/* Language grid */}
-          <div className="grid grid-cols-2 gap-x-[40px] gap-y-3 w-fit mx-auto">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                onClick={() => handleLanguageSelect(lang.code)}
-                className="flex items-center gap-2 group"
+            {/* Action buttons */}
+            <div className="flex gap-3 mb-[1.5vh] sm:mb-[2.5vh]">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleStartFree}
+                className="bg-[#440687] text-white rounded-xl shadow-sm hover:bg-[#350568] transition-colors"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(14px, 2.5vh, 22px)', padding: 'clamp(6px, 1.2vh, 12px) clamp(18px, 3vw, 32px)' }}
               >
-                <div className="flex items-center gap-2.5 min-w-[90px]">
-                  <span className="text-[20px]">{lang.flag}</span>
-                  <div className="text-left">
-                    <div
-                      className={`text-[14px] leading-tight ${
-                        language === lang.code ? 'text-[#5B4CDB]' : 'text-[#1F2937]'
-                      }`}
-                      style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-                    >
-                      {lang.name}
-                    </div>
-                    <div
-                      className="text-[#9CA3AF] text-[11px]"
-                      style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
-                    >
-                      {lang.nativeName}
-                    </div>
-                  </div>
-                </div>
+                {t.startFree}
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSignUp}
+                className="bg-[#77B602] text-white rounded-xl shadow-sm hover:bg-[#669a02] transition-colors"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(14px, 2.5vh, 22px)', padding: 'clamp(6px, 1.2vh, 12px) clamp(18px, 3vw, 32px)' }}
+              >
+                {t.signUp}
+              </motion.button>
+            </div>
 
-                {/* Check circle */}
-                <div
-                  className={`w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 transition-all ${
-                    language === lang.code
-                      ? 'bg-[#5B4CDB]'
-                      : 'border-[2px] border-[#E5E7EB] group-hover:border-[#D1D5DB]'
-                  }`}
-                >
-                  {language === lang.code && (
-                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  )}
-                </div>
-              </button>
-            ))}
+            {/* Language selection */}
+            <div>
+              <h2
+                className="text-[#1F2937] text-center landscape:text-left mb-[0.8vh] sm:mb-[1.5vh]"
+                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(14px, 2.5vh, 24px)' }}
+              >
+                {t.chooseLanguage}
+              </h2>
+
+              {/* Language grid — 2 cols mobile, 3 cols landscape */}
+              <div className="grid grid-cols-2 landscape:grid-cols-3 w-fit mx-auto landscape:mx-0" style={{ columnGap: 'clamp(24px, 3vw, 48px)', rowGap: 'clamp(6px, 1.2vh, 16px)' }}>
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => handleLanguageSelect(lang.code)}
+                    className="flex items-center gap-2 group"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span style={{ fontSize: 'clamp(20px, 3.5vh, 32px)' }}>{lang.flag}</span>
+                      <div className="text-left">
+                        <div
+                          className={`leading-tight ${
+                            language === lang.code ? 'text-[#5B4CDB]' : 'text-[#1F2937]'
+                          }`}
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 'clamp(13px, 2vh, 18px)' }}
+                        >
+                          {lang.name}
+                        </div>
+                        <div
+                          className="text-[#9CA3AF]"
+                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400, fontSize: 'clamp(10px, 1.4vh, 14px)' }}
+                        >
+                          {lang.nativeName}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Check circle */}
+                    <div
+                      className="rounded-full flex items-center justify-center flex-shrink-0 transition-all"
+                      style={{ width: 'clamp(14px, 2.2vh, 22px)', height: 'clamp(14px, 2.2vh, 22px)', border: language === lang.code ? 'none' : '2px solid #E5E7EB', backgroundColor: language === lang.code ? '#5B4CDB' : 'transparent' }}
+                    >
+                      {language === lang.code && (
+                        <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

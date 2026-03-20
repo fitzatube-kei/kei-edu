@@ -304,7 +304,7 @@ export const ja = {
     language: '言語',
     changeLanguage: '言語を変更',
     selectLanguage: '言語を選択',
-    title: '設定',
+    title: 'My Page',
     myInfo: 'マイ情報',
     appInfo: 'アプリ情報',
     appPurchase: 'プレミアム',

@@ -304,7 +304,7 @@ export const zh = {
     language: '语言',
     changeLanguage: '更改语言',
     selectLanguage: '选择语言',
-    title: '设置',
+    title: 'My Page',
     myInfo: '我的信息',
     appInfo: '应用信息',
     appPurchase: '高级版',

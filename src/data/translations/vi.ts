@@ -304,7 +304,7 @@ export const vi = {
     language: 'Ngôn ngữ',
     changeLanguage: 'Đổi Ngôn ngữ',
     selectLanguage: 'Chọn Ngôn ngữ',
-    title: 'Cài đặt',
+    title: 'My Page',
     myInfo: 'Thông tin của tôi',
     appInfo: 'Thông tin ứng dụng',
     appPurchase: 'Premium',

@@ -7,7 +7,131 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/context/LanguageContext';
 import { useAuth } from '@/context/AuthContext';
 import { useProgress } from '@/hooks/useProgress';
+import { UserProgress } from '@/types';
 import AvatarChangeLayer from './AvatarChangeLayer';
+
+// Total levels per module (based on data files)
+const TOTAL_HANGUL = 20; // beginner levels
+const TOTAL_PUZZLE = 300; // 100 per tier
+const TOTAL_GRAMMAR = 30; // grammar lessons
+const TOTAL_CULTURE = 50; // culture quiz levels
+const TOTAL_STORY = 60; // story episodes across 15 seasons
+
+const MODULE_CONFIG = [
+  { key: 'hangulProgress' as const, label: 'Hangul', icon: '/images/mypage/icon_hangul_1.png', color: '#B4D700', total: TOTAL_HANGUL, completedKey: 'completed' },
+  { key: 'puzzleProgress' as const, label: 'Words', icon: '/images/mypage/icon_words_1.png', color: '#38B6FF', total: TOTAL_PUZZLE, completedKey: 'completed' },
+  { key: 'grammarProgress' as const, label: 'Sentences', icon: '/images/mypage/icon_sen_1.png', color: '#C9A0DC', total: TOTAL_GRAMMAR, completedKey: 'completed' },
+  { key: 'cultureProgress' as const, label: 'Quiz', icon: '/images/mypage/icon_quiz_1.png', color: '#F5A623', total: TOTAL_CULTURE, completedKey: 'completed' },
+  { key: 'storyProgress' as const, label: 'Story', icon: '/images/mypage/icon_story_1.png', color: '#FF7E7E', total: TOTAL_STORY, completedKey: 'completed' },
+];
+
+function getCompletedCount(arr: { completed?: boolean }[] | undefined): number {
+  if (!arr || !Array.isArray(arr)) return 0;
+  return arr.filter(item => item.completed).length;
+}
+
+function LearningProgressCard({ progress }: { progress: UserProgress }) {
+  const moduleStats = MODULE_CONFIG.map(mod => {
+    const arr = progress[mod.key] as { completed?: boolean }[];
+    const completed = getCompletedCount(arr);
+    const total = Math.max(mod.total, arr?.length || 0);
+    return { ...mod, completed, total };
+  });
+
+  const totalCompleted = moduleStats.reduce((sum, m) => sum + m.completed, 0);
+  const totalAll = moduleStats.reduce((sum, m) => sum + m.total, 0);
+  const overallPercent = totalAll > 0 ? Math.round((totalCompleted / totalAll) * 100) : 0;
+
+  // Circular progress SVG params
+  const circleRadius = 28;
+  const circumference = 2 * Math.PI * circleRadius;
+  const strokeDashoffset = circumference - (overallPercent / 100) * circumference;
+
+  return (
+    <div className="bg-gradient-to-br from-[#F8F0FF] to-[#E8F5E9] rounded-xl p-4">
+      {/* Overall circular progress */}
+      <div className="flex flex-col items-center mb-4">
+        <div className="relative w-[72px] h-[72px]">
+          <svg className="w-full h-full -rotate-90" viewBox="0 0 64 64">
+            <circle
+              cx="32" cy="32" r={circleRadius}
+              fill="none" stroke="#e5e7eb" strokeWidth="6"
+            />
+            <motion.circle
+              cx="32" cy="32" r={circleRadius}
+              fill="none" stroke="#440687" strokeWidth="6"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              initial={{ strokeDashoffset: circumference }}
+              animate={{ strokeDashoffset }}
+              transition={{ duration: 1, ease: 'easeOut' }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-sm font-bold text-[#440687]" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              {overallPercent}%
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Module progress bars */}
+      <div className="space-y-2.5">
+        {moduleStats.map((mod) => {
+          const percent = mod.total > 0 ? (mod.completed / mod.total) * 100 : 0;
+          return (
+            <div key={mod.key} className="flex items-center gap-2">
+              <Image src={mod.icon} alt={mod.label} width={20} height={20} className="w-5 h-5 flex-shrink-0 object-contain" unoptimized />
+              <span
+                className="text-xs font-semibold text-gray-700 w-[68px] flex-shrink-0"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                {mod.label}
+              </span>
+              <div className="flex-1 h-2 bg-white/60 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ backgroundColor: mod.color }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${percent}%` }}
+                  transition={{ duration: 0.8, ease: 'easeOut', delay: 0.2 }}
+                />
+              </div>
+              <span
+                className="text-xs text-gray-500 w-10 text-right flex-shrink-0"
+                style={{ fontFamily: 'Poppins, sans-serif' }}
+              >
+                {mod.completed}/{mod.total}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Score & streak */}
+      <div className="flex items-center justify-center gap-6 mt-4 pt-3 border-t border-white/40">
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm">🔥</span>
+          <span
+            className="text-xs font-semibold text-gray-600"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            {progress.streakDays || 0} days
+          </span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm">🏆</span>
+          <span
+            className="text-xs font-semibold text-gray-600"
+            style={{ fontFamily: 'Poppins, sans-serif' }}
+          >
+            {(progress.totalScore || 0).toLocaleString()} pts
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface SettingsLayerProps {
   isOpen: boolean;
@@ -171,6 +295,17 @@ export default function SettingsLayer({ isOpen, onClose }: SettingsLayerProps) {
                     </div>
                   )}
                 </div>
+              </section>
+
+              {/* Learning Progress Section */}
+              <section>
+                <h2
+                  className="text-sm font-bold text-[#440687] mb-3 uppercase tracking-wider"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  Learning Progress
+                </h2>
+                <LearningProgressCard progress={progress} />
               </section>
 
               {/* Premium Section */}

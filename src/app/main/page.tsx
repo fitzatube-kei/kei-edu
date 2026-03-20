@@ -169,7 +169,7 @@ export default function MainPage() {
       href: '/hangul',
       label: t.learnBasics,
       title: t.hangulLearning,
-      bgColor: '#87ABFF',
+      bgColor: '#B4D700',
       buttonColor: '#440687',
       image: '/images/word/crt002_4.png',
     },
@@ -183,22 +183,31 @@ export default function MainPage() {
       image: '/images/main/illustration3.png',
     },
     {
-      id: 'story',
-      href: '/story',
-      label: t.interactiveAdventure,
-      title: t.storyMode,
-      bgColor: '#B4D700',
-      buttonColor: '#FF7E00',
-      image: '/images/main/illustration4.png',
+      id: 'sentences',
+      href: '/sentences',
+      label: t.learnBasics,
+      title: 'Sentences',
+      bgColor: '#C9A0DC',
+      buttonColor: '#440687',
+      image: '/images/main/illustration6.png',
     },
     {
       id: 'culture',
       href: '/culture',
       label: t.emojiGuessing,
-      title: t.kpopDrama,
+      title: 'K Emoji Quiz',
       bgColor: '#F5A623',
       buttonColor: '#9038EF',
       image: '/images/main/illustration5.png',
+    },
+    {
+      id: 'story',
+      href: '/story',
+      label: t.interactiveAdventure,
+      title: t.storyMode,
+      bgColor: '#FF7E7E',
+      buttonColor: '#FF3B30',
+      image: '/images/main/illustration4.png',
     },
   ];
 
@@ -208,74 +217,58 @@ export default function MainPage() {
       <Header />
 
       {/* Hero Banner */}
-      <div className="px-4 sm:px-6 pt-[30px] xs:pt-[38px] md:pt-[50px] lg:pt-[58px] xl:pt-[66px] pb-2">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-[#AACFFF] rounded-full flex items-center relative overflow-visible h-[110px] xs:h-[130px] sm:h-[151px]">
-            {/* Character */}
-            <div className="absolute left-[10px] xs:left-[14px] -bottom-[14px] xs:-bottom-[18px] sm:-bottom-[21px] w-[110px] h-[128px] xs:w-[140px] xs:h-[162px] sm:w-[198px] sm:h-[220px]">
-              <Image
-                src="/images/main/illustration1.png"
-                alt="Sejong"
-                fill
-                className="object-contain object-bottom"
-                unoptimized
-              />
-            </div>
+      <div className="px-4 sm:px-6 pt-0 sm:pt-[6px] pb-0">
+        <div className="max-w-4xl mx-auto flex items-center relative overflow-visible">
+          {/* Character */}
+          <div className="relative shrink-0 w-[100px] h-[116px] xs:w-[130px] xs:h-[150px] sm:w-[200px] sm:h-[260px]">
+            <Image
+              src="/images/main/illustration1.png"
+              alt="Sejong"
+              fill
+              className="object-contain object-bottom"
+              unoptimized
+            />
+          </div>
 
-            {/* Text and Buttons */}
-            <div className="flex-1 flex flex-col items-end justify-center pr-[20px] xs:pr-[32px] sm:pr-[57px] ml-[100px] xs:ml-[130px] sm:ml-[170px]">
-              <p
-                className="text-[#2F3596] text-right leading-[1.1] -mt-[1px]"
-                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(11px, 3.5vw, 26px)' }}
-              >
-                {language === 'en' ? (
-                  <>&ldquo;Begin your joyful journey<br className="sm:hidden" /> into Hangul!&rdquo;</>
-                ) : (
-                  t.heroBanner.replace(/["""]/g, '')
-                )}
-              </p>
-              {!user && (
-                <div className="flex gap-1.5 xs:gap-1.5 sm:gap-2 mt-2 xs:mt-2 sm:mt-3 mr-0 xs:mr-[4px] sm:mr-[12px]">
-                  <Link
-                    href="/signup"
-                    className="bg-white text-[#2F3596] px-[6px] xs:px-[10px] sm:px-[18px] py-[2px] xs:py-[4px] sm:py-[7px] rounded-md text-[11px] xs:text-[11px] sm:text-[16px] transition-colors duration-200 hover:text-[#B4D700]"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                  >
-                    {t.signUp}
-                  </Link>
-                  <Link
-                    href="/login"
-                    className="bg-[#3261B8] text-white px-[6px] xs:px-[10px] sm:px-[18px] py-[2px] xs:py-[4px] sm:py-[7px] rounded-md text-[11px] xs:text-[11px] sm:text-[16px]"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                  >
-                    {t.logIn}
-                  </Link>
-                </div>
+          {/* Text and Buttons */}
+          <div className="flex-1 flex flex-col items-end justify-center pr-[10px] xs:pr-[16px] sm:pr-[24px]">
+            <p
+              className="text-[#440687] text-right leading-[1.15]"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900, fontSize: 'clamp(18px, 5.5vw, 36px)' }}
+            >
+              {language === 'en' ? (
+                <>&ldquo;Begin your joyful<br /> journey into Hangul!&rdquo;</>
+              ) : (
+                t.heroBanner.replace(/["""]/g, '')
               )}
-            </div>
+            </p>
+            {!user && (
+              <div className="flex gap-1.5 xs:gap-1.5 sm:gap-2 mt-2 xs:mt-3 sm:mt-3">
+                <Link
+                  href="/signup"
+                  className="bg-[#B4D700] text-[#2F3596] px-[8px] xs:px-[12px] sm:px-[18px] py-[3px] xs:py-[5px] sm:py-[7px] rounded-md text-[11px] xs:text-[12px] sm:text-[16px] transition-opacity duration-200 hover:opacity-80"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                >
+                  {t.signUp}
+                </Link>
+                <Link
+                  href="/login"
+                  className="bg-[#440687] text-white px-[8px] xs:px-[12px] sm:px-[18px] py-[3px] xs:py-[5px] sm:py-[7px] rounded-md text-[11px] xs:text-[12px] sm:text-[16px]"
+                  style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
+                >
+                  {t.logIn}
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <main className="px-4 sm:px-6 pt-[14px] pb-4">
+      <main className="px-4 sm:px-6 -mt-[12px] xs:-mt-[16px] sm:-mt-[50px] relative z-10 pb-4">
         <div className="max-w-4xl mx-auto">
-          {/* Section Title */}
-          <p
-            className="text-[#6B7280] text-[11px] xs:text-[12px] sm:text-[14px] mb-[-2px]"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
-          >
-            {t.courseSubtitle}
-          </p>
-          <h2
-            className="text-[#1F2937] text-[16px] xs:text-[18px] sm:text-[24px] mb-2 xs:mb-3"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-          >
-            {t.courseTitle}
-          </h2>
-
-          {/* Course Cards - 2x2 Grid on mobile, vertical list on tablet/PC */}
-          <div className="grid grid-cols-2 sm:grid-cols-1 gap-[12px] sm:gap-[24px]">
+          {/* Course Cards - Vertical stack horizontal banners */}
+          <div className="flex flex-col gap-[10px] sm:gap-[16px]">
             {courses.map((course, index) => (
               <motion.div
                 key={course.id}
@@ -284,80 +277,34 @@ export default function MainPage() {
                 transition={{ delay: index * 0.08 }}
               >
                 <Link href={course.href}>
-                  {/* Mobile: square cards */}
                   <div
-                    className="sm:hidden rounded-[12px] pl-[10px] pt-[10px] pr-2 pb-2 xs:pl-[14px] xs:pt-[14px] xs:pr-3 xs:pb-3 relative overflow-hidden flex flex-col justify-between"
-                    style={{ backgroundColor: course.bgColor, aspectRatio: '1 / 1.05' }}
-                  >
-                    <div className="z-10">
-                      <p
-                        className="uppercase tracking-wider mb-0 opacity-70 text-[8px] xs:text-[10px] leading-tight"
-                        style={{ color: 'white', fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                      >
-                        {course.label}
-                      </p>
-                      <h3
-                        className="leading-tight mt-[1px] text-[15px] xs:text-[20px]"
-                        style={{ color: 'white', fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-                      >
-                        {course.title}
-                      </h3>
-                    </div>
-                    <div className={`absolute ${
-                      index % 2 === 0
-                        ? 'right-[-4px] bottom-[-4px]'
-                        : 'left-[-4px] bottom-[-4px]'
-                    } ${course.id === 'puzzle' || course.id === 'story' || course.id === 'culture' ? 'w-[95%] h-[95%]' : 'w-[110%] h-[110%]'}`}>
-                      <Image
-                        src={course.image}
-                        alt={course.title}
-                        fill
-                        className={`object-contain object-bottom ${course.id === 'culture' ? '-scale-x-100' : ''}`}
-                        unoptimized
-                      />
-                    </div>
-                    <div className="z-10">
-                      <button
-                        className="flex items-center justify-center px-[10px] xs:px-[16px] py-[4px] xs:py-[6px] rounded-full text-[11px] xs:text-[14px] gap-1 xs:gap-1.5 text-white"
-                        style={{ backgroundColor: course.buttonColor, fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-                      >
-                        <span className="leading-none relative top-[1px]">{t.start}</span>
-                        <svg className="w-2.5 h-2.5 xs:w-3 xs:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Tablet/PC: horizontal banner */}
-                  <div
-                    className="hidden sm:flex rounded-[12px] py-[12px] px-5 relative items-center h-[140px] overflow-visible"
+                    className="rounded-[16px] px-[14px] xs:px-[18px] sm:px-5 py-[10px] xs:py-[12px] sm:py-[16px] relative overflow-hidden flex items-center h-[86px] xs:h-[100px] sm:h-[140px]"
                     style={{ backgroundColor: course.bgColor }}
                   >
                     <div className="flex-1 z-10">
                       <p
-                        className="uppercase tracking-wider mb-0 opacity-70 text-[13px]"
+                        className="uppercase tracking-wider mb-0 opacity-70 text-[8px] xs:text-[10px] sm:text-[13px] leading-tight"
                         style={{ color: 'white', fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
                       >
                         {course.label}
                       </p>
                       <h3
-                        className="text-[28px] leading-tight mt-[2px] mb-3"
+                        className="leading-tight mt-[2px] mb-2 xs:mb-3 text-[16px] xs:text-[20px] sm:text-[28px]"
                         style={{ color: 'white', fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
                       >
                         {course.title}
                       </h3>
                       <button
-                        className="flex items-center justify-center px-[20px] py-[8px] rounded-full text-[14px] gap-1.5 text-white"
+                        className="flex items-center justify-center px-[12px] xs:px-[16px] sm:px-[20px] py-[4px] xs:py-[6px] sm:py-[8px] rounded-full text-[11px] xs:text-[13px] sm:text-[14px] gap-1 xs:gap-1.5 text-white"
                         style={{ backgroundColor: course.buttonColor, fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
                       >
                         <span className="leading-none relative top-[1px]">{t.start}</span>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-2.5 h-2.5 xs:w-3 xs:h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                         </svg>
                       </button>
                     </div>
-                    <div className={`absolute -top-[10px] ${course.id === 'hangul' ? 'right-[34px] -top-[142px] w-[246px] h-[282px]' : course.id === 'puzzle' ? 'right-[14px] -top-[50px] w-[168px] h-[192px]' : course.id === 'story' ? 'right-[14px] -top-[33px] w-[153px] h-[175px]' : 'right-[14px] w-[140px] h-[160px]'}`}>
+                    <div className={`absolute bottom-[0px] w-[38%] h-[100%] sm:w-[35%] sm:h-[110%] ${course.id === 'hangul' ? 'right-[10px] xs:right-[14px] sm:right-[20px]' : 'right-[0px]'}`}>
                       <Image
                         src={course.image}
                         alt={course.title}
@@ -385,23 +332,6 @@ export default function MainPage() {
                 style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 400 }}
                 dangerouslySetInnerHTML={{ __html: t.hangulInfo }}
               />
-            </div>
-            <div className="flex-shrink-0 flex flex-col items-center">
-              <div className="relative w-[60px] h-[68px] xs:w-[80px] xs:h-[90px] sm:w-[108px] sm:h-[120px]">
-                <Image
-                  src="/images/main/illustration6.png"
-                  alt="KEI character"
-                  fill
-                  className="object-contain"
-                  unoptimized
-                />
-              </div>
-              <p
-                className="text-[#4B5563] text-[9px] xs:text-[10px] sm:text-[11px] mt-1 whitespace-nowrap"
-                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-              >
-                {t.hiImKei}
-              </p>
             </div>
           </motion.div>
         </div>

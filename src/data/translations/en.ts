@@ -304,7 +304,7 @@ export const en = {
     language: 'Language',
     changeLanguage: 'Change Language',
     selectLanguage: 'Select Language',
-    title: 'Settings',
+    title: 'My Page',
     myInfo: 'My Info',
     appInfo: 'App Info',
     appPurchase: 'Premium',

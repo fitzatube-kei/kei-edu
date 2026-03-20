@@ -13,6 +13,12 @@ import CurrencyBadge from '@/components/ui/CurrencyBadge';
 const DEFAULT_AVATAR = '/images/avatar/avt001.png';
 const GUEST_AVATAR = '/images/main/avt_none001.png'; // Default guest avatar (logged out)
 
+// Convert avatar path to _2 version for header display (e.g. avt001.png -> avt001_2.png)
+const toHeaderAvatar = (path: string) => {
+  if (path.includes('avt000') || path.includes('avt_none') || !path.includes('/avatar/')) return path;
+  return path.replace(/\.png$/, '_2.png');
+};
+
 const languages = [
   { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
   { code: 'es', name: 'Español', nativeName: 'Spanish', flag: '🇪🇸' },
@@ -108,7 +114,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-[#440687] px-2 sm:px-6 pt-[8px] sm:pt-2 pb-[6px] relative z-50">
+      <header className="bg-[#440687] px-2 sm:px-6 pt-[8px] sm:pt-2 pb-0 relative z-50">
         <div className="max-w-4xl mx-auto">
           {/* Single Row: Logo + Language + Avatar + Settings */}
           <div className="flex items-center justify-between gap-1">
@@ -168,20 +174,53 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Right: Currency + Avatar + Settings — fixed sizes, never shrink */}
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              <CurrencyBadge />
+            {/* Right: Currency + My Page badge + Avatar — fixed sizes, never shrink */}
+            <div className="flex items-center gap-0 sm:gap-1 shrink-0">
+              <div className="flex flex-col items-end self-start mt-[2px] sm:mt-[4px]">
+                <CurrencyBadge />
+                {/* MY badge - below coin badge (logged in only) */}
+                {user && (
+                  <motion.button
+                    onClick={() => setShowSettings(true)}
+                    className="relative mt-[4px] sm:mt-[5px] mr-[6px] w-[62px] sm:w-[72px] px-[8px] py-[4px] sm:py-[5px] rounded-[8px] text-[9px] sm:text-[10px] text-center cursor-pointer hover:opacity-80 transition-opacity"
+                    style={{
+                      backgroundColor: '#CEECFE',
+                      color: '#440687',
+                      fontFamily: 'Poppins, sans-serif',
+                      fontWeight: 900,
+                    }}
+                    animate={{ x: [0, 4, 0, 4, 0] }}
+                    transition={{
+                      duration: 0.6,
+                      delay: 2,
+                      repeat: Infinity,
+                      repeatDelay: 29.4,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    My Page
+                    {/* Speech bubble tail pointing right */}
+                    <div
+                      className="absolute -right-[5px] top-1/2 -translate-y-1/2 w-0 h-0"
+                      style={{
+                        borderTop: '4px solid transparent',
+                        borderBottom: '4px solid transparent',
+                        borderLeft: '6px solid #CEECFE',
+                      }}
+                    />
+                  </motion.button>
+                )}
+              </div>
               <button
                 onClick={() => setShowSettings(true)}
-                className="shrink-0 hover:opacity-80 transition-opacity"
+                className={`shrink-0 hover:opacity-80 transition-opacity -mr-[2px] ${!user ? 'scale-[0.88] self-center' : 'self-end'}`}
               >
                 <Image
-                  src={userAvatar}
+                  src={toHeaderAvatar(userAvatar)}
                   alt="Profile"
                   width={72}
                   height={80}
-                  className="object-contain w-[60px] h-[66px] sm:w-[72px] sm:h-[80px]"
-                  style={{ transformOrigin: 'top right' }}
+                  className="object-contain w-[65px] h-[65px] sm:w-[80px] sm:h-[80px]"
                   unoptimized
                 />
               </button>

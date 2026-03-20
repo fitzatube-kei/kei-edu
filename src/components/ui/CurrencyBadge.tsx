@@ -16,16 +16,18 @@ export default function CurrencyBadge() {
   return (
     <motion.button
       onClick={() => router.push('/store')}
-      className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-[12px] text-sm font-semibold mr-1"
+      className="relative flex items-center justify-center gap-1 w-[62px] sm:w-[72px] px-[8px] py-[4px] sm:py-[5px] rounded-[8px] text-[9px] sm:text-[10px] mr-1"
       style={{
-        background: 'linear-gradient(135deg, #6BBF00, #B4D700)',
+        background: '#B4D700',
         color: '#fff',
-        boxShadow: '0 2px 8px rgba(139, 195, 0, 0.3)',
+        fontFamily: 'Poppins, sans-serif',
+        fontWeight: 900,
+        boxShadow: 'none',
       }}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
-      <span style={{ fontSize: '14px' }}>✦</span>
+      <span style={{ fontSize: '10px' }}>✦</span>
       <AnimatePresence mode="wait">
         <motion.span
           key={balance}
@@ -41,9 +43,9 @@ export default function CurrencyBadge() {
       <div
         className="absolute -right-[6px] top-1/2 -translate-y-1/2 w-0 h-0"
         style={{
-          borderTop: '6px solid transparent',
-          borderBottom: '6px solid transparent',
-          borderLeft: '7px solid #B4D700',
+          borderTop: '4px solid transparent',
+          borderBottom: '4px solid transparent',
+          borderLeft: '6px solid #B4D700',
         }}
       />
     </motion.button>

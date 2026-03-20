@@ -304,7 +304,7 @@ export const th = {
     language: 'ภาษา',
     changeLanguage: 'เปลี่ยนภาษา',
     selectLanguage: 'เลือกภาษา',
-    title: 'การตั้งค่า',
+    title: 'My Page',
     myInfo: 'ข้อมูลของฉัน',
     appInfo: 'ข้อมูลแอป',
     appPurchase: 'พรีเมียม',
