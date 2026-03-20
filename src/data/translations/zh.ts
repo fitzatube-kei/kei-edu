@@ -46,6 +46,8 @@ export const zh = {
     password: '密码',
     confirmPassword: '确认密码',
     name: '姓名',
+    rememberEmail: '记住邮箱',
+    stayLoggedIn: '保持登录状态',
     forgotPassword: '忘记密码？',
     noAccount: '没有账户？',
     hasAccount: '已有账户？',

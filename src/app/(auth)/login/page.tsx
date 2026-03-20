@@ -27,14 +27,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 flex flex-col">
       {/* Header */}
-      <header className="bg-[#440687] h-[120px] px-4 flex justify-between items-center">
+      <header className="bg-[#440687] h-[80px] sm:h-[100px] lg:h-[120px] px-4 sm:px-6 flex justify-between items-center">
         <Link href="/main" className="flex items-center gap-1.5">
           <Image
             src="/images/main/kbi01.png"
             alt="KEI Brand"
             width={30}
             height={36}
-            className="object-contain"
+            className="object-contain w-[24px] h-[29px] sm:w-[30px] sm:h-[36px]"
             unoptimized
           />
           <Image
@@ -42,7 +42,7 @@ export default function LoginPage() {
             alt="KEI-EDU"
             width={120}
             height={36}
-            className="object-contain"
+            className="object-contain w-[90px] sm:w-[110px] lg:w-[120px]"
             unoptimized
           />
         </Link>
@@ -51,10 +51,10 @@ export default function LoginPage() {
         <div className="relative">
           <button
             onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-            className="flex items-center gap-1.5 text-white"
+            className="flex items-center gap-1 sm:gap-1.5 text-white"
           >
-            <span className="text-[36px]">{currentLanguage.flag}</span>
-            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span className="text-[26px] sm:text-[32px] lg:text-[36px]">{currentLanguage.flag}</span>
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -93,7 +93,7 @@ export default function LoginPage() {
       {/* Back Button */}
       <button
         onClick={() => router.back()}
-        className="flex items-center gap-1 text-gray-700 text-[14px] px-4 mt-[20px]"
+        className="flex items-center gap-1 text-gray-700 text-[14px] sm:text-[16px] px-4 sm:px-6 mt-[16px] sm:mt-[20px]"
         style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 500 }}
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +103,7 @@ export default function LoginPage() {
       </button>
 
       {/* Content */}
-      <main className="flex-1 flex items-center justify-center p-4">
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <AuthForm mode="login" />
       </main>
     </div>

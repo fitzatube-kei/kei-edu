@@ -46,6 +46,8 @@ export const vi = {
     password: 'Mật khẩu',
     confirmPassword: 'Xác nhận Mật khẩu',
     name: 'Tên',
+    rememberEmail: 'Ghi nhớ Email',
+    stayLoggedIn: 'Duy trì đăng nhập',
     forgotPassword: 'Quên mật khẩu?',
     noAccount: 'Chưa có tài khoản?',
     hasAccount: 'Đã có tài khoản?',

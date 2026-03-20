@@ -46,6 +46,8 @@ export const th = {
     password: 'รหัสผ่าน',
     confirmPassword: 'ยืนยันรหัสผ่าน',
     name: 'ชื่อ',
+    rememberEmail: 'จดจำอีเมล',
+    stayLoggedIn: 'คงสถานะเข้าสู่ระบบ',
     forgotPassword: 'ลืมรหัสผ่าน?',
     noAccount: 'ยังไม่มีบัญชี?',
     hasAccount: 'มีบัญชีอยู่แล้ว?',

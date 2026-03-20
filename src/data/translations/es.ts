@@ -46,6 +46,8 @@ export const es = {
     password: 'Contraseña',
     confirmPassword: 'Confirmar Contraseña',
     name: 'Nombre',
+    rememberEmail: 'Recordar correo electrónico',
+    stayLoggedIn: 'Mantener sesión iniciada',
     forgotPassword: '¿Olvidaste tu contraseña?',
     noAccount: '¿No tienes una cuenta?',
     hasAccount: '¿Ya tienes una cuenta?',

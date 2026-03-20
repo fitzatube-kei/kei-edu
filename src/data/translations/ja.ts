@@ -46,6 +46,8 @@ export const ja = {
     password: 'パスワード',
     confirmPassword: 'パスワード確認',
     name: '名前',
+    rememberEmail: 'メールアドレスを記憶する',
+    stayLoggedIn: 'ログイン状態を維持する',
     forgotPassword: 'パスワードを忘れましたか？',
     noAccount: 'アカウントをお持ちでない方',
     hasAccount: 'すでにアカウントをお持ちの方',

@@ -46,6 +46,8 @@ export const en = {
     password: 'Password',
     confirmPassword: 'Confirm Password',
     name: 'Name',
+    rememberEmail: 'Remember Email',
+    stayLoggedIn: 'Stay Logged In',
     forgotPassword: 'Forgot your password?',
     noAccount: "Don't have an account?",
     hasAccount: 'Already have an account?',

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -50,8 +50,26 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [displayName, setDisplayName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
+  const [rememberEmail, setRememberEmail] = useState(false);
+  const [stayLoggedIn, setStayLoggedIn] = useState(true);
 
   const isLogin = mode === 'login';
+
+  // Load saved email and preferences on mount (login mode only)
+  useEffect(() => {
+    if (isLogin) {
+      const savedEmail = localStorage.getItem('rememberedEmail');
+      const savedRemember = localStorage.getItem('rememberEmail');
+      const savedStayLoggedIn = localStorage.getItem('stayLoggedIn');
+      if (savedEmail && savedRemember === 'true') {
+        setEmail(savedEmail);
+        setRememberEmail(true);
+      }
+      if (savedStayLoggedIn !== null) {
+        setStayLoggedIn(savedStayLoggedIn === 'true');
+      }
+    }
+  }, [isLogin]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,7 +87,16 @@ export default function AuthForm({ mode }: AuthFormProps) {
 
     try {
       if (isLogin) {
-        await signIn(email, password);
+        await signIn(email, password, stayLoggedIn);
+        // Save/clear remembered email
+        if (rememberEmail) {
+          localStorage.setItem('rememberedEmail', email);
+          localStorage.setItem('rememberEmail', 'true');
+        } else {
+          localStorage.removeItem('rememberedEmail');
+          localStorage.setItem('rememberEmail', 'false');
+        }
+        localStorage.setItem('stayLoggedIn', String(stayLoggedIn));
       } else {
         await signUp(email, password, displayName);
         // Set random avatar for new user
@@ -161,6 +188,29 @@ export default function AuthForm({ mode }: AuthFormProps) {
                 style={{ fontFamily: 'Poppins, sans-serif' }}
                 placeholder="••••••••"
               />
+            </div>
+          )}
+
+          {isLogin && (
+            <div className="space-y-2 pt-1">
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rememberEmail}
+                  onChange={(e) => setRememberEmail(e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-[#440687] focus:ring-[#440687] cursor-pointer"
+                />
+                <span className="text-sm text-gray-600">{t('auth.rememberEmail') || 'Remember Email'}</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={stayLoggedIn}
+                  onChange={(e) => setStayLoggedIn(e.target.checked)}
+                  className="w-4 h-4 rounded border-gray-300 text-[#440687] focus:ring-[#440687] cursor-pointer"
+                />
+                <span className="text-sm text-gray-600">{t('auth.stayLoggedIn') || 'Stay Logged In'}</span>
+              </label>
             </div>
           )}
 

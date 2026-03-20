@@ -8,6 +8,9 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
   User as FirebaseUser,
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -69,10 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, stayLoggedIn: boolean = true) => {
     setLoading(true);
     setError(null);
     try {
+      await setPersistence(auth, stayLoggedIn ? browserLocalPersistence : browserSessionPersistence);
       const { user: firebaseUser } = await signInWithEmailAndPassword(auth, email, password);
       // Reload to get latest profile data
       await firebaseUser.reload();

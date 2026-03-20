@@ -46,6 +46,8 @@ export const zhTW = {
     password: '密碼',
     confirmPassword: '確認密碼',
     name: '姓名',
+    rememberEmail: '記住電子郵件',
+    stayLoggedIn: '保持登入狀態',
     forgotPassword: '忘記密碼？',
     noAccount: '還沒有帳號？',
     hasAccount: '已有帳號？',
