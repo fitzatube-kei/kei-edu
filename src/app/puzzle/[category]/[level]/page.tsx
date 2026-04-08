@@ -146,7 +146,7 @@ export default function PuzzleLevelPage() {
       setToast('Complete Writing Practice first!');
       return;
     }
-    setPhase('preview');
+    setPhase('game');
   }, [writeCompleted]);
 
   // ---- PHASE RENDERING ----

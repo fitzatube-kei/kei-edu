@@ -280,7 +280,7 @@ function getLayout(medial: string, hasFinal: boolean): { initial: BBox; medial: 
   const isHorizontal = HORIZONTAL_VOWELS.has(medial);
   const isCompound = medial in COMPOUND_VOWELS;
 
-  if (isVertical || (isCompound && VERTICAL_VOWELS.has(COMPOUND_VOWELS[medial]?.[1]))) {
+  if (isVertical) {
     if (hasFinal) {
       return {
         initial: { x: 0.02, y: 0.02, w: 0.52, h: 0.55 },
@@ -308,18 +308,19 @@ function getLayout(medial: string, hasFinal: boolean): { initial: BBox; medial: 
     };
   }
 
-  // Compound vowels (ㅘ, ㅝ, etc.) - treat as vertical + horizontal mix
+  // Compound vowels (ㅘ, ㅙ, ㅚ, ㅝ, ㅞ, ㅟ, ㅢ) - horizontal + vertical mix
+  // Layout: initial top-left, medial covers full area for compound positioning
   if (isCompound) {
     if (hasFinal) {
       return {
-        initial: { x: 0.02, y: 0.02, w: 0.48, h: 0.55 },
-        medial:  { x: 0.02, y: 0.02, w: 0.96, h: 0.55 },
-        final:   { x: 0.08, y: 0.60, w: 0.84, h: 0.38 },
+        initial: { x: 0.02, y: 0.02, w: 0.52, h: 0.35 },
+        medial:  { x: 0.02, y: 0.02, w: 0.96, h: 0.58 },
+        final:   { x: 0.08, y: 0.62, w: 0.84, h: 0.36 },
       };
     }
     return {
-      initial: { x: 0.02, y: 0.05, w: 0.48, h: 0.90 },
-      medial:  { x: 0.02, y: 0.05, w: 0.96, h: 0.90 },
+      initial: { x: 0.02, y: 0.02, w: 0.52, h: 0.48 },
+      medial:  { x: 0.02, y: 0.02, w: 0.96, h: 0.96 },
     };
   }
 
@@ -418,17 +419,30 @@ export function getSyllableStrokes(char: string): StrokePath[] {
   const isCompound = medial in COMPOUND_VOWELS;
   if (isCompound) {
     const [v1, v2] = COMPOUND_VOWELS[medial];
-    // For compound vowels, we need special layout within the medial bbox
     const medBbox = layout.medial;
-    if (HORIZONTAL_VOWELS.has(v1)) {
-      // e.g., ㅘ = ㅗ + ㅏ: ㅗ takes more horizontal space, ㅏ on right
-      const s1 = JAMO_STROKES[v1] || [];
-      const s2 = JAMO_STROKES[v2] || [];
+    const s1 = JAMO_STROKES[v1] || [];
+    const s2 = JAMO_STROKES[v2] || [];
+    if (HORIZONTAL_VOWELS.has(v1) && VERTICAL_VOWELS.has(v2)) {
+      // e.g., ㅟ = ㅜ + ㅣ, ㅘ = ㅗ + ㅏ, ㅚ = ㅗ + ㅣ
+      // Horizontal part (ㅜ/ㅗ) goes bottom-left, vertical part (ㅣ/ㅏ) goes right side
+      allStrokes.push(...transformStrokes(s1, {
+        x: medBbox.x,
+        y: medBbox.y + medBbox.h * 0.48,
+        w: medBbox.w * 0.62,
+        h: medBbox.h * 0.52,
+      }));
+      allStrokes.push(...transformStrokes(s2, {
+        x: medBbox.x + medBbox.w * 0.58,
+        y: medBbox.y,
+        w: medBbox.w * 0.40,
+        h: medBbox.h,
+      }));
+    } else if (HORIZONTAL_VOWELS.has(v1)) {
+      // Horizontal + non-vertical (fallback)
       allStrokes.push(...transformStrokes(s1, { x: medBbox.x, y: medBbox.y, w: medBbox.w * 0.65, h: medBbox.h }));
       allStrokes.push(...transformStrokes(s2, { x: medBbox.x + medBbox.w * 0.60, y: medBbox.y, w: medBbox.w * 0.40, h: medBbox.h }));
     } else {
-      const s1 = JAMO_STROKES[v1] || [];
-      const s2 = JAMO_STROKES[v2] || [];
+      // Vertical + something (e.g., ㅢ = ㅡ + ㅣ if ㅡ is not horizontal)
       allStrokes.push(...transformStrokes(s1, { x: medBbox.x, y: medBbox.y, w: medBbox.w, h: medBbox.h * 0.55 }));
       allStrokes.push(...transformStrokes(s2, { x: medBbox.x, y: medBbox.y + medBbox.h * 0.5, w: medBbox.w, h: medBbox.h * 0.50 }));
     }

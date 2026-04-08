@@ -37,7 +37,7 @@ function highlightWord(word: string, targetJamo: string): React.ReactNode {
   return word.split('').map((char, i) => {
     const contains = syllableContainsJamo(char, targetJamo);
     return (
-      <span key={i} style={{ color: contains ? '#440687' : '#8BB700', fontWeight: 700 }}>
+      <span key={i} style={{ color: contains ? '#B4D700' : '#ffffff', fontWeight: 700 }}>
         {char}
       </span>
     );
@@ -717,58 +717,21 @@ function CharacterCard({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="bg-white rounded-[20px] shadow-lg overflow-hidden"
-    >
-      {/* Main card - always visible */}
-      <motion.div
-        onClick={onToggle}
-        className="p-6 cursor-pointer"
-        whileHover={{ backgroundColor: 'rgba(68, 6, 135, 0.02)' }}
-      >
-        <div className="flex items-center gap-6">
-          {/* Large Character Display */}
-          <motion.div
-            className="w-24 h-24 bg-gradient-to-br from-[#440687] to-[#6B21A8] rounded-[16px] flex items-center justify-center shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+    <div className="flex flex-col h-full">
+      {/* Character Header - centered big character */}
+      <div className="flex flex-col items-center pt-2 pb-3">
+        <div className="relative">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#1B0440] rounded-[16px] flex items-center justify-center"
+            style={{ boxShadow: '3px 3px 0px #0D0220' }}
           >
             <span
-              className="text-5xl text-white"
+              className="text-4xl sm:text-5xl text-white"
               style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
             >
               {character.character}
             </span>
-          </motion.div>
-
-          {/* Character Info */}
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <span
-                className="text-[20px] text-[#440687]"
-                style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-              >
-                {character.romanization}
-              </span>
-              <span
-                className="text-[16px] text-gray-500"
-                style={{ fontFamily: 'Poppins, sans-serif' }}
-              >
-                ({character.pronunciation})
-              </span>
-            </div>
-            <p
-              className="text-[14px] text-gray-600 leading-relaxed"
-              style={{ fontFamily: 'Poppins, sans-serif' }}
-            >
-              {getSoundDescription()}
-            </p>
           </div>
-
-          {/* TTS Button */}
+          {/* TTS Button - overlapping top-left */}
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -776,200 +739,114 @@ function CharacterCard({
               e.stopPropagation();
               speak(character.pronunciation, `char-${index}`);
             }}
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-md transition-all ${
+            className={`absolute -top-2 -left-2 w-8 h-8 rounded-full flex items-center justify-center z-10 ${
               speakingId === `char-${index}`
-                ? 'bg-[#B4D700] text-white'
-                : 'bg-[#F3E8FF] text-[#440687]'
+                ? 'bg-[#B4D700]'
+                : 'bg-[#AE7DFD]'
             }`}
+            style={{ boxShadow: '2px 2px 0px #1B0440' }}
           >
             {speakingId === `char-${index}` ? (
-              <motion.img
-                src="/images/icon/sound001_g.png"
-                alt="sound"
-                className="w-7 h-7"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
-              />
+              <motion.img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4"
+                animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.5 }} />
             ) : (
-              <img src="/images/icon/sound001_p.png" alt="sound" className="w-7 h-7" />
+              <img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4" />
             )}
           </motion.button>
-
-          {/* Expand indicator */}
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            className="text-[#440687]"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </motion.div>
         </div>
-      </motion.div>
+        {/* Romanization & Pronunciation */}
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-[18px] sm:text-[20px] text-white" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
+            {character.romanization}
+          </span>
+          <span className="text-[14px] sm:text-[16px] text-white/60" style={{ fontFamily: 'Poppins, sans-serif' }}>
+            ({character.pronunciation})
+          </span>
+        </div>
+        {/* Sound Description */}
+        <p className="text-[12px] sm:text-[13px] text-white/70 text-center mt-1 px-4 leading-relaxed" style={{ fontFamily: 'Poppins, sans-serif' }}>
+          {getSoundDescription()}
+        </p>
+      </div>
 
-      {/* Expanded content */}
-      <AnimatePresence>
-        {isExpanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="px-6 pb-6 border-t border-gray-100 pt-4">
-              {/* Example Syllables - Only for consonants */}
-              {isConsonant && syllableExamples && (
-                <div className="mb-6">
-                  <h4
-                    className="text-[13px] text-[#B4D700] uppercase tracking-wider mb-3"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                  >
-                    {language === 'ja' ? '音節の例' :
-                     language.startsWith('zh') ? '音节示例' :
-                     language === 'th' ? 'ตัวอย่างพยางค์' :
-                     language === 'vi' ? 'Vi du am tiet' :
-                     language === 'es' ? 'Ejemplos de silabas' :
-                     'Example Syllables'}
-                  </h4>
-                  <div className="space-y-2">
-                    {syllableExamples.syllables.map((syllable, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-center gap-4 p-3 bg-[#F6FFC7] rounded-[12px]"
-                      >
-                        <span className="text-[18px] text-[#440687] font-bold">
-                          {syllable.consonant}
-                        </span>
-                        <span className="text-gray-400 text-[16px]">+</span>
-                        <span className="text-[18px] text-[#440687] font-bold">
-                          {syllable.vowel}
-                        </span>
-                        <span className="text-gray-400 text-[16px]">=</span>
-                        <span
-                          className="text-[20px] text-[#440687] min-w-[40px]"
-                          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                        >
-                          {syllable.result}
-                        </span>
-                        <span className="text-[14px] text-gray-500 flex-1">
-                          {syllable.romanization}
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            speak(syllable.result, `syllable-${index}-${idx}`);
-                          }}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                            speakingId === `syllable-${index}-${idx}`
-                              ? 'bg-[#440687]'
-                              : 'bg-white'
-                          }`}
-                        >
-                          <img src={speakingId === `syllable-${index}-${idx}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'} alt="sound" className="w-5 h-5" />
-                        </button>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Example Words */}
-              {wordExamples && wordExamples.length > 0 && (
-                <div>
-                  <h4
-                    className="text-[13px] text-[#B4D700] uppercase tracking-wider mb-3"
-                    style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-                  >
-                    {language === 'ja' ? '単語の例' :
-                     language.startsWith('zh') ? '词汇示例' :
-                     language === 'th' ? 'ตัวอย่างคำ' :
-                     language === 'vi' ? 'Vi du tu' :
-                     language === 'es' ? 'Ejemplos de palabras' :
-                     'Example Words'}
-                  </h4>
-                  <div className="space-y-2">
-                    {wordExamples.map((word, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.1 }}
-                        className="flex items-center gap-4 p-3 bg-gray-50 rounded-[12px]"
-                      >
-                        <span
-                          className="text-[20px] min-w-[80px]"
-                          style={{ fontFamily: 'Poppins, sans-serif' }}
-                        >
-                          {highlightWord(word.word, character.character)}
-                        </span>
-                        <span className="text-[14px] text-gray-500">
-                          {word.romanization}
-                        </span>
-                        <span className="text-[14px] text-gray-600 flex-1">
-                          {word.meaning}
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            speak(word.word, `word-${index}-${idx}`);
-                          }}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                            speakingId === `word-${index}-${idx}`
-                              ? 'bg-[#440687] text-white'
-                              : 'bg-[#F3E8FF] text-[#440687]'
-                          }`}
-                        >
-                          <img
-                            src={speakingId === `word-${index}-${idx}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'}
-                            alt="sound"
-                            className="w-5 h-5"
-                          />
-                        </button>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Original example from data if available */}
-              {character.example && !wordExamples && (
-                <div className="mt-4 p-4 bg-[#F6FFC7] rounded-[12px]">
-                  <div className="flex items-center gap-4">
-                    <span className="text-[24px] text-[#440687] font-bold">
-                      {character.example.word}
-                    </span>
-                    <span className="text-gray-600">
-                      = {character.example.meaning}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        speak(character.pronunciation || character.character, `example-${index}`);
-                      }}
-                      className={`ml-auto w-10 h-10 rounded-full flex items-center justify-center ${
-                        speakingId === `example-${index}`
-                          ? 'bg-[#440687] text-white'
-                          : 'bg-white text-[#440687]'
-                      }`}
-                    >
-                      <img
-                        src={speakingId === `example-${index}` ? '/images/icon/sound001_w.png' : '/images/icon/sound001_p.png'}
-                        alt="sound"
-                        className="w-5 h-5"
-                      />
-                    </button>
-                  </div>
-                </div>
-              )}
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto min-h-0 px-1 space-y-2.5">
+        {/* Example Syllables - Only for consonants */}
+        {isConsonant && syllableExamples && (
+          <div>
+            <h4 className="text-[11px] sm:text-[12px] text-[#B4D700] uppercase tracking-wider mb-1.5 px-1"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
+              {language === 'ja' ? '音節の例' : language.startsWith('zh') ? '音节示例' : language === 'th' ? 'ตัวอย่างพยางค์' : language === 'vi' ? 'Vi du am tiet' : language === 'es' ? 'Ejemplos de silabas' : 'Example Syllables'}
+            </h4>
+            <div className="space-y-1.5">
+              {syllableExamples.syllables.map((syllable, idx) => (
+                <motion.div key={idx}
+                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.08 }}
+                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 bg-[#AE7DFD] rounded-[10px]"
+                  style={{ boxShadow: '3px 3px 0px #1B0440' }}
+                >
+                  <span className="text-[16px] sm:text-[18px] text-white font-bold">{syllable.consonant}</span>
+                  <span className="text-white/50 text-[14px]">+</span>
+                  <span className="text-[16px] sm:text-[18px] text-white font-bold">{syllable.vowel}</span>
+                  <span className="text-white/50 text-[14px]">=</span>
+                  <span className="text-[18px] sm:text-[20px] text-[#B4D700] min-w-[32px]" style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
+                    {syllable.result}
+                  </span>
+                  <span className="text-[12px] sm:text-[13px] text-white/70 flex-1">{syllable.romanization}</span>
+                  <button onClick={(e) => { e.stopPropagation(); speak(syllable.result, `syllable-${index}-${idx}`); }}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${speakingId === `syllable-${index}-${idx}` ? 'bg-[#B4D700]' : 'bg-[#1B0440]/30'}`}>
+                    <img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4" />
+                  </button>
+                </motion.div>
+              ))}
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
-    </motion.div>
+
+        {/* Example Words */}
+        {wordExamples && wordExamples.length > 0 && (
+          <div>
+            <h4 className="text-[11px] sm:text-[12px] text-[#B4D700] uppercase tracking-wider mb-1.5 px-1"
+              style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}>
+              {language === 'ja' ? '単語の例' : language.startsWith('zh') ? '词汇示例' : language === 'th' ? 'ตัวอย่างคำ' : language === 'vi' ? 'Vi du tu' : language === 'es' ? 'Ejemplos de palabras' : 'Example Words'}
+            </h4>
+            <div className="space-y-1.5">
+              {wordExamples.map((word, idx) => (
+                <motion.div key={idx}
+                  initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: idx * 0.08 }}
+                  className="flex items-center gap-2 sm:gap-3 p-2 sm:p-2.5 bg-[#AE7DFD] rounded-[10px]"
+                  style={{ boxShadow: '3px 3px 0px #1B0440' }}
+                >
+                  <span className="text-[17px] sm:text-[19px] min-w-[60px] sm:min-w-[70px]" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                    {highlightWord(word.word, character.character)}
+                  </span>
+                  <span className="text-[12px] sm:text-[13px] text-white/60">{word.romanization}</span>
+                  <span className="text-[12px] sm:text-[13px] text-white/80 flex-1">{word.meaning}</span>
+                  <button onClick={(e) => { e.stopPropagation(); speak(word.word, `word-${index}-${idx}`); }}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all flex-shrink-0 ${speakingId === `word-${index}-${idx}` ? 'bg-[#B4D700]' : 'bg-[#1B0440]/30'}`}>
+                    <img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4" />
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Original example from data if available */}
+        {character.example && !wordExamples && (
+          <div className="p-3 bg-[#AE7DFD] rounded-[10px]" style={{ boxShadow: '3px 3px 0px #1B0440' }}>
+            <div className="flex items-center gap-3">
+              <span className="text-[22px] text-white font-bold">{character.example.word}</span>
+              <span className="text-white/70">= {character.example.meaning}</span>
+              <button onClick={(e) => { e.stopPropagation(); speak(character.pronunciation || character.character, `example-${index}`); }}
+                className={`ml-auto w-8 h-8 rounded-full flex items-center justify-center ${speakingId === `example-${index}` ? 'bg-[#B4D700]' : 'bg-[#1B0440]/30'}`}>
+                <img src="/images/icon/sound001_w.png" alt="sound" className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -982,6 +859,7 @@ export default function HangulLearnPage() {
   const { updateLevelProgress } = useProgress();
 
   const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Mark learn as completed when page is visited
   useEffect(() => {
@@ -1141,37 +1019,28 @@ export default function HangulLearnPage() {
     : vocabularyItems.length;
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-b from-[#440687] via-[#5B1A9A] to-[#6B21A8] pb-32">
-      {/* Back / Tier Badge / Close */}
-      <div className="grid grid-cols-[auto_1fr_auto] items-center px-4 pt-4">
+    <div className="fixed inset-0 bg-[#421785] flex flex-col" style={{ fontFamily: 'Poppins, sans-serif' }}>
+      {/* Header */}
+      <div className="flex items-center justify-between px-3 sm:px-4 pt-3 sm:pt-4 pb-1">
+        {/* Back button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => router.push(`/hangul/${levelNumber}`)}
-          className="flex items-center gap-2 text-white/80 hover:text-white transition-colors"
-          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
+          className="w-[42px] h-[42px] md:w-[48px] md:h-[48px] bg-white rounded-full flex items-center justify-center"
+          style={{ boxShadow: '3px 3px 0px #1B0440' }}
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg className="w-5 h-5 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
           </svg>
-          {language === 'ja' ? '戻る' :
-           language.startsWith('zh') ? '返回' :
-           language === 'th' ? 'ย้อนกลับ' :
-           language === 'vi' ? 'Quay lai' :
-           language === 'es' ? 'Volver' :
-           'Back'}
         </motion.button>
 
-        {/* Tier badge - centered in full row, aligned with content below */}
-        <div className="flex justify-center">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2, type: 'spring' }}
-            className="px-3 sm:px-4 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-[12px] text-[#440687] -translate-x-3"
-            style={{ backgroundColor: '#B4D700', fontFamily: 'Poppins, sans-serif', fontWeight: 700 }}
-          >
-            {getTierName()}
+        {/* Progress badge */}
+        <div className="flex items-center gap-2">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: 'spring' }}
+            className="px-3 py-1 rounded-full text-[12px] sm:text-[13px] text-[#1B0440] bg-[#B4D700]"
+            style={{ fontWeight: 700, boxShadow: '2px 2px 0px #1B0440' }}>
+            {currentIndex + 1} / {itemCount}
           </motion.div>
         </div>
 
@@ -1180,141 +1049,128 @@ export default function HangulLearnPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           onClick={() => router.push('/hangul')}
-          className="text-white/80 hover:text-white transition-colors"
+          className="w-[42px] h-[42px] md:w-[48px] md:h-[48px] bg-white rounded-full flex items-center justify-center"
+          style={{ boxShadow: '3px 3px 0px #1B0440' }}
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg className="w-5 h-5 text-[#1B0440]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </motion.button>
       </div>
 
-      {/* Level Title Section */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="px-4 pt-2 pb-3 sm:py-6 text-center"
-      >
-        <h1
-          className="text-[22px] sm:text-[28px] text-white mb-1 sm:mb-2"
-          style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 900 }}
-        >
-          {language === 'ja' ? `レベル ${levelNumber} - 学習` :
-           language.startsWith('zh') ? `第 ${levelNumber} 关 - 学习` :
-           language === 'th' ? `ระดับ ${levelNumber} - เรียนรู้` :
-           language === 'vi' ? `Cap ${levelNumber} - Hoc` :
-           language === 'es' ? `Nivel ${levelNumber} - Aprender` :
-           `Level ${levelNumber} - Learn`}
-        </h1>
-        <p
-          className="text-white/80 text-[12px] sm:text-[14px]"
-          style={{ fontFamily: 'Poppins, sans-serif' }}
-        >
-          {level.descriptionKey ? t(level.descriptionKey) : level.description}
-        </p>
-
-        {/* Item count */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mt-2 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-2 bg-white/10 rounded-full"
-        >
-          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#B4D700]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-          </svg>
-          <span
-            className="text-white text-[12px] sm:text-[14px]"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600 }}
-          >
-            {itemCount} {hasCharacterObjects
-              ? (language === 'ja' ? '文字' :
-                 language.startsWith('zh') ? '个字符' :
-                 language === 'th' ? 'ตัวอักษร' :
-                 language === 'vi' ? 'chu cai' :
-                 language === 'es' ? 'caracteres' :
-                 'characters')
-              : (language === 'ja' ? '単語' :
-                 language.startsWith('zh') ? '个单词' :
-                 language === 'th' ? 'คำศัพท์' :
-                 language === 'vi' ? 'tu vung' :
-                 language === 'es' ? 'palabras' :
-                 'words')}
-          </span>
-        </motion.div>
-      </motion.div>
-
-      {/* Content List - Characters for Beginner, Vocabulary for Intermediate/Advanced */}
-      <div className="px-4 space-y-4 max-w-2xl mx-auto">
-        {hasCharacterObjects ? (
-          // Beginner: Character cards
-          (level.characters as HangulCharacter[]).map((char, index) => (
-            <CharacterCard
-              key={char.character}
-              character={char}
-              index={index}
-              isExpanded={expandedIndex === index}
-              onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              speak={speak}
-              isSpeaking={isSpeaking}
-              speakingId={speakingId}
-              language={language}
-            />
-          ))
-        ) : (
-          // Intermediate/Advanced: Vocabulary cards
-          vocabularyItems.map((item, index) => (
-            <VocabularyCard
-              key={item.korean}
-              item={item}
-              index={index}
-              isExpanded={expandedIndex === index}
-              onToggle={() => setExpandedIndex(expandedIndex === index ? null : index)}
-              speak={speak}
-              speakingId={speakingId}
-            />
-          ))
-        )}
+      {/* Progress Bar */}
+      <div className="px-4 sm:px-6 py-2 max-w-2xl mx-auto w-full">
+        <div className="h-[8px] bg-[#1B0440] rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-[#B4D700] rounded-full"
+            initial={{ width: 0 }}
+            animate={{ width: `${((currentIndex + 1) / itemCount) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
       </div>
 
-      {/* Start Quiz Button - Fixed at bottom */}
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="fixed bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-[#440687] via-[#440687] to-transparent pt-8 sm:pt-12 pb-4 sm:pb-6"
-      >
-        {/* Scroll indicator arrow */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, y: [0, 5, 0] }}
-          transition={{ delay: 0.8, y: { repeat: Infinity, duration: 1.5 } }}
-          className="flex justify-center mb-2 sm:mb-3"
-        >
-          <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#440687]" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M7 10l5 5 5-5H7z" />
-          </svg>
-        </motion.div>
-        <div className="max-w-2xl mx-auto">
+      {/* Main Content - Purple Game Board */}
+      <div className="flex-1 px-3 sm:px-4 pb-2 min-h-0 max-w-2xl mx-auto w-full">
+        <div className="bg-[#8A4AEF] rounded-[16px] sm:rounded-[20px] h-full flex flex-col p-3 sm:p-4"
+          style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.3)' }}>
+          <AnimatePresence mode="wait">
+            {hasCharacterObjects ? (
+              <motion.div
+                key={`char-${currentIndex}`}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.25 }}
+                className="flex-1 flex flex-col min-h-0"
+              >
+                <CharacterCard
+                  character={(level.characters as HangulCharacter[])[currentIndex]}
+                  index={currentIndex}
+                  isExpanded={true}
+                  onToggle={() => {}}
+                  speak={speak}
+                  isSpeaking={isSpeaking}
+                  speakingId={speakingId}
+                  language={language}
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`vocab-${currentIndex}`}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.25 }}
+                className="flex-1 flex flex-col min-h-0"
+              >
+                <VocabularyCard
+                  item={vocabularyItems[currentIndex]}
+                  index={currentIndex}
+                  isExpanded={true}
+                  onToggle={() => {}}
+                  speak={speak}
+                  speakingId={speakingId}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Navigation Buttons - Fixed at bottom */}
+      <div className="px-3 sm:px-4 pt-2 pb-4 sm:pb-6 max-w-2xl mx-auto w-full">
+        <div className="flex gap-2.5">
+          {/* Previous Button */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push(`/hangul/${levelNumber}?mode=quiz`)}
-            className="w-full py-3 sm:py-4 bg-[#B4D700] text-[#440687] rounded-[14px] sm:rounded-[16px] shadow-lg flex items-center justify-center gap-2 sm:gap-3"
-            style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 700, fontSize: '16px' }}
+            onClick={() => { stop(); setCurrentIndex(Math.max(0, currentIndex - 1)); }}
+            disabled={currentIndex === 0}
+            className={`flex-1 py-3 sm:py-3.5 rounded-[10px] sm:rounded-[12px] flex items-center justify-center gap-1.5 border-2 transition-all ${
+              currentIndex === 0
+                ? 'bg-[#AE7DFD]/50 text-white/40 border-[#1B0440]/30 cursor-not-allowed'
+                : 'bg-[#AE7DFD] text-white border-[#1B0440]'
+            }`}
+            style={{ fontWeight: 700, fontSize: '14px', boxShadow: currentIndex === 0 ? 'none' : '3px 3px 0px #1B0440' }}
           >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
             </svg>
-            {language === 'ja' ? 'クイズを始める' :
-             language.startsWith('zh') ? '开始测验' :
-             language === 'th' ? 'เริ่มแบบทดสอบ' :
-             language === 'vi' ? 'Bat dau bai kiem tra' :
-             language === 'es' ? 'Iniciar cuestionario' :
-             'Start Quiz'}
+            {language === 'ja' ? '前' : language.startsWith('zh') ? '上一个' : language === 'th' ? 'ก่อนหน้า' : language === 'vi' ? 'Truoc' : language === 'es' ? 'Anterior' : 'Prev'}
+          </motion.button>
+
+          {/* Next / Start Quiz Button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              stop();
+              if (currentIndex === itemCount - 1) { router.push(`/hangul/${levelNumber}?mode=quiz`); }
+              else { setCurrentIndex(currentIndex + 1); }
+            }}
+            className="flex-[2] py-3 sm:py-3.5 bg-[#B4D700] text-[#1B0440] rounded-[10px] sm:rounded-[12px] border-2 border-[#1B0440] flex items-center justify-center gap-1.5"
+            style={{ fontWeight: 700, fontSize: '14px', boxShadow: '3px 3px 0px #1B0440' }}
+          >
+            {currentIndex === itemCount - 1 ? (
+              <>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {language === 'ja' ? 'クイズを始める' : language.startsWith('zh') ? '开始测验' : language === 'th' ? 'เริ่มแบบทดสอบ' : language === 'vi' ? 'Bat dau bai kiem tra' : language === 'es' ? 'Iniciar cuestionario' : 'Start Quiz'}
+              </>
+            ) : (
+              <>
+                {language === 'ja' ? '次' : language.startsWith('zh') ? '下一个' : language === 'th' ? 'ถัดไป' : language === 'vi' ? 'Tiep' : language === 'es' ? 'Siguiente' : 'Next'}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                </svg>
+              </>
+            )}
           </motion.button>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
